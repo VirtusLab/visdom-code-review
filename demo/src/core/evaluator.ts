@@ -154,6 +154,9 @@ export function evaluateReport(
 
 // Match finding to ground truth by file + semantic similarity
 function findGroundTruthMatch(finding: Finding, gt: GroundTruthEntry[]): GroundTruthEntry | null {
+  let bestMatch: GroundTruthEntry | null = null;
+  let bestScore = 0;
+
   for (const entry of gt) {
     // Must match file (or at least the filename part)
     const findingFile = finding.file.split('/').pop() ?? finding.file;
@@ -162,20 +165,43 @@ function findGroundTruthMatch(finding: Finding, gt: GroundTruthEntry[]): GroundT
       continue;
     }
 
-    // Fuzzy title/description match — check for keyword overlap
-    const findingText = `${finding.title} ${finding.description}`.toLowerCase();
-    const gtText = `${entry.title} ${entry.description}`.toLowerCase();
+    const score = semanticScore(
+      `${finding.title} ${finding.description}`,
+      `${entry.title} ${entry.description}`
+    );
 
-    // Extract keywords (3+ char words)
-    const gtKeywords = gtText.match(/\b\w{3,}\b/g) ?? [];
-    const matchCount = gtKeywords.filter(kw => findingText.includes(kw)).length;
-    const matchRatio = gtKeywords.length > 0 ? matchCount / gtKeywords.length : 0;
-
-    if (matchRatio >= 0.3) {
-      return entry;
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = entry;
     }
   }
-  return null;
+
+  // Threshold: 0.2 is enough when file already matches
+  return bestScore >= 0.2 ? bestMatch : null;
+}
+
+// Bidirectional keyword overlap score
+function semanticScore(textA: string, textB: string): number {
+  const a = textA.toLowerCase();
+  const b = textB.toLowerCase();
+
+  // Extract meaningful keywords (4+ chars, skip common words)
+  const stopWords = new Set(['this', 'that', 'with', 'from', 'have', 'been', 'will', 'than', 'they', 'them', 'into', 'does', 'uses', 'instead', 'which', 'should', 'every', 'makes', 'allow']);
+  const extractKeywords = (text: string) =>
+    (text.match(/\b\w{4,}\b/g) ?? []).filter(w => !stopWords.has(w));
+
+  const kwA = extractKeywords(a);
+  const kwB = extractKeywords(b);
+
+  if (kwA.length === 0 || kwB.length === 0) return 0;
+
+  // A→B: how many of A's keywords appear in B's text
+  const aInB = kwA.filter(kw => b.includes(kw)).length / kwA.length;
+  // B→A: how many of B's keywords appear in A's text
+  const bInA = kwB.filter(kw => a.includes(kw)).length / kwB.length;
+
+  // Return the max of both directions (generous matching)
+  return Math.max(aInB, bInA);
 }
 
 // A finding is a "valid suggestion" if it has reasonable confidence and is actionable
