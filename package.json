@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "demo": "cd demo && npx tsx src/cli/index.ts",
+    "demo:live": "cd demo && npx tsx src/cli/index.ts --live",
+    "demo:local": "cd demo && npx tsx src/cli/index.ts --local",
+    "demo:cleanup": "cd demo && npx tsx src/cli/index.ts --cleanup"
   },
   "dependencies": {
     "astro": "^5.7.10",
