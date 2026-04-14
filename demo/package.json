@@ -8,6 +8,8 @@
     "demo:live": "tsx src/cli/index.ts --live",
     "demo:local": "tsx src/cli/index.ts --local",
     "demo:cleanup": "tsx src/cli/index.ts --cleanup",
+    "demo:narrate": "tsx src/cli/index.ts --narrate",
+    "demo:interactive": "tsx src/cli/index.ts --interactive",
     "build": "tsup src/cli/index.ts --format esm --dts",
     "typecheck": "tsc --noEmit"
   },

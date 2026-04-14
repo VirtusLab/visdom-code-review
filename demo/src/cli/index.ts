@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import chalk from 'chalk';
 
 import type { CLIOptions, ReviewContext } from '../core/types.js';
-import { ReviewPipeline } from '../core/pipeline.js';
+import { ReviewPipeline, buildReport } from '../core/pipeline.js';
 import { ContextCollector, loadScenarioFiles } from '../core/layers/context-collector.js';
 import { DeterministicGate } from '../core/layers/deterministic-gate.js';
 import { AIQuickScan } from '../core/layers/ai-quick-scan.js';
@@ -12,6 +12,7 @@ import { AIDeepReview } from '../core/layers/ai-deep-review.js';
 import { AIClient } from '../core/ai/client.js';
 import { GitHubOps } from '../core/github/operations.js';
 import { TerminalReporter, renderHeader, renderPRCreated, renderLayerStart, renderLayerComplete, renderCleanupHint } from '../core/reporter/terminal.js';
+import { Narrator, PaceMode } from '../core/narrator.js';
 import { scenario as perfectPR } from '../scenarios/perfect-pr/scenario.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -19,12 +20,16 @@ const SCENARIOS = { 'perfect-pr': perfectPR } as const;
 
 function parseArgs(): CLIOptions {
   const args = process.argv.slice(2);
+  const narrate = args.includes('--narrate');
+  const interactive = args.includes('--interactive');
   return {
     live: args.includes('--live'),
-    local: args.includes('--local'),
+    local: args.includes('--local') || narrate || interactive,
     cleanup: args.includes('--cleanup'),
     list: args.includes('--list'),
     scenario: args.find((a) => !a.startsWith('--')) ?? 'perfect-pr',
+    narrate,
+    interactive,
   };
 }
 
@@ -50,6 +55,12 @@ function getGitHubToken(): string {
   throw new Error(
     'No GitHub token found. Set GITHUB_TOKEN or install/authenticate gh CLI.'
   );
+}
+
+function getPaceMode(opts: CLIOptions): PaceMode {
+  if (opts.interactive) return 'interactive';
+  if (opts.narrate) return 'auto';
+  return 'none';
 }
 
 async function main() {
@@ -109,11 +120,62 @@ async function main() {
 
   // === Main demo flow ===
 
+  const narrator = new Narrator(getPaceMode(opts));
+
   renderHeader(scenarioConfig.title, scenarioConfig.description);
 
   // Load scenario files
   const scenarioDir = join(__dirname, '..', 'scenarios', scenarioConfig.name);
   const files = await loadScenarioFiles(scenarioDir, scenarioConfig.files);
+
+  // === Narrated intro ===
+  await narrator.heading('The Setup');
+  await narrator.narrate(
+    'A developer opens a pull request: "feat: add user authentication service."\n' +
+    'The PR adds login/register endpoints, JWT auth, password hashing, and 12 tests.\n' +
+    'CI is green. Coverage is 94%. Commit messages are clean.'
+  );
+
+  await narrator.narrate(
+    "Let's look at the code the same way a reviewer would see it."
+  );
+
+  // Show key files
+  const controller = files.find(f => f.path.includes('auth.controller'));
+  if (controller) {
+    await narrator.showCode(controller.path, controller.content);
+    await narrator.narrate(
+      'Clean REST controller. Async/await. Error handling. Typed request/response.\n' +
+      'Nothing obviously wrong at a glance.'
+    );
+  }
+
+  const service = files.find(f => f.path.includes('auth.service'));
+  if (service) {
+    await narrator.showCode(service.path, service.content);
+    await narrator.narrate(
+      'Business logic separated from HTTP layer. Bcrypt for passwords. JWT for tokens.\n' +
+      'Follows the patterns you expect.'
+    );
+  }
+
+  const testFile = files.find(f => f.path.includes('auth.test'));
+  if (testFile) {
+    await narrator.showCode(testFile.path, testFile.content);
+    await narrator.narrate(
+      '12 tests. Mocked dependencies. Good describe/it structure.\n' +
+      '94% line coverage. All green.'
+    );
+  }
+
+  await narrator.challenge('Would you approve this PR?');
+
+  await narrator.separator();
+  await narrator.heading("Let's see what VCR finds");
+  await narrator.narrate(
+    'VCR runs this PR through 4 layers — from zero-cost deterministic checks\n' +
+    'to AI-powered deep analysis. Each layer adds depth. Cost scales with risk.'
+  );
 
   // Setup AI client
   const cacheDir = join(__dirname, '..', '..', 'cache');
@@ -165,7 +227,7 @@ async function main() {
     previousLayers: [],
   };
 
-  // Build pipeline
+  // Build layers
   const layers = [
     new ContextCollector(),
     new DeterministicGate(),
@@ -173,25 +235,95 @@ async function main() {
     new AIDeepReview(ai, scenarioConfig.name),
   ];
 
+  // Layer narration texts
+  const layerNarration: Record<number, { before: string; after: string }> = {
+    0: {
+      before: 'Layer 0 collects context: file classifications, diff, metadata.\nZero cost. Pure data preparation.',
+      after: 'Context ready. Files classified: auth code marked as critical.',
+    },
+    1: {
+      before: 'Layer 1 is the deterministic gate. Zero AI. Zero cost.\nRegex pattern matching for known vulnerability patterns.\nThis layer CANNOT be fooled by prompt injection or hallucination.',
+      after: 'Already found issues — and we haven\'t spent a single token on AI yet.\nA secret in the env file. SQL injection. Timing-unsafe comparison. Weak RNG.',
+    },
+    2: {
+      before: 'Layer 2: first contact with AI. Claude Haiku — fast, cheap ($0.02).\nClassifies risk level. Detects circular test patterns.\nThis is the economic hinge: only HIGH+ risk triggers the expensive Layer 3.',
+      after: 'CRITICAL risk. And the big finding: 8 of 12 tests are circular.\nThey mock everything and test nothing. That 94% coverage? Meaningless.\nGate decision: proceed to deep review.',
+    },
+    3: {
+      before: 'Layer 3: deep review with Claude Sonnet. Three lenses run in parallel:\n  - Security: OWASP Top 10, crypto, auth patterns\n  - Architecture: coupling, testability, data exposure\n  - Test quality: what the tests actually verify\nThis is the expensive layer (~$0.40) — but it only runs for risky PRs.',
+      after: 'The full picture emerges. bcrypt cost factor 4 — brute-forceable.\nJWT accepts algorithm "none" — tokens can be forged.\nThe model returns password hashes to every caller.\nTests assert spy calls, not actual behavior.',
+    },
+  };
+
   const reporters = [new TerminalReporter()];
-  const pipeline = new ReviewPipeline(layers, reporters);
 
-  // Wire up live progress events
-  pipeline.on('layer:start', (e: any) => renderLayerStart(e.layer, e.name));
-  pipeline.on('layer:complete', (e: any) => renderLayerComplete(e.result));
+  if (narrator.mode !== 'none') {
+    // Manual orchestration with narration between layers
+    for (const layer of layers) {
+      const narr = layerNarration[layer.layer];
+      if (narr) await narrator.narrate(narr.before);
 
-  // Run pipeline
-  const report = await pipeline.run(context);
+      renderLayerStart(layer.layer, layer.name);
+      const result = await layer.analyze(context);
+      context.previousLayers.push(result);
+      renderLayerComplete(result);
 
-  // Post findings to GitHub
-  if (gh && !opts.local) {
-    process.stdout.write(chalk.dim('→ Posting findings to PR... '));
-    await gh.postFindings(pr, report);
-    console.log(chalk.green('✓'));
-    console.log(`  ${chalk.underline(pr.url)}`);
-    console.log('');
-    renderCleanupHint();
+      if (narr) {
+        await narrator.narrate(narr.after);
+        await narrator.separator();
+      }
+
+      if (result.gate && !result.gate.proceed) break;
+    }
+
+    // Build report and render via reporter
+    const report = buildReport(context);
+    for (const reporter of reporters) {
+      await reporter.render(report);
+    }
+
+    // Post-pipeline narration
+    await narrator.heading('The Verdict');
+    await narrator.narrate(
+      'A traditional code review would have seen: CI green, 94% coverage, clean code.\n' +
+      'A senior engineer — if available within 24-48 hours — might catch one or two issues.\n' +
+      'VCR found 14 issues in under 2 minutes for $0.44.'
+    );
+    await narrator.narrate(
+      'The most dangerous finding: the tests provide a false sense of security.\n' +
+      'They pass, they show high coverage, but they verify nothing.\n' +
+      'This PR would ship an authentication bypass to production.'
+    );
+
+    // Post findings to GitHub (won't happen in narrated mode since local is implied, but kept for completeness)
+    if (gh && !opts.local) {
+      process.stdout.write(chalk.dim('→ Posting findings to PR... '));
+      await gh.postFindings(pr, report);
+      console.log(chalk.green('✓'));
+      console.log(`  ${chalk.underline(pr.url)}`);
+      console.log('');
+      renderCleanupHint();
+    }
+  } else {
+    // Standard mode — use pipeline as before
+    const pipeline = new ReviewPipeline(layers, reporters);
+    pipeline.on('layer:start', (e: any) => renderLayerStart(e.layer, e.name));
+    pipeline.on('layer:complete', (e: any) => renderLayerComplete(e.result));
+
+    const report = await pipeline.run(context);
+
+    // Post findings to GitHub
+    if (gh && !opts.local) {
+      process.stdout.write(chalk.dim('→ Posting findings to PR... '));
+      await gh.postFindings(pr, report);
+      console.log(chalk.green('✓'));
+      console.log(`  ${chalk.underline(pr.url)}`);
+      console.log('');
+      renderCleanupHint();
+    }
   }
+
+  narrator.close();
 }
 
 main().catch((err) => {

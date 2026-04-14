@@ -140,4 +140,6 @@ export interface CLIOptions {
   cleanup: boolean;
   list: boolean;
   scenario: string;
+  narrate: boolean;
+  interactive: boolean;
 }

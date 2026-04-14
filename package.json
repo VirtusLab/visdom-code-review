@@ -9,7 +9,9 @@
     "demo": "cd demo && npx tsx src/cli/index.ts",
     "demo:live": "cd demo && npx tsx src/cli/index.ts --live",
     "demo:local": "cd demo && npx tsx src/cli/index.ts --local",
-    "demo:cleanup": "cd demo && npx tsx src/cli/index.ts --cleanup"
+    "demo:cleanup": "cd demo && npx tsx src/cli/index.ts --cleanup",
+    "demo:narrate": "cd demo && npx tsx src/cli/index.ts --narrate",
+    "demo:interactive": "cd demo && npx tsx src/cli/index.ts --interactive"
   },
   "dependencies": {
     "astro": "^5.7.10",

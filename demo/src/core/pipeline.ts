@@ -49,43 +49,47 @@ export class ReviewPipeline extends EventEmitter {
   }
 
   private buildReport(context: ReviewContext): ReviewReport {
-    const allFindings = context.previousLayers.flatMap((l) => l.findings);
-    const totalDurationMs = context.previousLayers.reduce((sum, l) => sum + l.metrics.durationMs, 0);
-    const totalCostUsd = context.previousLayers.reduce((sum, l) => sum + l.metrics.costUsd, 0);
-
-    const bySeverity: Record<string, number> = {};
-    for (const f of allFindings) {
-      bySeverity[f.severity] = (bySeverity[f.severity] ?? 0) + 1;
-    }
-
-    const summary: ReviewSummary = {
-      totalFindings: allFindings.length,
-      bySeverity,
-      totalDurationMs,
-      totalCostUsd,
-      traditionalComparison: {
-        traditional: {
-          findings: 0,
-          waitTime: '24-48h',
-          cost: '~1h senior engineer',
-          riskMissed: 'auth bypass ships to production',
-        },
-        vcr: {
-          findings: allFindings.length,
-          time: formatDuration(totalDurationMs),
-          cost: `$${totalCostUsd.toFixed(2)}`,
-          riskCaught: 'caught before merge',
-        },
-      },
-    };
-
-    return {
-      scenario: context.scenario,
-      pr: context.pr,
-      layers: context.previousLayers,
-      summary,
-    };
+    return buildReport(context);
   }
+}
+
+export function buildReport(context: ReviewContext): ReviewReport {
+  const allFindings = context.previousLayers.flatMap((l) => l.findings);
+  const totalDurationMs = context.previousLayers.reduce((sum, l) => sum + l.metrics.durationMs, 0);
+  const totalCostUsd = context.previousLayers.reduce((sum, l) => sum + l.metrics.costUsd, 0);
+
+  const bySeverity: Record<string, number> = {};
+  for (const f of allFindings) {
+    bySeverity[f.severity] = (bySeverity[f.severity] ?? 0) + 1;
+  }
+
+  const summary: ReviewSummary = {
+    totalFindings: allFindings.length,
+    bySeverity,
+    totalDurationMs,
+    totalCostUsd,
+    traditionalComparison: {
+      traditional: {
+        findings: 0,
+        waitTime: '24-48h',
+        cost: '~1h senior engineer',
+        riskMissed: 'auth bypass ships to production',
+      },
+      vcr: {
+        findings: allFindings.length,
+        time: formatDuration(totalDurationMs),
+        cost: `$${totalCostUsd.toFixed(2)}`,
+        riskCaught: 'caught before merge',
+      },
+    },
+  };
+
+  return {
+    scenario: context.scenario,
+    pr: context.pr,
+    layers: context.previousLayers,
+    summary,
+  };
 }
 
 function formatDuration(ms: number): string {
