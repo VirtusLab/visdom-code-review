@@ -13,6 +13,8 @@
     "demo:triage": "tsx src/cli/index.ts --local --triage",
     "bench": "tsx src/cli/index.ts --local --bench",
     "bench:live": "tsx src/cli/index.ts --local --bench --live",
+    "bench:martian": "tsx src/cli/bench-martian.ts",
+    "bench:martian:live": "tsx src/cli/bench-martian.ts --live",
     "build": "tsup src/cli/index.ts --format esm --dts",
     "typecheck": "tsc --noEmit"
   },

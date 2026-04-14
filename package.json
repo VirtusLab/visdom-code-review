@@ -13,7 +13,8 @@
     "demo:narrate": "cd demo && npx tsx src/cli/index.ts --narrate",
     "demo:interactive": "cd demo && npx tsx src/cli/index.ts --interactive",
     "demo:triage": "cd demo && npx tsx src/cli/index.ts --local --triage",
-    "demo:bench": "cd demo && npx tsx src/cli/index.ts --local --bench"
+    "demo:bench": "cd demo && npx tsx src/cli/index.ts --local --bench",
+    "demo:bench:martian": "cd demo && npx tsx src/cli/bench-martian.ts"
   },
   "dependencies": {
     "astro": "^5.7.10",
