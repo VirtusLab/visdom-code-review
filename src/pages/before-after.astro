@@ -20,7 +20,10 @@ const base = import.meta.env.BASE_URL;
 </p>
 
 <!-- Scenario 1 -->
-<BeforeAfter title="The AI wrote the code. The AI wrote the tests. The CI said it was fine.">
+<BeforeAfter title="The AI wrote the code. The AI wrote the tests. The CI said it was fine." impacts={[
+  { before: "24-48h", after: "<10 min", label: "time to feedback" },
+  { before: "$50-200K", after: "$2", label: "incident vs review cost" },
+]}>
   <Fragment slot="before">
     <p>
       A developer uses Copilot to write authentication code. Copilot also writes the tests.
@@ -60,7 +63,11 @@ const base = import.meta.env.BASE_URL;
 </BeforeAfter>
 
 <!-- Scenario 2 -->
-<BeforeAfter title="The agent that spent $30 fixing a test that wasn't broken">
+<BeforeAfter title="The agent that spent $30 fixing a test that wasn't broken" impacts={[
+  { before: "11.75h", after: "1.5 min", label: "wall time" },
+  { before: "$23+", after: "$0.90", label: "cost" },
+  { before: "47", after: "3", label: "iterations" },
+]}>
   <Fragment slot="before">
     <p>
       An AI coding agent gets a task. It writes a fix, pushes, and waits for CI. Fifteen minutes later,
@@ -96,7 +103,10 @@ const base = import.meta.env.BASE_URL;
 </BeforeAfter>
 
 <!-- Scenario 3 -->
-<BeforeAfter title="Six months of 'it works on my team'">
+<BeforeAfter title="Six months of 'it works on my team'" impacts={[
+  { before: "6 months", after: "2 weeks", label: "detection time" },
+  { before: "40-80 days", after: "2-3 days", label: "fix effort" },
+]}>
   <Fragment slot="before">
     <p>
       Your Poland team writes services using one pattern. Your India team uses a different one.
@@ -124,7 +134,10 @@ const base = import.meta.env.BASE_URL;
 </BeforeAfter>
 
 <!-- Scenario 4 -->
-<BeforeAfter title="The $950 AI budget that was really $17,000">
+<BeforeAfter title="The $950 AI budget that was really $17,000" impacts={[
+  { before: "$17,450", after: "$6,450", label: "monthly cost" },
+  { before: "hidden", after: "visible", label: "cost breakdown" },
+]}>
   <Fragment slot="before">
     <p>
       The CFO asks: "How much does AI cost us?" The answer: "50 Copilot licenses at $19 each.

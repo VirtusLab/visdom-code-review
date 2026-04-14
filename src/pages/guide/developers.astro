@@ -24,6 +24,8 @@ const base = import.meta.env.BASE_URL;
   day-to-day.
 </p>
 
+<div class="border-t border-visdom-gray-200 mt-14 mb-14"></div>
+
 <!-- What you'll see on your PRs -->
 <h2>What you'll see on your PRs</h2>
 
@@ -65,6 +67,8 @@ const base = import.meta.env.BASE_URL;
   If you're not hearing from it, that's working as intended.</p>
 </Callout>
 
+<div class="border-t border-visdom-gray-200 mt-14 mb-14"></div>
+
 <!-- How the risk levels work -->
 <h2>How the risk levels work</h2>
 
@@ -73,6 +77,7 @@ const base = import.meta.env.BASE_URL;
   reviewer's) time it asks for.
 </p>
 
+<div class="bg-visdom-gray-50 rounded-lg p-6 my-6">
 <table>
   <thead>
     <tr>
@@ -104,11 +109,14 @@ const base = import.meta.env.BASE_URL;
     </tr>
   </tbody>
 </table>
+</div>
 
 <p>
   The mental model is simple: <strong>if you touch auth, expect CRITICAL. If you touch docs,
   expect LOW.</strong> That's it.
 </p>
+
+<div class="border-t border-visdom-gray-200 mt-14 mb-14"></div>
 
 <!-- What VCR catches that you might miss -->
 <h2>What VCR catches that you might miss</h2>
@@ -153,6 +161,8 @@ const base = import.meta.env.BASE_URL;
   that actually causes incidents.</p>
 </Callout>
 
+<div class="border-t border-visdom-gray-200 mt-14 mb-14"></div>
+
 <!-- How to give feedback -->
 <h2>How to give feedback</h2>
 
@@ -161,6 +171,7 @@ const base = import.meta.env.BASE_URL;
   Use them. It takes one click and directly shapes what VCR comments on next time.
 </p>
 
+<div class="bg-visdom-gray-50 rounded-lg p-6 my-6">
 <table>
   <thead>
     <tr>
@@ -187,12 +198,15 @@ const base = import.meta.env.BASE_URL;
     </tr>
   </tbody>
 </table>
+</div>
 
 <Callout type="tip" title="Your feedback matters">
   <p>Thumbs-down a bad finding and VCR learns. The more your team reacts, the fewer
   false positives you'll see over time. This is how VCR avoids becoming another
   bot you ignore.</p>
 </Callout>
+
+<div class="border-t border-visdom-gray-200 mt-14 mb-14"></div>
 
 <!-- What VCR does NOT do -->
 <h2>What VCR does NOT do</h2>
@@ -205,6 +219,8 @@ const base = import.meta.env.BASE_URL;
   <li><strong>Won't block your PR</strong> unless your team explicitly configures it to. By default, VCR advises.</li>
   <li><strong>Won't comment on formatting, naming, or import order.</strong> That's what your linter is for. VCR focuses on things that cause actual problems.</li>
 </ul>
+
+<div class="border-t border-visdom-gray-200 mt-14 mb-14"></div>
 
 <!-- For senior developers -->
 <h2>For senior developers</h2>
@@ -241,6 +257,8 @@ const base = import.meta.env.BASE_URL;
   Full details on lenses and configuration:
   <a href={`${base}reference/configuration/`}>Configuration Reference</a>
 </p>
+
+<div class="border-t border-visdom-gray-200 mt-14 mb-14"></div>
 
 <!-- Persona cards -->
 <h2>What developers are saying</h2>

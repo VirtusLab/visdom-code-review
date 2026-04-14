@@ -1,9 +1,16 @@
 ---
-interface Props {
-  title: string;
+interface Impact {
+  before: string;
+  after: string;
+  label: string;
 }
 
-const { title } = Astro.props;
+interface Props {
+  title: string;
+  impacts?: Impact[];
+}
+
+const { title, impacts } = Astro.props;
 ---
 <div class="mb-8">
   <h3>{title}</h3>
@@ -25,4 +32,18 @@ const { title } = Astro.props;
       </div>
     </div>
   </div>
+  {impacts && impacts.length > 0 && (
+    <div class="flex flex-wrap gap-6 mt-4 pt-4 border-t border-visdom-gray-200">
+      {impacts.map((impact) => (
+        <div class="text-center">
+          <div class="flex items-center gap-2 justify-center">
+            <span class="text-base line-through text-red-400">{impact.before}</span>
+            <span class="text-visdom-gray-400">→</span>
+            <span class="text-xl font-bold text-emerald-600">{impact.after}</span>
+          </div>
+          <span class="text-xs text-visdom-gray-500">{impact.label}</span>
+        </div>
+      ))}
+    </div>
+  )}
 </div>

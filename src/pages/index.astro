@@ -1,187 +1,288 @@
 ---
-import DocLayout from '../layouts/DocLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import LayerDiagram from '../components/LayerDiagram.astro';
+import StatCard from '../components/StatCard.astro';
+import Timeline from '../components/Timeline.astro';
 import PersonaCard from '../components/PersonaCard.astro';
 import ResourceCard from '../components/ResourceCard.astro';
+import Callout from '../components/Callout.astro';
+import '../styles/global.css';
 
 const base = import.meta.env.BASE_URL;
 ---
-<DocLayout
-  title="Your team writes code with AI. Your review process doesn't know that."
-  subtitle="VISDOM Code Review is a reference process for enterprise code review in the age of AI-assisted development. Not a tool. A process."
-  tags={[
-    { label: "VISDOM", variant: "green" },
-    { label: "Reference Process", variant: "outline" },
-  ]}
->
-
-<p>
-  Your developers use Copilot, Claude, Cursor. Your CI says the code is fine. Your tests pass.
-  But 45% of AI-generated code contains OWASP vulnerabilities that those tests will never catch, because
-  <strong>the AI wrote the tests too</strong>.
-</p>
-
-<p>
-  Meanwhile, your senior engineers spend half their day reviewing code from distributed teams across
-  time zones. PRs wait 24-48 hours. Standards drift between offices. Nobody trusts the AI output enough
-  to ship it fast, but everybody's using it anyway.
-</p>
-
-<p>
-  <strong>VISDOM Code Review</strong> (<strong>VCR</strong>) is how we solve this at VirtusLab, and how we help our clients solve it.
-  It's a <strong>structured, multi-layered review process</strong> that we deploy on your teams, configure for
-  your stack, and hand over for you to own.
-</p>
-
-<h2>Pick your path</h2>
-
-<div class="grid sm:grid-cols-3 gap-4 my-6">
-  <a href={`${base}guide/leaders/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
-    <div class="flex items-center gap-2 mb-2">
-      <span class="text-2xl">📊</span>
-      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">For Leaders</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VISDOM Code Review</title>
+  <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="min-h-screen">
+  <!-- Top nav -->
+  <nav class="border-b border-visdom-gray-200 bg-white sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
+      <a href={`${base}`} class="flex items-center gap-2 text-visdom-gray-900 font-semibold no-underline hover:text-visdom-green-dark">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        VISDOM Code Review
+      </a>
+      <div class="flex items-center gap-6 text-sm text-visdom-gray-500">
+        <a href={`${base}`} class="hover:text-visdom-gray-900 no-underline">Home</a>
+        <a href={`${base}guide/leaders/`} class="hover:text-visdom-gray-900 no-underline">For Leaders</a>
+        <a href={`${base}guide/platform-engineers/`} class="hover:text-visdom-gray-900 no-underline">For Engineers</a>
+        <a href={`${base}guide/developers/`} class="hover:text-visdom-gray-900 no-underline">For Developers</a>
+        <a href={`${base}before-after/`} class="hover:text-visdom-gray-900 no-underline">Scenarios</a>
+        <a href={`${base}reference/`} class="hover:text-visdom-gray-900 no-underline">Reference</a>
+      </div>
     </div>
-    <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Engineering Managers, VPs, CTOs</h3>
-    <p class="text-sm text-visdom-gray-500 !mb-0">Business case, ROI model, what changes for your org, how we engage.</p>
-  </a>
+  </nav>
 
-  <a href={`${base}guide/platform-engineers/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
-    <div class="flex items-center gap-2 mb-2">
-      <span class="text-2xl">🔧</span>
-      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">For Engineers</span>
-    </div>
-    <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Platform & DevOps Engineers</h3>
-    <p class="text-sm text-visdom-gray-500 !mb-0">Architecture, how to run a pilot, configuration, metrics setup.</p>
-  </a>
-
-  <a href={`${base}guide/developers/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
-    <div class="flex items-center gap-2 mb-2">
-      <span class="text-2xl">💻</span>
-      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">For Developers</span>
-    </div>
-    <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Developers on the team</h3>
-    <p class="text-sm text-visdom-gray-500 !mb-0">What changes in your daily PR workflow, how to read and give feedback.</p>
-  </a>
-</div>
-
-<h2>The short version</h2>
-
-<p>Every PR passes through layers of increasing depth, fast and cheap for trivial changes, thorough for risky ones:</p>
-
-<div class="bg-visdom-gray-50 border border-visdom-gray-200 rounded-lg p-5 mb-6 font-mono text-sm">
-<pre class="!bg-transparent !p-0 !mb-0 text-visdom-gray-600"><code>PR opened
-  │
-  ▼
-Layer 0  Context Collection          &lt;10s    deterministic
-Layer 1  Deterministic Gate          &lt;60s    linters, SAST, secrets
-Layer 2  AI Quick Scan               &lt;2min   risk classification
-Layer 3  AI Deep Review              &lt;10min  only MEDIUM+ risk
-  │
-  ▼
-Structured PR comment + reviewer guidance</code></pre>
-</div>
-
-<p>
-  A LOW-risk PR gets feedback in under 2 minutes at ~$0.05.
-  A CRITICAL PR gets deep analysis across security, performance, architecture, and AI-code patterns, and
-  your senior reviewer gets a pre-annotated PR that tells them exactly where to look.
-</p>
-
-<h2>What this is not</h2>
-
-<ul>
-  <li><strong>Not a SaaS product.</strong> It's a reference process we implement on your infrastructure during a consulting engagement.</li>
-  <li><strong>Not tied to specific tools.</strong> The process works with any LLM provider, any CI platform, any code host. We provide reference implementations, you can swap components.</li>
-  <li><strong>Not a replacement for human review.</strong> It's a force multiplier. Seniors review fewer PRs, but with better context and focus.</li>
-</ul>
-
-<h2>What your team is saying right now</h2>
-
-<PersonaCard name="Your Engineering Manager" role="Katja's problem" color="green">
-  <p>"My seniors in Kraków spend half their day reviewing PRs from the India team. The quality is inconsistent, feedback takes 24 hours, and we're shipping AI-generated code without really understanding what it does."</p>
-</PersonaCard>
-
-<PersonaCard name="Your Platform Engineer" role="Ewa's problem" color="purple">
-  <p>"Our agents burn $30 per task because they loop on flaky tests. The CI lies to them. And nobody's tracking the real cost. Leadership thinks AI costs us $950/month in Copilot licenses."</p>
-</PersonaCard>
-
-<PersonaCard name="Your Senior Developer" role="Rajesh's problem" color="blue">
-  <p>"Copilot-generated PRs look clean but they're over-engineered: unnecessary Factory patterns, hallucinated APIs, tests that mirror the implementation instead of verifying it. I catch this stuff, but I can't review everything."</p>
-</PersonaCard>
-
-<p>
-  <a href={`${base}before-after/`}>See concrete before/after scenarios →</a>
-</p>
-
-<h2>How we work with you</h2>
-
-<div class="space-y-4 mb-8">
-  <div class="flex gap-4 items-start">
-    <span class="flex-shrink-0 w-8 h-8 rounded-full bg-visdom-green text-white flex items-center justify-center text-sm font-bold">1</span>
-    <div>
-      <h3 class="!mt-0 !mb-1">Assessment</h3>
-      <p class="text-sm !mb-0">We analyze your current review process, CI pipeline, test reliability, and team structure. We identify where VCR layers address your specific gaps.</p>
-    </div>
-  </div>
-  <div class="flex gap-4 items-start">
-    <span class="flex-shrink-0 w-8 h-8 rounded-full bg-visdom-green text-white flex items-center justify-center text-sm font-bold">2</span>
-    <div>
-      <h3 class="!mt-0 !mb-1">Pilot on 1-2 teams</h3>
-      <p class="text-sm !mb-0">We deploy VCR on your infrastructure, configured for your stack, your conventions, your risk thresholds. Working pipeline, real PRs, real feedback.</p>
-    </div>
-  </div>
-  <div class="flex gap-4 items-start">
-    <span class="flex-shrink-0 w-8 h-8 rounded-full bg-visdom-green text-white flex items-center justify-center text-sm font-bold">3</span>
-    <div>
-      <h3 class="!mt-0 !mb-1">Tune and measure</h3>
-      <p class="text-sm !mb-0">We track <strong>ITS</strong>, <strong>CPI</strong>, <strong>TORS</strong>, and developer satisfaction. We tune prompts, risk thresholds, and lens configurations based on real data from your teams.</p>
-    </div>
-  </div>
-  <div class="flex gap-4 items-start">
-    <span class="flex-shrink-0 w-8 h-8 rounded-full bg-visdom-green text-white flex items-center justify-center text-sm font-bold">4</span>
-    <div>
-      <h3 class="!mt-0 !mb-1">Handover</h3>
-      <p class="text-sm !mb-0">Your team owns VCR. We transfer knowledge, documentation, and operational ownership. You roll out to more teams on your own timeline.</p>
-    </div>
-  </div>
-</div>
-
-<h2>Part of VISDOM</h2>
-
-<p>
-  VCR sits within the <strong>Automated Risk Assessment</strong> pillar of
-  <a href="https://virtuslab.com/services/visdom">VISDOM</a>, VirtusLab's Agent-Ready SDLC offering.
-  Alongside Context Fabric and Machine-Speed CI, it forms the infrastructure that makes
-  AI-assisted development reliable at enterprise scale.
-</p>
-
-<p>
-  Read the thinking behind it: <a href="https://virtuslab.com/blog/ai/the-fallacy">The Agent-Ready SDLC series</a>
-</p>
-
-<h2>Go deeper</h2>
-
-<div class="grid sm:grid-cols-3 gap-3 mb-8">
-  <ResourceCard
-    title="Before / After Scenarios"
-    description="4 concrete scenarios showing what changes when VCR is deployed."
-    href={`${base}before-after/`}
-    tag="SCENARIOS"
-    tagColor="blue"
+  <!-- 1. Hero Section (full-width, dark background) -->
+  <HeroSection
+    title="Your team writes code with AI. Your review process doesn't know that."
+    subtitle="VISDOM Code Review is a reference process for enterprise code review in the age of AI-assisted development. Not a tool. A process."
   />
-  <ResourceCard
-    title="Technical Reference"
-    description="Full architecture, layer docs, configuration, metrics framework."
-    href={`${base}reference/`}
-    tag="REFERENCE"
-    tagColor="purple"
-  />
-  <ResourceCard
-    title="Reference Implementations"
-    description="Technology-agnostic table of components and alternatives."
-    href={`${base}reference/reference-implementations/`}
-    tag="REFERENCE"
-    tagColor="green"
-  />
-</div>
 
-</DocLayout>
+  <!-- 2. Problem stats -->
+  <section class="bg-visdom-gray-50 py-16">
+    <div class="max-w-doc mx-auto px-6">
+      <h2 class="!mt-0 text-center">The problem in numbers</h2>
+      <p class="text-center max-w-2xl mx-auto mb-10">
+        Your CI says the code is fine. Your tests pass.
+        But the AI wrote the tests too.
+      </p>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <StatCard
+          value="84%"
+          label="of CI test failures are flaky, not real regressions"
+          source="Google"
+          color="red"
+        />
+        <StatCard
+          value="45%"
+          label="of AI-generated code contains OWASP security vulnerabilities"
+          source="Veracode 2025"
+          color="amber"
+        />
+        <StatCard
+          value="12.5%"
+          label="of agent output that passes CI is still functionally wrong"
+          source="Spotify"
+          color="purple"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Pick your path -->
+  <section class="bg-white py-16">
+    <div class="max-w-doc mx-auto px-6">
+      <h2 class="!mt-0 text-center">Pick your path</h2>
+      <p class="text-center max-w-2xl mx-auto mb-10">
+        Different roles, different questions. Start with what matters to you.
+      </p>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <a href={`${base}guide/leaders/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-2xl">&#x1F4CA;</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">For Leaders</span>
+          </div>
+          <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Engineering Managers, VPs, CTOs</h3>
+          <p class="text-sm text-visdom-gray-500 !mb-0">Business case, ROI model, what changes for your org, how we engage.</p>
+        </a>
+
+        <a href={`${base}guide/platform-engineers/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-2xl">&#x1F527;</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">For Engineers</span>
+          </div>
+          <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Platform & DevOps Engineers</h3>
+          <p class="text-sm text-visdom-gray-500 !mb-0">Architecture, how to run a pilot, configuration, metrics setup.</p>
+        </a>
+
+        <a href={`${base}guide/developers/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-2xl">&#x1F4BB;</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">For Developers</span>
+          </div>
+          <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Developers on the team</h3>
+          <p class="text-sm text-visdom-gray-500 !mb-0">What changes in your daily PR workflow, how to read and give feedback.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. How it works -->
+  <section class="bg-visdom-gray-50 py-16">
+    <div class="max-w-doc mx-auto px-6">
+      <h2 class="!mt-0 text-center">How it works</h2>
+      <p class="text-center max-w-2xl mx-auto mb-10">
+        Every PR passes through layers of increasing depth -- fast and cheap for trivial changes, thorough for risky ones.
+        A LOW-risk PR gets feedback in under 2 minutes at ~$0.05.
+        A CRITICAL PR gets deep analysis across security, performance, architecture, and AI-code patterns.
+      </p>
+
+      <LayerDiagram />
+
+      <div class="text-center mt-8">
+        <a href={`${base}reference/`} class="inline-flex items-center gap-1 text-sm font-medium text-visdom-green hover:text-visdom-green-dark no-underline">
+          Full architecture reference &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. What your team is saying -->
+  <section class="bg-white py-16">
+    <div class="max-w-doc mx-auto px-6">
+      <h2 class="!mt-0 text-center">What your team is saying right now</h2>
+      <p class="text-center max-w-2xl mx-auto mb-10">
+        These are real patterns we see across enterprise teams adopting AI-assisted development.
+      </p>
+
+      <PersonaCard name="Your Engineering Manager" role="Katja's problem" color="green">
+        <p>"My seniors in Krak&oacute;w spend half their day reviewing PRs from the India team. The quality is inconsistent, feedback takes 24 hours, and we're shipping AI-generated code without really understanding what it does."</p>
+      </PersonaCard>
+
+      <PersonaCard name="Your Platform Engineer" role="Ewa's problem" color="purple">
+        <p>"Our agents burn $30 per task because they loop on flaky tests. The CI lies to them. And nobody's tracking the real cost. Leadership thinks AI costs us $950/month in Copilot licenses."</p>
+      </PersonaCard>
+
+      <PersonaCard name="Your Senior Developer" role="Rajesh's problem" color="blue">
+        <p>"Copilot-generated PRs look clean but they're over-engineered: unnecessary Factory patterns, hallucinated APIs, tests that mirror the implementation instead of verifying it. I catch this stuff, but I can't review everything."</p>
+      </PersonaCard>
+
+      <div class="text-center mt-8">
+        <a href={`${base}before-after/`} class="inline-flex items-center gap-1 text-sm font-medium text-visdom-green hover:text-visdom-green-dark no-underline">
+          See concrete before/after scenarios &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. How we work with you -->
+  <section class="bg-visdom-gray-50 py-16">
+    <div class="max-w-doc mx-auto px-6">
+      <h2 class="!mt-0 text-center">How we work with you</h2>
+      <p class="text-center max-w-2xl mx-auto mb-10">
+        <strong>VISDOM Code Review</strong> (<strong>VCR</strong>) is how we solve this at VirtusLab, and how we help our clients solve it.
+        It's a structured, multi-layered review process that we deploy on your teams, configure for
+        your stack, and hand over for you to own.
+      </p>
+
+      <Timeline />
+    </div>
+  </section>
+
+  <!-- What this is not -->
+  <section class="bg-white py-16">
+    <div class="max-w-doc mx-auto px-6">
+      <h2 class="!mt-0 text-center">What this is not</h2>
+      <div class="max-w-2xl mx-auto">
+        <ul>
+          <li><strong>Not a SaaS product.</strong> It's a reference process we implement on your infrastructure during a consulting engagement.</li>
+          <li><strong>Not tied to specific tools.</strong> The process works with any LLM provider, any CI platform, any code host. We provide reference implementations, you can swap components.</li>
+          <li><strong>Not a replacement for human review.</strong> It's a force multiplier. Seniors review fewer PRs, but with better context and focus.</li>
+        </ul>
+      </div>
+
+      <div class="max-w-2xl mx-auto mt-10">
+        <h3 class="!mt-0">Part of VISDOM</h3>
+        <p>
+          VCR sits within the <strong>Automated Risk Assessment</strong> pillar of
+          <a href="https://virtuslab.com/services/visdom">VISDOM</a>, VirtusLab's Agent-Ready SDLC offering.
+          Alongside Context Fabric and Machine-Speed CI, it forms the infrastructure that makes
+          AI-assisted development reliable at enterprise scale.
+        </p>
+        <p>
+          Read the thinking behind it: <a href="https://virtuslab.com/blog/ai/the-fallacy">The Agent-Ready SDLC series</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Go deeper -->
+  <section class="bg-visdom-gray-50 py-16">
+    <div class="max-w-doc mx-auto px-6">
+      <h2 class="!mt-0 text-center">Go deeper</h2>
+      <p class="text-center max-w-2xl mx-auto mb-10">
+        Reference material, architecture docs, and real-world scenarios.
+      </p>
+
+      <div class="grid sm:grid-cols-3 gap-3 mb-10">
+        <ResourceCard
+          title="Before / After Scenarios"
+          description="4 concrete scenarios showing what changes when VCR is deployed."
+          href={`${base}before-after/`}
+          tag="SCENARIOS"
+          tagColor="blue"
+        />
+        <ResourceCard
+          title="Technical Reference"
+          description="Full architecture, layer docs, configuration, metrics framework."
+          href={`${base}reference/`}
+          tag="REFERENCE"
+          tagColor="purple"
+        />
+        <ResourceCard
+          title="Reference Implementations"
+          description="Technology-agnostic table of components and alternatives."
+          href={`${base}reference/reference-implementations/`}
+          tag="REFERENCE"
+          tagColor="green"
+        />
+      </div>
+
+      <h3 class="text-center">From the field</h3>
+      <p class="text-center max-w-2xl mx-auto mb-8 text-sm text-visdom-gray-500">
+        External research and real-world evidence that shaped this process.
+      </p>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <ResourceCard
+          title="Shopify on AI Code Review Culture"
+          description="How feedback must be constructive, not evaluative, for distributed teams adopting AI."
+          href="https://arxiv.org/abs/2407.04216"
+          tag="RESEARCH"
+          tagColor="red"
+          source="Shopify / arXiv"
+        />
+        <ResourceCard
+          title="Augment Code: Context Matters"
+          description="Pattern-based grep-search for context produces poor results. Retrieval architecture is everything."
+          href="https://www.augmentcode.com/blog/the-70-problem-hard-truths-about-ai-assisted-coding"
+          tag="INDUSTRY"
+          tagColor="amber"
+          source="Augment Code"
+        />
+        <ResourceCard
+          title="LLM-Generated Code Security"
+          description="Systematic study of security vulnerabilities in AI-generated code across common languages."
+          href="https://arxiv.org/abs/2502.06638"
+          tag="RESEARCH"
+          tagColor="purple"
+          source="arXiv 2025"
+        />
+        <ResourceCard
+          title="Spotify: Agent Output Quality"
+          description="LLM-as-judge vetoes 25% of agent output. 1 in 4 passes CI but is still functionally wrong."
+          href="https://engineering.atspotify.com/2025/04/how-we-built-an-ai-agent-to-help-manage-our-open-source-projects/"
+          tag="INDUSTRY"
+          tagColor="green"
+          source="Spotify Engineering"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-0">
+    <div class="max-w-5xl mx-auto px-6 py-8 text-center text-xs text-visdom-gray-400">
+      VISDOM Code Review
+    </div>
+  </footer>
+</body>
+</html>

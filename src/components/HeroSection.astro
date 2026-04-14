@@ -1,0 +1,31 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+}
+
+const { title, subtitle } = Astro.props;
+
+const stats = [
+  { value: '<10 min', label: 'to first feedback', detail: 'vs 24-48h human review' },
+  { value: '-40%', label: 'senior review time', detail: 'pre-annotated, focused PRs' },
+  { value: '$0.05', label: 'per LOW-risk PR', detail: 'layered cost model' },
+];
+---
+
+<section class="relative w-screen left-1/2 -translate-x-1/2 bg-gradient-to-b from-[#111827] to-[#1f2937] py-16 px-6">
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-4xl font-bold tracking-tight text-white !mb-4">{title}</h1>
+    <p class="text-lg text-gray-300 max-w-2xl !mb-10">{subtitle}</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {stats.map((stat) => (
+        <div class="bg-white/10 backdrop-blur rounded-lg border border-white/20 p-5">
+          <div class="text-3xl font-bold text-white mb-1">{stat.value}</div>
+          <div class="text-sm text-gray-300">{stat.label}</div>
+          <div class="text-xs text-gray-400 mt-1">{stat.detail}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

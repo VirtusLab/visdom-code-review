@@ -1,0 +1,116 @@
+---
+const base = import.meta.env.BASE_URL;
+
+const layers = [
+  {
+    id: 'L0',
+    name: 'Layer 0',
+    label: 'Pre-flight Checks',
+    timing: '<10s',
+    description: 'Static analysis gates that run before AI touches the code.',
+    bg: 'bg-gray-50',
+    border: 'border-gray-400',
+    dot: 'bg-gray-400',
+    pill: 'bg-gray-100 text-gray-600',
+    href: `${base}reference/layer0/`,
+  },
+  {
+    id: 'L1',
+    name: 'Layer 1',
+    label: 'Single-file Analysis',
+    timing: '~30s',
+    description: 'AI reviews each changed file independently for common issues.',
+    bg: 'bg-blue-50',
+    border: 'border-blue-400',
+    dot: 'bg-blue-400',
+    pill: 'bg-blue-100 text-blue-600',
+    href: `${base}reference/layer1/`,
+  },
+  {
+    id: 'L2',
+    name: 'Layer 2',
+    label: 'Cross-file Analysis',
+    timing: '~2 min',
+    description: 'AI correlates changes across files for architectural issues.',
+    bg: 'bg-amber-50',
+    border: 'border-amber-400',
+    dot: 'bg-amber-400',
+    pill: 'bg-amber-100 text-amber-600',
+    href: `${base}reference/layer2/`,
+  },
+  {
+    id: 'L3',
+    name: 'Layer 3',
+    label: 'Full-context Review',
+    timing: '~5 min',
+    description: 'Deep reasoning over the entire PR with project context.',
+    bg: 'bg-purple-50',
+    border: 'border-purple-400',
+    dot: 'bg-purple-400',
+    pill: 'bg-purple-100 text-purple-600',
+    href: `${base}reference/layer3/`,
+  },
+];
+---
+
+<div class="flex flex-col items-center w-full max-w-lg mx-auto">
+  {layers.map((layer, i) => (
+    <>
+      {/* Layer box */}
+      <a
+        href={layer.href}
+        class={`block w-full rounded-lg p-4 border-l-4 ${layer.border} ${layer.bg} no-underline hover:shadow-md transition-shadow`}
+      >
+        <div class="flex items-center justify-between mb-1">
+          <div class="flex items-center gap-2">
+            <span class={`inline-block w-2.5 h-2.5 rounded-full ${layer.dot}`}></span>
+            <span class="text-xs font-medium text-gray-500">{layer.name}</span>
+            <span class="font-bold text-gray-900 text-sm">{layer.label}</span>
+          </div>
+          <span class={`text-xs font-medium px-2 py-0.5 rounded-full ${layer.pill}`}>
+            {layer.timing}
+          </span>
+        </div>
+        <p class="text-sm text-gray-500 !mb-0 ml-[1.125rem]">{layer.description}</p>
+      </a>
+
+      {/* Connector arrow */}
+      {i < layers.length - 1 && (
+        <div class="flex flex-col items-center py-1">
+          <div class="w-px h-4 bg-gray-300"></div>
+          {/* Label between L2 and L3 */}
+          {i === 2 && (
+            <span class="inline-block text-xs font-medium text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full my-1">
+              MEDIUM+ risk only
+            </span>
+          )}
+          <svg class="w-3 h-3 text-gray-400" viewBox="0 0 12 12" fill="currentColor">
+            <path d="M6 9L2 5h8L6 9z" />
+          </svg>
+        </div>
+      )}
+    </>
+  ))}
+
+  {/* Final connector to Reporter */}
+  <div class="flex flex-col items-center py-1">
+    <div class="w-px h-4 bg-gray-300"></div>
+    <svg class="w-3 h-3 text-gray-400" viewBox="0 0 12 12" fill="currentColor">
+      <path d="M6 9L2 5h8L6 9z" />
+    </svg>
+  </div>
+
+  {/* Reporter box */}
+  <a
+    href={`${base}reference/reporter/`}
+    class="block w-full rounded-lg p-4 border-l-4 border-emerald-400 bg-emerald-50 no-underline hover:shadow-md transition-shadow"
+  >
+    <div class="flex items-center gap-2 mb-1">
+      <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+      <span class="font-bold text-gray-900 text-sm">Reporter</span>
+    </div>
+    <p class="text-sm text-gray-500 !mb-0 ml-[1.125rem]">
+      Compiles findings into actionable PR comments with severity and confidence.
+    </p>
+  </a>
+</div>
