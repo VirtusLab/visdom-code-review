@@ -15,7 +15,7 @@ const base = import.meta.env.BASE_URL;
     { label: "Code Review", variant: "gray" },
     { label: "Enterprise", variant: "outline" },
   ]}
-  next={{ label: "Architecture", href: `${base}architecture` }}
+  next={{ label: "Architecture", href: `${base}architecture/` }}
 >
 
 <h2>What It Is</h2>
@@ -65,7 +65,7 @@ const base = import.meta.env.BASE_URL;
 <p>Every PR passes through layers of increasing depth and cost:</p>
 
 <div class="flex flex-col gap-3 my-6">
-  <a href={`${base}layers/context-collection`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+  <a href={`${base}layers/context-collection/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
     <div class="flex items-center gap-3 mb-1">
       <LayerBadge layer={0} />
       <span class="text-xs text-visdom-gray-400">&lt;10s</span>
@@ -73,7 +73,7 @@ const base = import.meta.env.BASE_URL;
     <p class="text-sm text-visdom-gray-600 !mb-0">Deterministic context gathering from repository knowledge, git data, and test reliability history.</p>
   </a>
 
-  <a href={`${base}layers/deterministic-gate`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+  <a href={`${base}layers/deterministic-gate/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
     <div class="flex items-center gap-3 mb-1">
       <LayerBadge layer={1} />
       <span class="text-xs text-visdom-gray-400">&lt;60s</span>
@@ -81,7 +81,7 @@ const base = import.meta.env.BASE_URL;
     <p class="text-sm text-visdom-gray-600 !mb-0">Zero AI. Linters, SAST, secret scan, coverage delta. 100% repeatable. Cannot be prompt-injected.</p>
   </a>
 
-  <a href={`${base}layers/ai-quick-scan`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+  <a href={`${base}layers/ai-quick-scan/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
     <div class="flex items-center gap-3 mb-1">
       <LayerBadge layer={2} />
       <span class="text-xs text-visdom-gray-400">&lt;2 min</span>
@@ -89,7 +89,7 @@ const base = import.meta.env.BASE_URL;
     <p class="text-sm text-visdom-gray-600 !mb-0">Fast AI pass over diff. Risk classification (LOW→CRITICAL). Quick findings (max 5). AI-code detection.</p>
   </a>
 
-  <a href={`${base}layers/ai-deep-review`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+  <a href={`${base}layers/ai-deep-review/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
     <div class="flex items-center gap-3 mb-1">
       <LayerBadge layer={3} />
       <span class="text-xs text-visdom-gray-400">&lt;10 min · MEDIUM+ risk only</span>
@@ -163,7 +163,7 @@ const base = import.meta.env.BASE_URL;
 
 <PersonaCard name="Marcus" role="CFO" color="amber">
   <p>"I approved 50 Copilot licenses at $950/month. Nobody told me the real cost was $17,000. VCR's dashboard finally gave me visibility into the 4x hidden tax."</p>
-  <p><strong>What Marcus should do</strong> — review the <a href={`${base}metrics`}>Metrics Framework</a> and the 4x Hidden Tax breakdown.</p>
+  <p><strong>What Marcus should do</strong> — review the <a href={`${base}metrics/`}>Metrics Framework</a> and the 4x Hidden Tax breakdown.</p>
 </PersonaCard>
 
 <h2>Further Reading</h2>
@@ -172,21 +172,21 @@ const base = import.meta.env.BASE_URL;
   <ResourceCard
     title="Architecture"
     description="Layered Review Agent model — how the layers compose."
-    href={`${base}architecture`}
+    href={`${base}architecture/`}
     tag="DOCS"
     tagColor="green"
   />
   <ResourceCard
     title="Before / After"
     description="4 concrete scenarios showing what changes with VCR."
-    href={`${base}before-after`}
+    href={`${base}before-after/`}
     tag="SCENARIOS"
     tagColor="blue"
   />
   <ResourceCard
     title="Configuration"
     description="vcr-config.yaml reference and repo structure."
-    href={`${base}configuration`}
+    href={`${base}configuration/`}
     tag="REFERENCE"
     tagColor="purple"
   />

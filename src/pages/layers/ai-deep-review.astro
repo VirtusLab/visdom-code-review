@@ -14,8 +14,8 @@ const base = import.meta.env.BASE_URL;
     { label: "AI-Powered", variant: "green" },
     { label: "Review Lenses", variant: "outline" },
   ]}
-  prev={{ label: "Layer 2 — AI Quick Scan", href: `${base}layers/ai-quick-scan` }}
-  next={{ label: "Reporter", href: `${base}reporter` }}
+  prev={{ label: "Layer 2 — AI Quick Scan", href: `${base}layers/ai-quick-scan/` }}
+  next={{ label: "Reporter", href: `${base}reporter/` }}
 >
 
 <p>
@@ -138,7 +138,7 @@ Flag as CIRCULAR if the test would pass regardless of correctness.</code></pre>
 }</code>`} />
 
 <p>
-  Findings from all lenses are aggregated by the <a href={`${base}reporter`}>Reporter</a> into a single structured PR comment
+  Findings from all lenses are aggregated by the <a href={`${base}reporter/`}>Reporter</a> into a single structured PR comment
   with inline annotations.
 </p>
 
