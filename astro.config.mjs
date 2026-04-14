@@ -4,5 +4,6 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   integrations: [tailwind()],
   site: 'https://virtuslab.github.io',
-  base: '/visdom-code-review',
+  base: '/visdom-code-review/',
+  trailingSlash: 'always',
 });
