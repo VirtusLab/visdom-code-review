@@ -201,15 +201,34 @@ const base = import.meta.env.BASE_URL;
         </ul>
       </div>
 
-      <div class="max-w-2xl mx-auto mt-10">
-        <h3 class="!mt-0">Part of Visdom</h3>
-        <p>
-          VCR sits within the <strong>Automated Risk Assessment</strong> pillar of
-          <a href="https://virtuslab.com/services/visdom">Visdom</a>, VirtusLab's Agent-Ready SDLC offering.
-          Alongside Context Fabric and Machine-Speed CI, it forms the infrastructure that makes
-          AI-assisted development reliable at enterprise scale.
+      <div class="mt-12">
+        <h3 class="!mt-0 text-center">Part of Visdom</h3>
+        <p class="text-center max-w-2xl mx-auto">
+          VCR is one of four components in <a href="https://virtuslab.com/services/visdom">Visdom</a>, VirtusLab's Agent-Ready SDLC.
         </p>
-        <p>
+        <div class="grid sm:grid-cols-4 gap-4 mt-6">
+          <a href="https://github.com/virtuslab/vidia" class="block border border-visdom-gray-200 rounded-lg p-4 no-underline hover:shadow-md transition-shadow text-center">
+            <span class="text-xs uppercase tracking-wider text-visdom-gray-400 font-medium">Context Fabric</span>
+            <h4 class="text-base font-bold text-visdom-gray-900 mt-1 mb-1">ViDIA</h4>
+            <p class="text-xs text-visdom-gray-500 !mb-0">Pre-indexed code expertise, dependency graphs, PR history</p>
+          </a>
+          <div class="block border border-visdom-gray-200 rounded-lg p-4 text-center">
+            <span class="text-xs uppercase tracking-wider text-visdom-gray-400 font-medium">Machine-Speed CI</span>
+            <h4 class="text-base font-bold text-visdom-gray-900 mt-1 mb-1">Fast Feedback</h4>
+            <p class="text-xs text-visdom-gray-500 !mb-0">Sub-2-min CI loops, caching, incremental builds, test impact analysis</p>
+          </div>
+          <a href={`${base}`} class="block border-2 border-visdom-green rounded-lg p-4 no-underline hover:shadow-md transition-shadow text-center bg-emerald-50/50">
+            <span class="text-xs uppercase tracking-wider text-visdom-green font-medium">Risk Assessment</span>
+            <h4 class="text-base font-bold text-visdom-gray-900 mt-1 mb-1">VCR</h4>
+            <p class="text-xs text-visdom-gray-500 !mb-0">Multi-layered AI code review. You are here.</p>
+          </a>
+          <a href="https://tracevault.dev/" class="block border border-visdom-gray-200 rounded-lg p-4 no-underline hover:shadow-md transition-shadow text-center">
+            <span class="text-xs uppercase tracking-wider text-visdom-gray-400 font-medium">Governance</span>
+            <h4 class="text-base font-bold text-visdom-gray-900 mt-1 mb-1">TraceVault</h4>
+            <p class="text-xs text-visdom-gray-500 !mb-0">Audit trail, auto-evaluation, EU AI Act compliance</p>
+          </a>
+        </div>
+        <p class="text-center mt-6">
           Read the thinking behind it: <a href="https://virtuslab.com/blog/ai/the-fallacy">The Agent-Ready SDLC series</a>
         </p>
       </div>
