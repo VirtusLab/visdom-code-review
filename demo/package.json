@@ -10,6 +10,7 @@
     "demo:cleanup": "tsx src/cli/index.ts --cleanup",
     "demo:narrate": "tsx src/cli/index.ts --narrate",
     "demo:interactive": "tsx src/cli/index.ts --interactive",
+    "demo:triage": "tsx src/cli/index.ts --local --triage",
     "build": "tsup src/cli/index.ts --format esm --dts",
     "typecheck": "tsc --noEmit"
   },

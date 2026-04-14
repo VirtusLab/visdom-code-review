@@ -14,6 +14,9 @@ import { GitHubOps } from '../core/github/operations.js';
 import { TerminalReporter, renderHeader, renderPRCreated, renderLayerStart, renderLayerComplete, renderCleanupHint } from '../core/reporter/terminal.js';
 import { Narrator, PaceMode } from '../core/narrator.js';
 import { scenario as perfectPR } from '../scenarios/perfect-pr/scenario.js';
+import { evaluateReport } from '../core/evaluator.js';
+import { renderTriageReport } from '../core/reporter/triage.js';
+import { groundTruth } from '../scenarios/perfect-pr/ground-truth.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SCENARIOS = { 'perfect-pr': perfectPR } as const;
@@ -30,6 +33,7 @@ function parseArgs(): CLIOptions {
     scenario: args.find((a) => !a.startsWith('--')) ?? 'perfect-pr',
     narrate,
     interactive,
+    triage: args.includes('--triage'),
   };
 }
 
@@ -304,6 +308,12 @@ async function main() {
       console.log('');
       renderCleanupHint();
     }
+
+    // Triage evaluation
+    if (opts.triage) {
+      const triage = evaluateReport(report, groundTruth);
+      renderTriageReport(triage);
+    }
   } else {
     // Standard mode — use pipeline as before
     const pipeline = new ReviewPipeline(layers, reporters);
@@ -320,6 +330,12 @@ async function main() {
       console.log(`  ${chalk.underline(pr.url)}`);
       console.log('');
       renderCleanupHint();
+    }
+
+    // Triage evaluation
+    if (opts.triage) {
+      const triage = evaluateReport(report, groundTruth);
+      renderTriageReport(triage);
     }
   }
 

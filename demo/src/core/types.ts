@@ -142,4 +142,5 @@ export interface CLIOptions {
   scenario: string;
   narrate: boolean;
   interactive: boolean;
+  triage: boolean;
 }
