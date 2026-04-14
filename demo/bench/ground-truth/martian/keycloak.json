@@ -1,0 +1,251 @@
+{
+  "scenario": "martian-keycloak",
+  "version": "1.0",
+  "source": "Martian Code Review Bench (https://github.com/withmartian/code-review-benchmark)",
+  "license": "MIT",
+  "language": "java",
+  "domain": "authentication",
+  "description": "Golden comments from keycloak repository (Martian benchmark)",
+  "prs": [
+    {
+      "title": "Fixing Re-authentication with passkeys",
+      "url": "https://github.com/keycloak/keycloak/pull/41249",
+      "entries": [
+        {
+          "id": "GT-001",
+          "tier": 2,
+          "severity": "Medium",
+          "title": "ConditionalPasskeysEnabled() called without UserModel parameter",
+          "description": "ConditionalPasskeysEnabled() called without UserModel parameter"
+        },
+        {
+          "id": "GT-002",
+          "tier": 2,
+          "severity": "Medium",
+          "title": "With isConditionalPasskeysEnabled(UserModel user) requiring user !",
+          "description": "With isConditionalPasskeysEnabled(UserModel user) requiring user != null, authenticate(...) will not call webauthnAuth.fillContextForm(context) on the initial login page where context.getUser() is still null, so conditional passkey UI will not be set up for first-time passkey login. Consider whether this should also be enabled when no user has been selected yet so ID-less passkey authentication on the initial login form continues to work."
+        }
+      ]
+    },
+    {
+      "title": "Add caching support for IdentityProviderStorageProvider.getForLogin operations",
+      "url": "https://github.com/keycloak/keycloak/pull/32918",
+      "entries": [
+        {
+          "id": "GT-003",
+          "tier": 1,
+          "severity": "Critical",
+          "title": "Recursive caching call using session instead of delegate",
+          "description": "Recursive caching call using session instead of delegate"
+        },
+        {
+          "id": "GT-004",
+          "tier": 2,
+          "severity": "Medium",
+          "title": "Cleanup reference uses incorrect alias - should be 'idp-alias-' + i instead of 'alias'.",
+          "description": "Cleanup reference uses incorrect alias - should be 'idp-alias-' + i instead of 'alias'."
+        }
+      ]
+    },
+    {
+      "title": "Add AuthzClientCryptoProvider for authorization client cryptographic operations",
+      "url": "https://github.com/keycloak/keycloak/pull/33832",
+      "entries": [
+        {
+          "id": "GT-005",
+          "tier": 1,
+          "severity": "High",
+          "title": "Returns wrong provider (default keystore instead of BouncyCastle)",
+          "description": "Returns wrong provider (default keystore instead of BouncyCastle)"
+        },
+        {
+          "id": "GT-006",
+          "tier": 2,
+          "severity": "Low",
+          "title": "Dead code exists where ASN1Encoder instances are created and written to, but their results are immediately discarded.",
+          "description": "Dead code exists where ASN1Encoder instances are created and written to, but their results are immediately discarded. The actual encoding is performed by new ASN1Encoder instances created in the subsequent return statement, rendering the earlier operations useless."
+        }
+      ]
+    },
+    {
+      "title": "Add rolling-updates feature flag and compatibility framework",
+      "url": "https://github.com/keycloak/keycloak/pull/36882",
+      "entries": [
+        {
+          "id": "GT-007",
+          "tier": 2,
+          "severity": "Medium",
+          "title": "Incorrect method call for exit codes.",
+          "description": "Incorrect method call for exit codes. The picocli.exit() method calls System.exit() directly, which is problematic:"
+        }
+      ]
+    },
+    {
+      "title": "Add Client resource type and scopes to authorization schema",
+      "url": "https://github.com/keycloak/keycloak/pull/36880",
+      "entries": [
+        {
+          "id": "GT-008",
+          "tier": 1,
+          "severity": "High",
+          "title": "Inconsistent feature flag bug causing orphaned permissions.",
+          "description": "Inconsistent feature flag bug causing orphaned permissions. The AdminPermissions event listener, responsible for cleaning up permissions upon role, client, or group removal, is incorrectly guarded by the ADMIN_FINE_GRAINED_AUTHZ (V1) feature flag. This is inconsistent with other methods in the class that use ADMIN_FINE_GRAINED_AUTHZ_V2. Consequently, if ADMIN_FINE_GRAINED_AUTHZ_V2 is enabled but V1 is not, the permission cleanup logic will not execute, leading to orphaned permission data. Cleanup should occur regardless of which fine-grained authorization version is enabled."
+        },
+        {
+          "id": "GT-009",
+          "tier": 1,
+          "severity": "High",
+          "title": "In hasPermission(ClientModel client, String scope), the resource lookup uses findByName(server, client.",
+          "description": "In hasPermission(ClientModel client, String scope), the resource lookup uses findByName(server, client.getId(), server.getId()), but AdminPermissionsSchema.getOrCreateResource creates per-client resources with the owner set to resourceServer.getClientId(), so this lookup will never find those resources and will always fall back to the 'all-clients' resource, effectively ignoring client-specific permissions."
+        },
+        {
+          "id": "GT-010",
+          "tier": 1,
+          "severity": "High",
+          "title": "In getClientsWithPermission(String scope), iterating resourceStore.",
+          "description": "In getClientsWithPermission(String scope), iterating resourceStore.findByType(server, AdminPermissionsSchema.CLIENTS_RESOURCE_TYPE) and returning resource.getName() will only ever consider the type-level 'Clients' resource (per-client resources have no type) and return its name, while AvailableRoleMappingResource#getRoleIdsWithPermissions expects actual client IDs to pass to realm.getClientById, which can lead to incorrect behavior or a null client and subsequent failures."
+        }
+      ]
+    },
+    {
+      "title": "Add Groups resource type and scopes to authorization schema",
+      "url": "https://github.com/keycloak/keycloak/pull/37038",
+      "entries": [
+        {
+          "id": "GT-011",
+          "tier": 1,
+          "severity": "High",
+          "title": "Incorrect permission check in canManage() method",
+          "description": "Incorrect permission check in canManage() method"
+        },
+        {
+          "id": "GT-012",
+          "tier": 1,
+          "severity": "High",
+          "title": "In getGroupIdsWithViewPermission, hasPermission is called with groupResource.",
+          "description": "In getGroupIdsWithViewPermission, hasPermission is called with groupResource.getId() and the same groupResource.getId() is added to granted, but hasPermission resolves resources by name (treating the argument as a group id) and the GroupPermissionEvaluator contract says this method returns group IDs that are later used as UserModel.GROUPS and in getUsersCount group filters. This mismatch means per-group VIEW_MEMBERS/MANAGE_MEMBERS permissions may not yield the expected group IDs for filtering and counts, and evaluation may effectively only look at the type-level 'all-groups' resource; consider revisiting whether this should operate on the underlying group ids (resource names) instead so it aligns with the JPA queries and the interface contract."
+        }
+      ]
+    },
+    {
+      "title": "Add HTML sanitizer for translated message resources",
+      "url": "https://github.com/keycloak/keycloak/pull/37429",
+      "entries": [
+        {
+          "id": "GT-013",
+          "tier": 2,
+          "severity": "Medium",
+          "title": "The translation is in Italian instead of Lithuanian.",
+          "description": "The translation is in Italian instead of Lithuanian. This should be translated to Lithuanian to match the file's locale (messages_lt.properties)."
+        },
+        {
+          "id": "GT-014",
+          "tier": 2,
+          "severity": "Medium",
+          "title": "The totpStep1 value uses Traditional Chinese terms in the Simplified Chinese file (zh_CN), which is likely incorrect ...",
+          "description": "The totpStep1 value uses Traditional Chinese terms in the Simplified Chinese file (zh_CN), which is likely incorrect for this locale. Please verify the locale‑appropriate translation."
+        },
+        {
+          "id": "GT-015",
+          "tier": 2,
+          "severity": "Low",
+          "title": "The anchor sanitization logic has a potential issue where it consumes English matcher groups without proper validation.",
+          "description": "The anchor sanitization logic has a potential issue where it consumes English matcher groups without proper validation. If the translated text has more anchor tags than the English text, this could lead to incorrect validation results."
+        },
+        {
+          "id": "GT-016",
+          "tier": 2,
+          "severity": "Low",
+          "title": "The method name 'santizeAnchors' should be 'sanitizeAnchors' (missing 'i').",
+          "description": "The method name 'santizeAnchors' should be 'sanitizeAnchors' (missing 'i')."
+        }
+      ]
+    },
+    {
+      "title": "Implement access token context encoding framework",
+      "url": "https://github.com/keycloak/keycloak/pull/37634",
+      "entries": [
+        {
+          "id": "GT-017",
+          "tier": 1,
+          "severity": "Critical",
+          "title": "Wrong parameter in null check (grantType vs.",
+          "description": "Wrong parameter in null check (grantType vs. rawTokenId)"
+        },
+        {
+          "id": "GT-018",
+          "tier": 1,
+          "severity": "High",
+          "title": "In isAccessTokenId, the substring for the grant shortcut and the equality check look inverted: the grant shortcut occ...",
+          "description": "In isAccessTokenId, the substring for the grant shortcut and the equality check look inverted: the grant shortcut occupies indices 4–5 (substring(4,6)), and a match should return true (combined with UUID check), not false."
+        },
+        {
+          "id": "GT-019",
+          "tier": 2,
+          "severity": "Low",
+          "title": "Javadoc mentions \"usually like 3-letters shortcut\" but some implementations use 2-letter shortcuts (\"ac\", \"cc\", \"rt\",...",
+          "description": "Javadoc mentions \"usually like 3-letters shortcut\" but some implementations use 2-letter shortcuts (\"ac\", \"cc\", \"rt\", \"te\", \"pc\", \"ci\", \"ro\"). Consider updating documentation to reflect actual usage pattern."
+        },
+        {
+          "id": "GT-020",
+          "tier": 2,
+          "severity": "Low",
+          "title": " Catching generic RuntimeException is too broad.",
+          "description": " Catching generic RuntimeException is too broad. The implementation throws IllegalArgumentException specifically - catch that instead for more precise testing."
+        }
+      ]
+    },
+    {
+      "title": "Implement recovery key support for user storage providers",
+      "url": "https://github.com/keycloak/keycloak/pull/38446",
+      "entries": [
+        {
+          "id": "GT-021",
+          "tier": 2,
+          "severity": "Medium",
+          "title": "Unsafe raw List deserialization without type safety.",
+          "description": "Unsafe raw List deserialization without type safety. Calling Optional.get() directly on the Optional returned by RecoveryAuthnCodesUtils.getCredential(user) without checking isPresent() can lead to a NoSuchElementException if the Optional is empty."
+        },
+        {
+          "id": "GT-022",
+          "tier": 2,
+          "severity": "Low",
+          "title": "After creating the RecoveryAuthnCodesCredentialModel, consider setting its id from the stored credential (e.",
+          "description": "After creating the RecoveryAuthnCodesCredentialModel, consider setting its id from the stored credential (e.g., myUser.recoveryCodes.getId()); otherwise getId() will be null and downstream removal by id (e.g., removeStoredCredentialById in the authenticator flow) may not work."
+        }
+      ]
+    },
+    {
+      "title": "Fix concurrent group access to prevent NullPointerException",
+      "url": "https://github.com/keycloak/keycloak/pull/40940",
+      "entries": [
+        {
+          "id": "GT-023",
+          "tier": 1,
+          "severity": "Critical",
+          "title": "Returning null from getSubGroupsCount() violates the GroupModel contract (Javadoc says it never returns null) and may...",
+          "description": "Returning null from getSubGroupsCount() violates the GroupModel contract (Javadoc says it never returns null) and may lead to NPEs in callers that expect a non-null count."
+        },
+        {
+          "id": "GT-024",
+          "tier": 2,
+          "severity": "Medium",
+          "title": "The reader thread isn’t waited for; flipping deletedAll to true and asserting immediately can race and miss exception...",
+          "description": "The reader thread isn’t waited for; flipping deletedAll to true and asserting immediately can race and miss exceptions added just after the flag change, making this test flaky."
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "totalPRs": 10,
+    "totalEntries": 24,
+    "tier1": 10,
+    "tier2": 14,
+    "bySeverity": {
+      "Medium": 8,
+      "Critical": 3,
+      "High": 7,
+      "Low": 6
+    }
+  }
+}
