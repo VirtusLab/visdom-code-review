@@ -9,7 +9,7 @@
   "prs": [
     {
       "title": "Fixing Re-authentication with passkeys",
-      "url": "https://github.com/keycloak/keycloak/pull/41249",
+      "url": "https://github.com/ai-code-review-evaluation/keycloak-greptile/pull/1",
       "entries": [
         {
           "id": "GT-001",

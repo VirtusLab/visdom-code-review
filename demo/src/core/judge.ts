@@ -127,10 +127,13 @@ export function judgeByKeywords(
   let bestScore = 0;
 
   for (const entry of groundTruth) {
-    const findingFile = finding.file.split('/').pop() ?? finding.file;
-    const gtFile = entry.file.split('/').pop() ?? entry.file;
-    if (findingFile !== gtFile && !finding.file.endsWith(entry.file) && !entry.file.endsWith(finding.file)) {
-      continue;
+    // Skip file filter if GT has no file path (e.g. Martian dataset uses '*')
+    if (entry.file !== '*') {
+      const findingFile = finding.file.split('/').pop() ?? finding.file;
+      const gtFile = entry.file.split('/').pop() ?? entry.file;
+      if (findingFile !== gtFile && !finding.file.endsWith(entry.file) && !entry.file.endsWith(finding.file)) {
+        continue;
+      }
     }
 
     const score = semanticScore(

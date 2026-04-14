@@ -36,7 +36,7 @@
     },
     {
       "title": "Optimize spans buffer insertion with eviction during insert",
-      "url": "https://github.com/getsentry/sentry/pull/92393",
+      "url": "https://github.com/ai-code-review-evaluation/sentry-greptile/pull/2",
       "entries": [
         {
           "id": "GT-004",
@@ -63,7 +63,7 @@
     },
     {
       "title": "feat(upsampling) - Support upsampled error count with performance optimizations",
-      "url": "https://github.com/getsentry/sentry/pull/94376",
+      "url": "https://github.com/ai-code-review-evaluation/sentry-greptile/pull/3",
       "entries": [
         {
           "id": "GT-007",

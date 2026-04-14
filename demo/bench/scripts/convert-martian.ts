@@ -81,7 +81,7 @@ async function convert() {
 
       return {
         title: pr.pr_title,
-        url: pr.original_url ?? pr.url,
+        url: pr.url,
         entries,
       };
     });

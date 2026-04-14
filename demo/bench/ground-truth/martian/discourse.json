@@ -9,7 +9,7 @@
   "prs": [
     {
       "title": "FEATURE: automatically downsize large images",
-      "url": "https://github.com/discourse/discourse/commit/ffbaf8c54269df2ce510de91245760fddce09896",
+      "url": "https://github.com/ai-code-review-evaluation/discourse-graphite/pull/1",
       "entries": [
         {
           "id": "GT-001",
@@ -36,7 +36,7 @@
     },
     {
       "title": "FEATURE: per-topic unsubscribe option in emails",
-      "url": "https://github.com/discourse/discourse/commit/6669a2d94d76eea3b99b8c476d12b1eb66726b07",
+      "url": "https://github.com/ai-code-review-evaluation/discourse-graphite/pull/2",
       "entries": [
         {
           "id": "GT-004",
@@ -56,7 +56,7 @@
     },
     {
       "title": "Add comprehensive email validation for blocked users",
-      "url": "https://github.com/discourse/discourse/commit/5f8a130277dbddc95d133cd2832be639baf89213",
+      "url": "https://github.com/ai-code-review-evaluation/discourse-graphite/pull/3",
       "entries": [
         {
           "id": "GT-006",
@@ -76,7 +76,7 @@
     },
     {
       "title": "Enhance embed URL handling and validation system",
-      "url": "https://github.com/discourse/discourse/commit/4f8aed295a29954023b2849c060ef4fb299d1b5d",
+      "url": "https://github.com/ai-code-review-evaluation/discourse-graphite/pull/4",
       "entries": [
         {
           "id": "GT-008",
@@ -124,7 +124,7 @@
     },
     {
       "title": "Optimize header layout performance with flexbox mixins",
-      "url": "https://github.com/discourse/discourse/commit/5b229316ee4c661836ed1161139692a3e8527444",
+      "url": "https://github.com/ai-code-review-evaluation/discourse-graphite/pull/5",
       "entries": [
         {
           "id": "GT-014",
@@ -144,7 +144,7 @@
     },
     {
       "title": "UX: show complete URL path if website domain is same as instance domain",
-      "url": "https://github.com/discourse/discourse/commit/267d8be1f556ed59639ced396c885bb44586da19",
+      "url": "https://github.com/ai-code-review-evaluation/discourse-graphite/pull/6",
       "entries": [
         {
           "id": "GT-016",
@@ -157,7 +157,7 @@
     },
     {
       "title": "scale-color $lightness must use $secondary for dark themes",
-      "url": "https://github.com/discourse/discourse/commit/d38c4d5f7443223c81529c22470293771baf9f38",
+      "url": "https://github.com/ai-code-review-evaluation/discourse-graphite/pull/7",
       "entries": [
         {
           "id": "GT-017",
@@ -184,7 +184,7 @@
     },
     {
       "title": "FIX: proper handling of group memberships",
-      "url": "https://github.com/discourse/discourse/commit/060cda77729cb1c4a827560e09e89a7b22078ba9",
+      "url": "https://github.com/ai-code-review-evaluation/discourse-graphite/pull/8",
       "entries": [
         {
           "id": "GT-020",
@@ -211,7 +211,7 @@
     },
     {
       "title": "FEATURE: Localization fallbacks (server-side)",
-      "url": "https://github.com/discourse/discourse/commit/ecfa17b5a79dfdc91e7a4d50b42ae78a35d0a293",
+      "url": "https://github.com/ai-code-review-evaluation/discourse-graphite/pull/9",
       "entries": [
         {
           "id": "GT-023",
@@ -231,7 +231,7 @@
     },
     {
       "title": "FEATURE: Can edit category/host relationships for embedding",
-      "url": "https://github.com/discourse/discourse/commit/d1c69189f3c90ecf56013a8da904da9bff9a8e19",
+      "url": "https://github.com/ai-code-review-evaluation/discourse-graphite/pull/10",
       "entries": [
         {
           "id": "GT-025",
