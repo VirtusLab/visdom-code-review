@@ -52,18 +52,18 @@ const base = import.meta.env.BASE_URL;
   <section class="hero">
     <div class="hero__inner">
       <h1 class="hero__headline">
-        AI writes your code.<br />
-        <span class="hero__gradient">Who reviews it?</span>
+        Visdom<br />
+        <span class="hero__gradient">Code Review</span>
       </h1>
       <p class="hero__subtitle">
-        A structured, multi-layered review process for enterprise teams shipping AI-generated code.
-        Not a tool. A process.
+        A multi-layered review process for enterprise teams shipping AI-generated code.
+        Part of the Visdom Agent-Ready SDLC.
       </p>
       <div class="hero__buttons">
         <a href={`${base}guide/leaders/`} class="btn btn--primary">For Leaders</a>
         <a href={`${base}reference/`} class="btn btn--outline">Technical Reference</a>
       </div>
-      <p class="hero__tagline">Part of <a href="https://virtuslab.com/services/visdom" class="hero__tagline-link">Visdom</a> &mdash; VirtusLab's Agent-Ready SDLC</p>
+      <p class="hero__tagline">Part of <a href="https://virtuslab.com/services/visdom" class="hero__tagline-link">Visdom</a> · VirtusLab's Agent-Ready SDLC</p>
 
       <!-- Pipeline strip -->
       <div class="pipeline">
@@ -100,7 +100,7 @@ const base = import.meta.env.BASE_URL;
     <div class="feature-row__inner">
       <div class="feature-row__text">
         <span class="kicker">How it works</span>
-        <h2 class="feature-row__heading">So fast</h2>
+        <h2 class="feature-row__heading">Layered review</h2>
         <p class="feature-row__desc">
           Every PR passes through layers of increasing depth. Fast and cheap for trivial changes, thorough for risky ones.
           A LOW-risk PR gets feedback in under 2 minutes at ~$0.05.
@@ -141,10 +141,10 @@ const base = import.meta.env.BASE_URL;
     <div class="feature-row__inner feature-row__inner--flipped">
       <div class="feature-row__text">
         <span class="kicker">Risk-based routing</span>
-        <h2 class="feature-row__heading">So precise</h2>
+        <h2 class="feature-row__heading">Risk classification</h2>
         <p class="feature-row__desc">
-          Not every PR needs deep analysis. VCR assigns a risk level and routes accordingly &mdash;
-          saving compute, money, and reviewer attention for what matters.
+          Each PR gets a risk level based on path classification, diff size, coverage delta, and module stability.
+          Only MEDIUM+ risk triggers deep analysis.
         </p>
         <a href={`${base}before-after/`} class="feature-row__link">See before/after scenarios &rarr;</a>
       </div>
@@ -177,11 +177,11 @@ const base = import.meta.env.BASE_URL;
   <section class="feature-row feature-row--white">
     <div class="feature-row__inner">
       <div class="feature-row__text">
-        <span class="kicker">Rich context</span>
-        <h2 class="feature-row__heading">So aware</h2>
+        <span class="kicker">Repository context</span>
+        <h2 class="feature-row__heading">Context sources</h2>
         <p class="feature-row__desc">
-          AI code review without context is just a fancy linter. VCR feeds every review with deep, pre-indexed knowledge
-          about your codebase, team, and history.
+          Each review is fed pre-indexed knowledge about the codebase: ownership, dependencies, commit history, conventions,
+          and test reliability data.
         </p>
         <a href="https://github.com/virtuslab/vidia" class="feature-row__link">Explore ViDIA context engine &rarr;</a>
       </div>
@@ -207,10 +207,10 @@ const base = import.meta.env.BASE_URL;
     <div class="feature-row__inner feature-row__inner--flipped">
       <div class="feature-row__text">
         <span class="kicker">What it catches</span>
-        <h2 class="feature-row__heading">So honest</h2>
+        <h2 class="feature-row__heading">AI-code patterns</h2>
         <p class="feature-row__desc">
-          Your CI says the code is fine. Your tests pass. But the AI wrote the tests too. VCR catches
-          the patterns that slip through conventional pipelines.
+          Patterns specific to AI-generated code that conventional CI and human reviewers typically miss.
+          Each is a dedicated Review Lens in Layer 3.
         </p>
         <a href={`${base}before-after/`} class="feature-row__link">See real examples &rarr;</a>
       </div>
@@ -420,14 +420,14 @@ const base = import.meta.env.BASE_URL;
   <section class="cta-section">
     <div class="cta-section__inner">
       <h2 class="cta-section__heading">
-        Ready to fix your<br /><span class="hero__gradient">code review?</span>
+        Read the<br /><span class="hero__gradient">full reference</span>
       </h2>
       <p class="cta-section__subtitle">
-        Stop rubber-stamping AI-generated PRs. Start reviewing them with the depth they deserve.
+        Architecture, configuration, metrics framework, and reference implementations.
       </p>
       <div class="hero__buttons">
-        <a href={`${base}guide/leaders/`} class="btn btn--primary">For Leaders</a>
-        <a href={`${base}reference/`} class="btn btn--outline">Technical Reference</a>
+        <a href={`${base}reference/`} class="btn btn--primary">Technical Reference</a>
+        <a href={`${base}before-after/`} class="btn btn--outline">Before / After Scenarios</a>
       </div>
     </div>
   </section>
