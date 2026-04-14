@@ -1,8 +1,5 @@
 ---
-import HeroSection from '../components/HeroSection.astro';
-import LayerDiagram from '../components/LayerDiagram.astro';
 import StatCard from '../components/StatCard.astro';
-import Timeline from '../components/Timeline.astro';
 import PersonaCard from '../components/PersonaCard.astro';
 import ResourceCard from '../components/ResourceCard.astro';
 import Callout from '../components/Callout.astro';
@@ -19,13 +16,13 @@ const base = import.meta.env.BASE_URL;
   <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>
-<body class="min-h-screen">
-  <!-- Top bar -->
-  <div class="bg-visdom-gray-100 border-b border-visdom-gray-200">
-    <div class="max-w-5xl mx-auto px-6 py-1.5 flex items-center gap-2">
-      <a href="https://virtuslab.com" class="no-underline hover:opacity-70 transition-opacity flex items-center gap-1.5">
+<body>
+  <!-- ============ VirtusLab Top Bar ============ -->
+  <div class="vl-topbar">
+    <div class="vl-topbar__inner">
+      <a href="https://virtuslab.com" class="vl-topbar__link">
         <svg width="80" height="16" viewBox="0 0 120 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M16.5 3L12 13.5L7.5 3H4.5L10.5 16.5H13.5L19.5 3H16.5Z" fill="#9ca3af"/>
           <path d="M22 7.5C22 6.5 22.8 5.5 24 5.5C25.2 5.5 26 6.5 26 7.5V16.5H28.5V7.5C28.5 5 26.5 3 24 3C21.5 3 19.5 5 19.5 7.5V16.5H22V7.5Z" fill="#9ca3af"/>
@@ -35,36 +32,231 @@ const base = import.meta.env.BASE_URL;
     </div>
   </div>
 
-  <!-- Nav -->
-  <nav class="border-b border-visdom-gray-200 bg-white sticky top-0 z-50">
-    <div class="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
-      <a href={`${base}`} class="flex items-center gap-2 text-visdom-gray-900 font-semibold no-underline hover:text-visdom-green-dark">
-        Visdom Code Review
-      </a>
-      <div class="flex items-center gap-6 text-sm text-visdom-gray-500">
-        <a href={`${base}`} class="hover:text-visdom-gray-900 no-underline">Home</a>
-        <a href={`${base}guide/leaders/`} class="hover:text-visdom-gray-900 no-underline">For Leaders</a>
-        <a href={`${base}guide/platform-engineers/`} class="hover:text-visdom-gray-900 no-underline">For Engineers</a>
-        <a href={`${base}guide/developers/`} class="hover:text-visdom-gray-900 no-underline">For Developers</a>
-        <a href={`${base}before-after/`} class="hover:text-visdom-gray-900 no-underline">Scenarios</a>
-        <a href={`${base}reference/`} class="hover:text-visdom-gray-900 no-underline">Reference</a>
+  <!-- ============ Navigation ============ -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href={`${base}`} class="nav__brand">Visdom Code Review</a>
+      <div class="nav__links">
+        <a href={`${base}`} class="nav__link nav__link--active">Home</a>
+        <a href={`${base}guide/leaders/`} class="nav__link">For Leaders</a>
+        <a href={`${base}guide/platform-engineers/`} class="nav__link">For Engineers</a>
+        <a href={`${base}guide/developers/`} class="nav__link">For Developers</a>
+        <a href={`${base}before-after/`} class="nav__link">Scenarios</a>
+        <a href={`${base}reference/`} class="nav__link">Reference</a>
+        <a href="https://github.com/VirtusLab/visdom-code-review" class="nav__github" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
   </nav>
 
-  <!-- 1. Hero Section (full-width, dark background) -->
-  <HeroSection
-    title="Your team writes code with AI. Your review process doesn't know that."
-    subtitle="Visdom Code Review is a reference process for enterprise code review in the age of AI-assisted development. Not a tool. A process."
-  />
+  <!-- ============ Hero Section ============ -->
+  <section class="hero">
+    <div class="hero__inner">
+      <h1 class="hero__headline">
+        AI writes your code.<br />
+        <span class="hero__gradient">Who reviews it?</span>
+      </h1>
+      <p class="hero__subtitle">
+        A structured, multi-layered review process for enterprise teams shipping AI-generated code.
+        Not a tool. A process.
+      </p>
+      <div class="hero__buttons">
+        <a href={`${base}guide/leaders/`} class="btn btn--primary">For Leaders</a>
+        <a href={`${base}reference/`} class="btn btn--outline">Technical Reference</a>
+      </div>
+      <p class="hero__tagline">Part of <a href="https://virtuslab.com/services/visdom" class="hero__tagline-link">Visdom</a> &mdash; VirtusLab's Agent-Ready SDLC</p>
 
-  <!-- 2. Problem stats -->
-  <section class="bg-visdom-gray-50 py-16">
-    <div class="max-w-doc mx-auto px-6">
-      <h2 class="!mt-0 text-center">The problem in numbers</h2>
-      <p class="text-center max-w-2xl mx-auto mb-10">
-        Your CI says the code is fine. Your tests pass.
-        But the AI wrote the tests too.
+      <!-- Pipeline strip -->
+      <div class="pipeline">
+        <div class="pipeline__stage">
+          <span class="pipeline__label">L0</span>
+          <span class="pipeline__name">Triage</span>
+        </div>
+        <span class="pipeline__arrow">&rarr;</span>
+        <div class="pipeline__stage">
+          <span class="pipeline__label">L1</span>
+          <span class="pipeline__name">Static</span>
+        </div>
+        <span class="pipeline__arrow">&rarr;</span>
+        <div class="pipeline__stage">
+          <span class="pipeline__label">L2</span>
+          <span class="pipeline__name">Semantic</span>
+        </div>
+        <span class="pipeline__arrow">&rarr;</span>
+        <div class="pipeline__stage">
+          <span class="pipeline__label">L3</span>
+          <span class="pipeline__name">Deep Analysis</span>
+        </div>
+        <span class="pipeline__arrow">&rarr;</span>
+        <div class="pipeline__stage pipeline__stage--reporter">
+          <span class="pipeline__label">R</span>
+          <span class="pipeline__name">Reporter</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Feature Row 1: How it works (So fast) ============ -->
+  <section class="feature-row feature-row--white">
+    <div class="feature-row__inner">
+      <div class="feature-row__text">
+        <span class="kicker">How it works</span>
+        <h2 class="feature-row__heading">So fast</h2>
+        <p class="feature-row__desc">
+          Every PR passes through layers of increasing depth. Fast and cheap for trivial changes, thorough for risky ones.
+          A LOW-risk PR gets feedback in under 2 minutes at ~$0.05.
+        </p>
+        <a href={`${base}reference/`} class="feature-row__link">Full architecture reference &rarr;</a>
+      </div>
+      <div class="feature-row__visual">
+        <div class="card">
+          <div class="card__stages">
+            <div class="card__stage">
+              <span class="card__num">01</span>
+              <span class="card__badge card__badge--green">L0 Triage</span>
+              <p class="card__stage-desc">Risk scoring, routing. Instant.</p>
+            </div>
+            <div class="card__stage">
+              <span class="card__num">02</span>
+              <span class="card__badge card__badge--blue">L1 Static</span>
+              <p class="card__stage-desc">Linters, SAST, pattern checks. &lt;30s.</p>
+            </div>
+            <div class="card__stage">
+              <span class="card__num">03</span>
+              <span class="card__badge card__badge--purple">L2 Semantic</span>
+              <p class="card__stage-desc">LLM review with full context. &lt;2min.</p>
+            </div>
+            <div class="card__stage">
+              <span class="card__num">04</span>
+              <span class="card__badge card__badge--amber">L3 Deep</span>
+              <p class="card__stage-desc">Multi-pass analysis, security, arch. &lt;5min.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Feature Row 2: Risk-based (So precise) ============ -->
+  <section class="feature-row feature-row--offwhite">
+    <div class="feature-row__inner feature-row__inner--flipped">
+      <div class="feature-row__text">
+        <span class="kicker">Risk-based routing</span>
+        <h2 class="feature-row__heading">So precise</h2>
+        <p class="feature-row__desc">
+          Not every PR needs deep analysis. VCR assigns a risk level and routes accordingly &mdash;
+          saving compute, money, and reviewer attention for what matters.
+        </p>
+        <a href={`${base}before-after/`} class="feature-row__link">See before/after scenarios &rarr;</a>
+      </div>
+      <div class="feature-row__visual">
+        <div class="card">
+          <div class="risk-grid">
+            <div class="risk-card risk-card--low">
+              <span class="risk-card__level">LOW</span>
+              <p class="risk-card__desc">Config, docs, deps. Auto-approved or light scan.</p>
+            </div>
+            <div class="risk-card risk-card--medium">
+              <span class="risk-card__level">MEDIUM</span>
+              <p class="risk-card__desc">Business logic. Standard LLM review with context.</p>
+            </div>
+            <div class="risk-card risk-card--high">
+              <span class="risk-card__level">HIGH</span>
+              <p class="risk-card__desc">Security-sensitive, cross-service. Multi-pass analysis.</p>
+            </div>
+            <div class="risk-card risk-card--critical">
+              <span class="risk-card__level">CRITICAL</span>
+              <p class="risk-card__desc">Auth, payments, data migration. Full depth + human gate.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Feature Row 3: Context (So aware) ============ -->
+  <section class="feature-row feature-row--white">
+    <div class="feature-row__inner">
+      <div class="feature-row__text">
+        <span class="kicker">Rich context</span>
+        <h2 class="feature-row__heading">So aware</h2>
+        <p class="feature-row__desc">
+          AI code review without context is just a fancy linter. VCR feeds every review with deep, pre-indexed knowledge
+          about your codebase, team, and history.
+        </p>
+        <a href="https://github.com/virtuslab/vidia" class="feature-row__link">Explore ViDIA context engine &rarr;</a>
+      </div>
+      <div class="feature-row__visual">
+        <div class="card">
+          <p class="card__label">Context sources</p>
+          <div class="context-pills">
+            <span class="pill pill--green">ViDIA</span>
+            <span class="pill pill--blue">Git Blame</span>
+            <span class="pill pill--purple">Coverage</span>
+            <span class="pill pill--amber">CODEOWNERS</span>
+            <span class="pill pill--teal">PR History</span>
+            <span class="pill pill--pink">Commit Heatmap</span>
+            <span class="pill pill--dashed">+ Your Source</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Feature Row 4: Problems (So honest) ============ -->
+  <section class="feature-row feature-row--offwhite">
+    <div class="feature-row__inner feature-row__inner--flipped">
+      <div class="feature-row__text">
+        <span class="kicker">What it catches</span>
+        <h2 class="feature-row__heading">So honest</h2>
+        <p class="feature-row__desc">
+          Your CI says the code is fine. Your tests pass. But the AI wrote the tests too. VCR catches
+          the patterns that slip through conventional pipelines.
+        </p>
+        <a href={`${base}before-after/`} class="feature-row__link">See real examples &rarr;</a>
+      </div>
+      <div class="feature-row__visual">
+        <div class="card">
+          <div class="problems-list">
+            <div class="problem">
+              <span class="problem__num">01</span>
+              <div>
+                <strong class="problem__title">Circular Tests</strong>
+                <p class="problem__desc">Tests that mirror implementation instead of verifying behavior.</p>
+              </div>
+            </div>
+            <div class="problem">
+              <span class="problem__num">02</span>
+              <div>
+                <strong class="problem__title">Hallucinated APIs</strong>
+                <p class="problem__desc">Calls to methods or endpoints that don't exist in your codebase.</p>
+              </div>
+            </div>
+            <div class="problem">
+              <span class="problem__num">03</span>
+              <div>
+                <strong class="problem__title">Convention Drift</strong>
+                <p class="problem__desc">AI-generated code that ignores your team's established patterns.</p>
+              </div>
+            </div>
+            <div class="problem">
+              <span class="problem__num">04</span>
+              <div>
+                <strong class="problem__title">Over-engineering</strong>
+                <p class="problem__desc">Unnecessary Factory patterns, abstractions, and complexity.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Stats Section ============ -->
+  <section class="stats-section">
+    <div class="stats-section__inner">
+      <h2 class="section-heading">The problem in numbers</h2>
+      <p class="section-subtitle">
+        Your CI says the code is fine. Your tests pass. But the AI wrote the tests too.
       </p>
       <div class="grid sm:grid-cols-3 gap-4">
         <StatCard
@@ -89,69 +281,46 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
-  <!-- 3. Pick your path -->
-  <section class="bg-white py-16">
-    <div class="max-w-doc mx-auto px-6">
-      <h2 class="!mt-0 text-center">Pick your path</h2>
-      <p class="text-center max-w-2xl mx-auto mb-10">
-        Different roles, different questions. Start with what matters to you.
+  <!-- ============ Part of Visdom ============ -->
+  <section class="visdom-section">
+    <div class="visdom-section__inner">
+      <h2 class="section-heading">Part of Visdom</h2>
+      <p class="section-subtitle">
+        VCR is one of four components in <a href="https://virtuslab.com/services/visdom">Visdom</a>, VirtusLab's Agent-Ready SDLC.
       </p>
-      <div class="grid sm:grid-cols-3 gap-4">
-        <a href={`${base}guide/leaders/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="text-2xl">&#x1F4CA;</span>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">For Leaders</span>
-          </div>
-          <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Engineering Managers, VPs, CTOs</h3>
-          <p class="text-sm text-visdom-gray-500 !mb-0">Business case, ROI model, what changes for your org, how we engage.</p>
+      <div class="visdom-grid">
+        <a href="https://github.com/virtuslab/vidia" class="visdom-card">
+          <span class="visdom-card__kicker">Context Fabric</span>
+          <h4 class="visdom-card__title">ViDIA</h4>
+          <p class="visdom-card__desc">Pre-indexed code expertise, dependency graphs, PR history</p>
         </a>
-
-        <a href={`${base}guide/platform-engineers/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="text-2xl">&#x1F527;</span>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">For Engineers</span>
-          </div>
-          <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Platform & DevOps Engineers</h3>
-          <p class="text-sm text-visdom-gray-500 !mb-0">Architecture, how to run a pilot, configuration, metrics setup.</p>
+        <div class="visdom-card">
+          <span class="visdom-card__kicker">Machine-Speed CI</span>
+          <h4 class="visdom-card__title">Fast Feedback</h4>
+          <p class="visdom-card__desc">Sub-2-min CI loops, caching, incremental builds, test impact analysis</p>
+        </div>
+        <a href={`${base}`} class="visdom-card visdom-card--active">
+          <span class="visdom-card__kicker visdom-card__kicker--active">Risk Assessment</span>
+          <h4 class="visdom-card__title">VCR</h4>
+          <p class="visdom-card__desc">Multi-layered AI code review. You are here.</p>
         </a>
-
-        <a href={`${base}guide/developers/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="text-2xl">&#x1F4BB;</span>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">For Developers</span>
-          </div>
-          <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Developers on the team</h3>
-          <p class="text-sm text-visdom-gray-500 !mb-0">What changes in your daily PR workflow, how to read and give feedback.</p>
+        <a href="https://tracevault.dev/" class="visdom-card">
+          <span class="visdom-card__kicker">Governance</span>
+          <h4 class="visdom-card__title">TraceVault</h4>
+          <p class="visdom-card__desc">Audit trail, auto-evaluation, EU AI Act compliance</p>
         </a>
       </div>
+      <p class="section-footnote">
+        Read the thinking behind it: <a href="https://virtuslab.com/blog/ai/the-fallacy">The Agent-Ready SDLC series</a>
+      </p>
     </div>
   </section>
 
-  <!-- 4. How it works -->
-  <section class="bg-visdom-gray-50 py-16">
-    <div class="max-w-doc mx-auto px-6">
-      <h2 class="!mt-0 text-center">How it works</h2>
-      <p class="text-center max-w-2xl mx-auto mb-10">
-        Every PR passes through layers of increasing depth -- fast and cheap for trivial changes, thorough for risky ones.
-        A LOW-risk PR gets feedback in under 2 minutes at ~$0.05.
-        A CRITICAL PR gets deep analysis across security, performance, architecture, and AI-code patterns.
-      </p>
-
-      <LayerDiagram />
-
-      <div class="text-center mt-8">
-        <a href={`${base}reference/`} class="inline-flex items-center gap-1 text-sm font-medium text-visdom-green hover:text-visdom-green-dark no-underline">
-          Full architecture reference &rarr;
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. What your team is saying -->
-  <section class="bg-white py-16">
-    <div class="max-w-doc mx-auto px-6">
-      <h2 class="!mt-0 text-center">What your team is saying right now</h2>
-      <p class="text-center max-w-2xl mx-auto mb-10">
+  <!-- ============ Persona Section ============ -->
+  <section class="persona-section">
+    <div class="persona-section__inner">
+      <h2 class="section-heading">What your team is saying right now</h2>
+      <p class="section-subtitle">
         These are real patterns we see across enterprise teams adopting AI-assisted development.
       </p>
 
@@ -168,78 +337,16 @@ const base = import.meta.env.BASE_URL;
       </PersonaCard>
 
       <div class="text-center mt-8">
-        <a href={`${base}before-after/`} class="inline-flex items-center gap-1 text-sm font-medium text-visdom-green hover:text-visdom-green-dark no-underline">
-          See concrete before/after scenarios &rarr;
-        </a>
+        <a href={`${base}before-after/`} class="feature-row__link">See concrete before/after scenarios &rarr;</a>
       </div>
     </div>
   </section>
 
-  <!-- 6. How we work with you -->
-  <section class="bg-visdom-gray-50 py-16">
-    <div class="max-w-doc mx-auto px-6">
-      <h2 class="!mt-0 text-center">How we work with you</h2>
-      <p class="text-center max-w-2xl mx-auto mb-10">
-        <strong>Visdom Code Review</strong> (<strong>VCR</strong>) is how we solve this at VirtusLab, and how we help our clients solve it.
-        It's a structured, multi-layered review process that we deploy on your teams, configure for
-        your stack, and hand over for you to own.
-      </p>
-
-      <Timeline />
-    </div>
-  </section>
-
-  <!-- What this is not -->
-  <section class="bg-white py-16">
-    <div class="max-w-doc mx-auto px-6">
-      <h2 class="!mt-0 text-center">What this is not</h2>
-      <div class="max-w-2xl mx-auto">
-        <ul>
-          <li><strong>Not a SaaS product.</strong> It's a reference process we implement on your infrastructure during a consulting engagement.</li>
-          <li><strong>Not tied to specific tools.</strong> The process works with any LLM provider, any CI platform, any code host. We provide reference implementations, you can swap components.</li>
-          <li><strong>Not a replacement for human review.</strong> It's a force multiplier. Seniors review fewer PRs, but with better context and focus.</li>
-        </ul>
-      </div>
-
-      <div class="mt-12">
-        <h3 class="!mt-0 text-center">Part of Visdom</h3>
-        <p class="text-center max-w-2xl mx-auto">
-          VCR is one of four components in <a href="https://virtuslab.com/services/visdom">Visdom</a>, VirtusLab's Agent-Ready SDLC.
-        </p>
-        <div class="grid sm:grid-cols-4 gap-4 mt-6">
-          <a href="https://github.com/virtuslab/vidia" class="block border border-visdom-gray-200 rounded-lg p-4 no-underline hover:shadow-md transition-shadow text-center">
-            <span class="text-xs uppercase tracking-wider text-visdom-gray-400 font-medium">Context Fabric</span>
-            <h4 class="text-base font-bold text-visdom-gray-900 mt-1 mb-1">ViDIA</h4>
-            <p class="text-xs text-visdom-gray-500 !mb-0">Pre-indexed code expertise, dependency graphs, PR history</p>
-          </a>
-          <div class="block border border-visdom-gray-200 rounded-lg p-4 text-center">
-            <span class="text-xs uppercase tracking-wider text-visdom-gray-400 font-medium">Machine-Speed CI</span>
-            <h4 class="text-base font-bold text-visdom-gray-900 mt-1 mb-1">Fast Feedback</h4>
-            <p class="text-xs text-visdom-gray-500 !mb-0">Sub-2-min CI loops, caching, incremental builds, test impact analysis</p>
-          </div>
-          <a href={`${base}`} class="block border-2 border-visdom-green rounded-lg p-4 no-underline hover:shadow-md transition-shadow text-center bg-emerald-50/50">
-            <span class="text-xs uppercase tracking-wider text-visdom-green font-medium">Risk Assessment</span>
-            <h4 class="text-base font-bold text-visdom-gray-900 mt-1 mb-1">VCR</h4>
-            <p class="text-xs text-visdom-gray-500 !mb-0">Multi-layered AI code review. You are here.</p>
-          </a>
-          <a href="https://tracevault.dev/" class="block border border-visdom-gray-200 rounded-lg p-4 no-underline hover:shadow-md transition-shadow text-center">
-            <span class="text-xs uppercase tracking-wider text-visdom-gray-400 font-medium">Governance</span>
-            <h4 class="text-base font-bold text-visdom-gray-900 mt-1 mb-1">TraceVault</h4>
-            <p class="text-xs text-visdom-gray-500 !mb-0">Audit trail, auto-evaluation, EU AI Act compliance</p>
-          </a>
-        </div>
-        <p class="text-center mt-6">
-          Read the thinking behind it: <a href="https://virtuslab.com/blog/ai/the-fallacy">The Agent-Ready SDLC series</a>
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7. Go deeper -->
-  <section class="bg-visdom-gray-50 py-16">
-    <div class="max-w-doc mx-auto px-6">
-      <h2 class="!mt-0 text-center">Go deeper</h2>
-      <p class="text-center max-w-2xl mx-auto mb-10">
+  <!-- ============ Go Deeper ============ -->
+  <section class="deeper-section">
+    <div class="deeper-section__inner">
+      <h2 class="section-heading">Go deeper</h2>
+      <p class="section-subtitle">
         Reference material, architecture docs, and real-world scenarios.
       </p>
 
@@ -267,8 +374,8 @@ const base = import.meta.env.BASE_URL;
         />
       </div>
 
-      <h3 class="text-center">From the field</h3>
-      <p class="text-center max-w-2xl mx-auto mb-8 text-sm text-visdom-gray-500">
+      <h3 class="section-subheading">From the field</h3>
+      <p class="section-subtitle section-subtitle--sm">
         External research and real-world evidence that shaped this process.
       </p>
 
@@ -309,11 +416,36 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="mt-0 bg-visdom-gray-100">
-    <div class="max-w-5xl mx-auto px-6 py-10 flex flex-col items-center gap-3">
-      <span class="text-[10px] uppercase tracking-[0.2em] text-visdom-gray-400 font-medium">Powered by</span>
-      <a href="https://virtuslab.com" class="no-underline hover:opacity-70 transition-opacity">
+  <!-- ============ CTA Section ============ -->
+  <section class="cta-section">
+    <div class="cta-section__inner">
+      <h2 class="cta-section__heading">
+        Ready to fix your<br /><span class="hero__gradient">code review?</span>
+      </h2>
+      <p class="cta-section__subtitle">
+        Stop rubber-stamping AI-generated PRs. Start reviewing them with the depth they deserve.
+      </p>
+      <div class="hero__buttons">
+        <a href={`${base}guide/leaders/`} class="btn btn--primary">For Leaders</a>
+        <a href={`${base}reference/`} class="btn btn--outline">Technical Reference</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Footer ============ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <a href={`${base}`} class="footer__brand">Visdom Code Review</a>
+      <div class="footer__links">
+        <a href={`${base}guide/leaders/`}>For Leaders</a>
+        <a href={`${base}reference/`}>Reference</a>
+        <a href={`${base}before-after/`}>Scenarios</a>
+        <a href="https://virtuslab.com" target="_blank" rel="noopener">VirtusLab</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span class="footer__powered">Powered by</span>
+      <a href="https://virtuslab.com" class="footer__vl-link">
         <svg width="120" height="24" viewBox="0 0 120 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M16.5 3L12 13.5L7.5 3H4.5L10.5 16.5H13.5L19.5 3H16.5Z" fill="#9ca3af"/>
           <path d="M22 7.5C22 6.5 22.8 5.5 24 5.5C25.2 5.5 26 6.5 26 7.5V16.5H28.5V7.5C28.5 5 26.5 3 24 3C21.5 3 19.5 5 19.5 7.5V16.5H22V7.5Z" fill="#9ca3af"/>
@@ -322,5 +454,798 @@ const base = import.meta.env.BASE_URL;
       </a>
     </div>
   </footer>
+
+  <style>
+    /* ===== Design Tokens ===== */
+    :root {
+      --white: #ffffff;
+      --off-white: #f7f8fc;
+      --light-gray: #eef0f6;
+      --mid-gray: #c4c8d8;
+      --text: #1a1a2e;
+      --text-secondary: #5c5e76;
+      --text-muted: #8b8da5;
+      --brand-green: #10b981;
+      --brand-green-dark: #059669;
+      --brand-dark: #32373c;
+      --brand-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --font-heading: 'Montserrat', system-ui, sans-serif;
+      --font-body: 'Nunito Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --max-w: 1080px;
+      --shadow-soft: 0 4px 24px rgba(26,26,46,0.06);
+      --shadow-md: 0 8px 40px rgba(26,26,46,0.08);
+    }
+
+    /* ===== Reset for landing page ===== */
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* ===== VirtusLab Top Bar ===== */
+    .vl-topbar {
+      background: var(--off-white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+    .vl-topbar__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 6px 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .vl-topbar__link {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .vl-topbar__link:hover {
+      opacity: 1;
+    }
+
+    /* ===== Navigation ===== */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 64px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--light-gray);
+    }
+    .nav__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav__brand {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav__brand:hover {
+      color: var(--brand-green);
+    }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.875rem;
+    }
+    .nav__link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav__link:hover,
+    .nav__link--active {
+      color: var(--text);
+    }
+    .nav__github {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: var(--brand-dark);
+      color: var(--white);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav__github:hover {
+      background: var(--text);
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: var(--white);
+      background-image: radial-gradient(ellipse at 50% 0%, rgba(16, 185, 129, 0.06) 0%, transparent 60%);
+      padding: 80px 24px 64px;
+      text-align: center;
+    }
+    .hero__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero__headline {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(2.8rem, 6.5vw, 4.5rem);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text);
+      margin: 0 0 24px;
+    }
+    .hero__gradient {
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero__subtitle {
+      font-family: var(--font-body);
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+    .hero__buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .hero__tagline {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0 0 40px;
+    }
+    .hero__tagline-link {
+      color: var(--brand-green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .hero__tagline-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn--primary {
+      background: var(--brand-dark);
+      color: var(--white);
+    }
+    .btn--primary:hover {
+      background: var(--text);
+      box-shadow: var(--shadow-md);
+    }
+    .btn--outline {
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--mid-gray);
+    }
+    .btn--outline:hover {
+      border-color: var(--brand-green);
+      color: var(--brand-green);
+    }
+
+    /* Pipeline strip */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pipeline__stage {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--off-white);
+      border: 1px solid var(--light-gray);
+      border-radius: 999px;
+      padding: 8px 18px;
+    }
+    .pipeline__stage--reporter {
+      background: linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(5,150,105,0.08) 100%);
+      border-color: rgba(16,185,129,0.25);
+    }
+    .pipeline__label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--brand-green);
+      background: rgba(16,185,129,0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .pipeline__name {
+      font-family: var(--font-heading);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .pipeline__arrow {
+      color: var(--mid-gray);
+      font-size: 1rem;
+    }
+
+    /* ===== Feature Rows ===== */
+    .feature-row {
+      padding: 80px 24px;
+    }
+    .feature-row--white {
+      background: var(--white);
+    }
+    .feature-row--offwhite {
+      background: var(--off-white);
+    }
+    .feature-row__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .feature-row__inner--flipped {
+      direction: rtl;
+    }
+    .feature-row__inner--flipped > * {
+      direction: ltr;
+    }
+    .feature-row__text {
+      /* text column */
+    }
+    .feature-row__visual {
+      /* visual column */
+    }
+
+    .kicker {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--brand-green);
+      margin-bottom: 12px;
+    }
+    .feature-row__heading {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--text);
+      margin: 0 0 16px;
+    }
+    .feature-row__desc {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin: 0 0 20px;
+    }
+    .feature-row__link {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--brand-green);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .feature-row__link:hover {
+      color: var(--brand-green-dark);
+    }
+
+    /* Cards (visual side) */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow-soft);
+    }
+    .card__label {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 0 0 16px;
+    }
+    .card__stages {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .card__stage {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .card__num {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      min-width: 24px;
+    }
+    .card__badge {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .card__badge--green {
+      background: rgba(16,185,129,0.12);
+      color: #059669;
+    }
+    .card__badge--blue {
+      background: rgba(59,130,246,0.12);
+      color: #2563eb;
+    }
+    .card__badge--purple {
+      background: rgba(139,92,246,0.12);
+      color: #7c3aed;
+    }
+    .card__badge--amber {
+      background: rgba(245,158,11,0.12);
+      color: #b45309;
+    }
+    .card__stage-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* Risk cards */
+    .risk-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .risk-card {
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid;
+    }
+    .risk-card--low {
+      background: rgba(16,185,129,0.06);
+      border-color: rgba(16,185,129,0.2);
+    }
+    .risk-card--medium {
+      background: rgba(59,130,246,0.06);
+      border-color: rgba(59,130,246,0.2);
+    }
+    .risk-card--high {
+      background: rgba(245,158,11,0.06);
+      border-color: rgba(245,158,11,0.2);
+    }
+    .risk-card--critical {
+      background: rgba(239,68,68,0.06);
+      border-color: rgba(239,68,68,0.2);
+    }
+    .risk-card__level {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .risk-card--low .risk-card__level { color: #059669; }
+    .risk-card--medium .risk-card__level { color: #2563eb; }
+    .risk-card--high .risk-card__level { color: #b45309; }
+    .risk-card--critical .risk-card__level { color: #dc2626; }
+    .risk-card__desc {
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* Context pills */
+    .context-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.82rem;
+      border: 1px solid;
+    }
+    .pill--green {
+      background: rgba(16,185,129,0.1);
+      border-color: rgba(16,185,129,0.25);
+      color: #059669;
+    }
+    .pill--blue {
+      background: rgba(59,130,246,0.1);
+      border-color: rgba(59,130,246,0.25);
+      color: #2563eb;
+    }
+    .pill--purple {
+      background: rgba(139,92,246,0.1);
+      border-color: rgba(139,92,246,0.25);
+      color: #7c3aed;
+    }
+    .pill--amber {
+      background: rgba(245,158,11,0.1);
+      border-color: rgba(245,158,11,0.25);
+      color: #b45309;
+    }
+    .pill--teal {
+      background: rgba(20,184,166,0.1);
+      border-color: rgba(20,184,166,0.25);
+      color: #0d9488;
+    }
+    .pill--pink {
+      background: rgba(236,72,153,0.1);
+      border-color: rgba(236,72,153,0.25);
+      color: #db2777;
+    }
+    .pill--dashed {
+      background: transparent;
+      border-color: var(--mid-gray);
+      border-style: dashed;
+      color: var(--text-muted);
+    }
+
+    /* Problems list */
+    .problems-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .problem {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .problem__num {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--brand-green);
+      background: rgba(16,185,129,0.1);
+      padding: 4px 8px;
+      border-radius: 6px;
+      min-width: 32px;
+      text-align: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .problem__title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .problem__desc {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* ===== Stats Section ===== */
+    .stats-section {
+      background: var(--off-white);
+      padding: 80px 24px;
+    }
+    .stats-section__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    /* ===== Section headings (shared) ===== */
+    .section-heading {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: -0.03em;
+      color: var(--text);
+      text-align: center;
+      margin: 0 0 12px;
+    }
+    .section-subtitle {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+    .section-subtitle--sm {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .section-subheading {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--text);
+      text-align: center;
+      margin: 0 0 8px;
+    }
+    .section-footnote {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-top: 32px;
+    }
+    .section-footnote a {
+      color: var(--brand-green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .section-footnote a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== Visdom Section ===== */
+    .visdom-section {
+      background: var(--white);
+      padding: 80px 24px;
+    }
+    .visdom-section__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .visdom-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .visdom-card {
+      background: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      text-decoration: none;
+      transition: box-shadow 0.2s;
+    }
+    .visdom-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .visdom-card--active {
+      border: 2px solid var(--brand-green);
+      background: rgba(16,185,129,0.03);
+    }
+    .visdom-card__kicker {
+      font-family: var(--font-heading);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .visdom-card__kicker--active {
+      color: var(--brand-green);
+    }
+    .visdom-card__title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      margin: 0 0 6px;
+    }
+    .visdom-card__desc {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ===== Persona Section ===== */
+    .persona-section {
+      background: var(--white);
+      padding: 80px 24px;
+    }
+    .persona-section__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    /* ===== Go Deeper Section ===== */
+    .deeper-section {
+      background: var(--off-white);
+      padding: 80px 24px;
+    }
+    .deeper-section__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    /* ===== CTA Section ===== */
+    .cta-section {
+      background: var(--off-white);
+      background-image: radial-gradient(ellipse at 50% 100%, rgba(16, 185, 129, 0.06) 0%, transparent 60%);
+      padding: 96px 24px;
+      text-align: center;
+    }
+    .cta-section__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .cta-section__heading {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: var(--text);
+      margin: 0 0 20px;
+    }
+    .cta-section__subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 540px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      border-top: 1px solid var(--light-gray);
+      background: var(--white);
+    }
+    .footer__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 24px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer__brand {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .footer__brand:hover {
+      color: var(--brand-green);
+    }
+    .footer__links {
+      display: flex;
+      gap: 20px;
+      font-size: 0.85rem;
+    }
+    .footer__links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer__links a:hover {
+      color: var(--text);
+    }
+    .footer__bottom {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer__powered {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .footer__vl-link {
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      text-decoration: none;
+    }
+    .footer__vl-link:hover {
+      opacity: 1;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .nav__links {
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .feature-row__inner,
+      .feature-row__inner--flipped {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        direction: ltr;
+      }
+      .visdom-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .risk-grid {
+        grid-template-columns: 1fr;
+      }
+      .pipeline {
+        gap: 6px;
+      }
+      .pipeline__stage {
+        padding: 6px 12px;
+      }
+      .footer__inner {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+      .footer__links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav__links {
+        gap: 8px;
+        font-size: 0.75rem;
+      }
+      .visdom-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </body>
 </html>
