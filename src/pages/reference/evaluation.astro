@@ -1,0 +1,694 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import Callout from '../../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="Evaluation Methodology"
+  subtitle="How VCR measures its own effectiveness — precision, recall, signal-to-noise, and cost efficiency against known ground truth."
+  section="Reference"
+  tags={[
+    { label: "Evaluation", variant: "green" },
+    { label: "CR-Bench", variant: "outline" },
+    { label: "SNR", variant: "outline" },
+    { label: "Ground Truth", variant: "outline" },
+  ]}
+  prev={{ label: "Metrics Framework", href: `${base}reference/metrics/` }}
+  next={{ label: "Reference Implementations", href: `${base}reference/reference-implementations/` }}
+>
+
+<p>
+  Most AI code review tools report how many findings they generate. VCR measures whether those findings are <strong>correct</strong>,
+  <strong>complete</strong>, and <strong>worth the cost</strong>. This page documents the evaluation methodology used by
+  <code>npm run demo:triage</code>.
+</p>
+
+<Callout type="info" title="Run it yourself">
+  <code>git clone https://github.com/VirtusLab/visdom-code-review && cd visdom-code-review/demo && npm install && npm run demo:triage</code>
+</Callout>
+
+<!-- ============ The Problem ============ -->
+<h2>Why evaluate?</h2>
+
+<p>
+  A code review tool that generates 50 comments per PR with 80% noise is worse than no tool at all.
+  Developer trust erodes at ~15% false positive rate. Beyond that, teams ignore all findings &mdash;
+  including the real ones.
+</p>
+
+<div class="eval-diagram">
+  <div class="eval-diagram__row">
+    <div class="eval-box eval-box--red">
+      <span class="eval-box__num">50</span>
+      <span class="eval-box__label">comments</span>
+    </div>
+    <div class="eval-arrow">&rarr;</div>
+    <div class="eval-box eval-box--red">
+      <span class="eval-box__num">40</span>
+      <span class="eval-box__label">noise</span>
+    </div>
+    <div class="eval-plus">+</div>
+    <div class="eval-box eval-box--green">
+      <span class="eval-box__num">10</span>
+      <span class="eval-box__label">real</span>
+    </div>
+    <div class="eval-arrow">&rarr;</div>
+    <div class="eval-box eval-box--gray">
+      <span class="eval-box__num">0</span>
+      <span class="eval-box__label">acted on</span>
+    </div>
+  </div>
+  <p class="eval-diagram__caption">The Cry Wolf Effect: noise destroys signal</p>
+</div>
+
+<p>
+  VCR's design philosophy is <strong>precision over recall</strong> &mdash; better to miss a LOW finding than
+  erode trust with false positives. The evaluation methodology quantifies whether we deliver on that promise.
+</p>
+
+<!-- ============ Framework Overview ============ -->
+<h2>Framework overview</h2>
+
+<p>The evaluation combines three established approaches:</p>
+
+<div class="framework-grid">
+  <div class="framework-card">
+    <div class="framework-card__header">
+      <span class="framework-card__num">1</span>
+      <h3 class="framework-card__title">CR-Bench Classification</h3>
+    </div>
+    <p class="framework-card__source">arxiv:2603.11078</p>
+    <p>Every finding is classified against ground truth into one of three categories:</p>
+    <div class="classification-legend">
+      <div class="classification-item">
+        <span class="classification-dot classification-dot--green"></span>
+        <strong>Bug Hit</strong> &mdash; correctly identifies a known vulnerability
+      </div>
+      <div class="classification-item">
+        <span class="classification-dot classification-dot--blue"></span>
+        <strong>Valid Suggestion</strong> &mdash; technically sound, actionable, but not in ground truth
+      </div>
+      <div class="classification-item">
+        <span class="classification-dot classification-dot--red"></span>
+        <strong>Noise</strong> &mdash; incorrect, hallucinated, or not actionable
+      </div>
+    </div>
+  </div>
+
+  <div class="framework-card">
+    <div class="framework-card__header">
+      <span class="framework-card__num">2</span>
+      <h3 class="framework-card__title">Signal-to-Noise Ratio</h3>
+    </div>
+    <p class="framework-card__source">SNR Framework (Jet Xu)</p>
+    <p>Findings are tiered by impact, and the ratio of signal to noise determines developer trust:</p>
+    <div class="snr-tiers">
+      <div class="snr-tier">
+        <span class="snr-tier__label snr-tier__label--t1">Tier 1</span>
+        <span>Critical signal &mdash; security vulnerabilities, runtime errors, breaking changes</span>
+      </div>
+      <div class="snr-tier">
+        <span class="snr-tier__label snr-tier__label--t2">Tier 2</span>
+        <span>Important signal &mdash; architecture issues, test quality, maintainability risks</span>
+      </div>
+      <div class="snr-tier">
+        <span class="snr-tier__label snr-tier__label--noise">Noise</span>
+        <span>Style preferences, micro-optimizations, hallucinated issues</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="framework-card">
+    <div class="framework-card__header">
+      <span class="framework-card__num">3</span>
+      <h3 class="framework-card__title">Cost-Quality Tradeoff</h3>
+    </div>
+    <p class="framework-card__source">Triage Framework (arxiv:2604.07494) &amp; Spotify Verification Loop</p>
+    <p>Per-layer cost efficiency determines whether the layered architecture delivers on its economic promise:</p>
+    <ul>
+      <li>Layer 1 (deterministic) should catch maximum findings at $0</li>
+      <li>Layer 2 (Haiku) should triage correctly for ~$0.02</li>
+      <li>Layer 3 (Sonnet) should justify its ~$0.40 cost with unique deep findings</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ Metrics ============ -->
+<h2>Metrics computed</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Formula</th>
+      <th>What it measures</th>
+      <th>Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Precision</strong></td>
+      <td><code>bug_hits / total_findings</code></td>
+      <td>How often findings are real</td>
+      <td>&ge;80%</td>
+    </tr>
+    <tr>
+      <td><strong>Recall</strong></td>
+      <td><code>matched_GT / total_GT</code></td>
+      <td>How many known bugs were found</td>
+      <td>&ge;80%</td>
+    </tr>
+    <tr>
+      <td><strong>F1 Score</strong></td>
+      <td><code>2 &times; (P &times; R) / (P + R)</code></td>
+      <td>Harmonic mean &mdash; penalizes imbalance</td>
+      <td>&ge;70%</td>
+    </tr>
+    <tr>
+      <td><strong>Usefulness Rate</strong></td>
+      <td><code>(hits + valid) / total</code></td>
+      <td>Findings a developer would act on (CR-Bench)</td>
+      <td>&ge;80%</td>
+    </tr>
+    <tr>
+      <td><strong>Signal Ratio</strong></td>
+      <td><code>(T1 + T2) / total</code></td>
+      <td>Share of findings that matter</td>
+      <td>&ge;80%</td>
+    </tr>
+    <tr>
+      <td><strong>SNR</strong></td>
+      <td><code>(hits + valid) / noise</code></td>
+      <td>Signal-to-noise ratio</td>
+      <td>&ge;5:1</td>
+    </tr>
+    <tr>
+      <td><strong>False Positive Rate</strong></td>
+      <td><code>noise / total</code></td>
+      <td>Developer trust erosion risk</td>
+      <td>&le;5%</td>
+    </tr>
+    <tr>
+      <td><strong>Cost per Bug Hit</strong></td>
+      <td><code>total_cost / bug_hits</code></td>
+      <td>Economic efficiency of detection</td>
+      <td>&lt;$0.10</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ============ Pipeline Diagram ============ -->
+<h2>Evaluation pipeline</h2>
+
+<div class="pipeline-eval">
+  <div class="pipeline-eval__step">
+    <div class="pipeline-eval__icon">1</div>
+    <div class="pipeline-eval__content">
+      <h4>Define ground truth</h4>
+      <p>Each scenario declares every planted vulnerability with tier classification (T1/T2), file location, and description.</p>
+    </div>
+  </div>
+  <div class="pipeline-eval__connector"></div>
+  <div class="pipeline-eval__step">
+    <div class="pipeline-eval__icon">2</div>
+    <div class="pipeline-eval__content">
+      <h4>Run VCR pipeline</h4>
+      <p>All 4 layers execute. Findings are collected with metadata: layer, severity, confidence, file, line.</p>
+    </div>
+  </div>
+  <div class="pipeline-eval__connector"></div>
+  <div class="pipeline-eval__step">
+    <div class="pipeline-eval__icon">3</div>
+    <div class="pipeline-eval__content">
+      <h4>Classify findings</h4>
+      <p>Each finding is matched against ground truth using bidirectional keyword overlap on file + title + description. Classified as Bug Hit, Valid Suggestion, or Noise.</p>
+    </div>
+  </div>
+  <div class="pipeline-eval__connector"></div>
+  <div class="pipeline-eval__step">
+    <div class="pipeline-eval__icon">4</div>
+    <div class="pipeline-eval__content">
+      <h4>Compute metrics</h4>
+      <p>Precision, Recall, F1, Usefulness Rate, SNR, FPR, and cost metrics. Per-layer breakdown shows which layers contribute what.</p>
+    </div>
+  </div>
+  <div class="pipeline-eval__connector"></div>
+  <div class="pipeline-eval__step">
+    <div class="pipeline-eval__icon">5</div>
+    <div class="pipeline-eval__content">
+      <h4>Identify gaps</h4>
+      <p>Ground truth entries without a matching finding are surfaced as missed vulnerabilities &mdash; the recall gap.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Current Results ============ -->
+<h2>Current results: "The Perfect PR"</h2>
+
+<p>
+  The demo scenario plants 14 known vulnerabilities (9 Tier-1 security, 5 Tier-2 architecture/test-quality)
+  in a deliberately flawed authentication service. Here are the evaluation results:
+</p>
+
+<div class="results-grid">
+  <div class="result-card result-card--green">
+    <span class="result-card__value">100%</span>
+    <span class="result-card__label">Precision</span>
+    <span class="result-card__detail">0 false positives</span>
+  </div>
+  <div class="result-card result-card--green">
+    <span class="result-card__value">93%</span>
+    <span class="result-card__label">Recall</span>
+    <span class="result-card__detail">13 of 14 GT matched</span>
+  </div>
+  <div class="result-card result-card--green">
+    <span class="result-card__value">96%</span>
+    <span class="result-card__label">F1 Score</span>
+    <span class="result-card__detail">Harmonic mean</span>
+  </div>
+  <div class="result-card result-card--green">
+    <span class="result-card__value">14:1</span>
+    <span class="result-card__label">SNR</span>
+    <span class="result-card__detail">Excellent (&ge;5:1)</span>
+  </div>
+  <div class="result-card result-card--green">
+    <span class="result-card__value">0%</span>
+    <span class="result-card__label">False Positive Rate</span>
+    <span class="result-card__detail">Zero noise</span>
+  </div>
+  <div class="result-card result-card--green">
+    <span class="result-card__value">$0.032</span>
+    <span class="result-card__label">Cost per Bug Hit</span>
+    <span class="result-card__detail">$0.44 total</span>
+  </div>
+</div>
+
+<h3>Per-layer contribution</h3>
+
+<div class="layer-bars">
+  <div class="layer-bar">
+    <div class="layer-bar__label">
+      <span class="layer-bar__name">L1 Deterministic</span>
+      <span class="layer-bar__cost">$0.00</span>
+    </div>
+    <div class="layer-bar__track">
+      <div class="layer-bar__fill layer-bar__fill--l1" style="width: 29%">
+        <span>4 hits</span>
+      </div>
+    </div>
+  </div>
+  <div class="layer-bar">
+    <div class="layer-bar__label">
+      <span class="layer-bar__name">L2 AI Quick Scan</span>
+      <span class="layer-bar__cost">$0.02</span>
+    </div>
+    <div class="layer-bar__track">
+      <div class="layer-bar__fill layer-bar__fill--l2" style="width: 21%">
+        <span>3 hits</span>
+      </div>
+    </div>
+  </div>
+  <div class="layer-bar">
+    <div class="layer-bar__label">
+      <span class="layer-bar__name">L3 AI Deep Review</span>
+      <span class="layer-bar__cost">$0.42</span>
+    </div>
+    <div class="layer-bar__track">
+      <div class="layer-bar__fill layer-bar__fill--l3" style="width: 50%">
+        <span>7 hits</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="text-sm text-visdom-gray-500 mt-4">
+  Layer 1 catches 4 findings at zero cost. Layer 2 adds 3 findings and makes the gate decision for $0.02.
+  Layer 3 adds 7 unique findings that only deep analysis with repository context can find &mdash; justifying its $0.42 cost.
+</p>
+
+<!-- ============ Ground Truth ============ -->
+<h2>Ground truth definition</h2>
+
+<p>
+  Each scenario declares its ground truth: every vulnerability planted, classified by tier.
+  The evaluator matches pipeline findings against this list using bidirectional keyword overlap
+  (file match required, semantic similarity threshold of 20%).
+</p>
+
+<h3>Tier 1 &mdash; Critical signal (9 entries)</h3>
+<table>
+  <thead>
+    <tr><th>ID</th><th>File</th><th>Vulnerability</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>GT-001</td><td><code>.env.test</code></td><td>Hardcoded JWT secret in version control</td></tr>
+    <tr><td>GT-002</td><td><code>auth.model.ts</code></td><td>SQL injection via string interpolation</td></tr>
+    <tr><td>GT-003</td><td><code>auth.controller.ts</code></td><td>Timing-unsafe token comparison</td></tr>
+    <tr><td>GT-004</td><td><code>auth.service.ts</code></td><td>Math.random() for security tokens</td></tr>
+    <tr><td>GT-005</td><td><code>auth.service.ts</code></td><td>bcrypt cost factor 4 (brute-forceable)</td></tr>
+    <tr><td>GT-006</td><td><code>auth.middleware.ts</code></td><td>JWT accepts algorithm "none", ignores expiry</td></tr>
+    <tr><td>GT-007</td><td><code>auth.controller.ts</code></td><td>No rate limiting on login endpoint</td></tr>
+    <tr><td>GT-008</td><td><code>auth.controller.ts</code></td><td>User enumeration via error messages</td></tr>
+    <tr><td>GT-009</td><td><code>auth.controller.ts</code></td><td>No input validation (bcrypt DoS)</td></tr>
+  </tbody>
+</table>
+
+<h3>Tier 2 &mdash; Important signal (5 entries)</h3>
+<table>
+  <thead>
+    <tr><th>ID</th><th>File</th><th>Issue</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>GT-010</td><td><code>auth.test.ts</code></td><td>8/12 tests are circular (mock-on-mock)</td></tr>
+    <tr><td>GT-011</td><td><code>auth.test.ts</code></td><td>Spy-only assertions instead of value assertions</td></tr>
+    <tr><td>GT-012</td><td><code>auth.test.ts</code></td><td>Zero negative and edge case tests</td></tr>
+    <tr><td>GT-013</td><td><code>auth.controller.ts</code></td><td>Business logic coupled to HTTP handler</td></tr>
+    <tr><td>GT-014</td><td><code>auth.model.ts</code></td><td>SELECT * returns password hash to all callers</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ Benchmarks Context ============ -->
+<h2>Industry context</h2>
+
+<p>For reference, here is how VCR's results compare to published benchmarks:</p>
+
+<table>
+  <thead>
+    <tr><th>Metric</th><th>Industry range</th><th>VCR (demo)</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>F1 Score</td>
+      <td>45&ndash;64% (CR-Bench 2026, top tools)</td>
+      <td><strong>96%</strong></td>
+    </tr>
+    <tr>
+      <td>False Positive Rate</td>
+      <td>5&ndash;15% (Graphite benchmark)</td>
+      <td><strong>0%</strong></td>
+    </tr>
+    <tr>
+      <td>SNR</td>
+      <td>~5:1 (best single-shot, SNR framework)</td>
+      <td><strong>14:1</strong></td>
+    </tr>
+    <tr>
+      <td>Spotify LLM Judge veto rate</td>
+      <td>~25% of agent output vetoed</td>
+      <td><strong>0% noise</strong> (nothing to veto)</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="info" title="Fair comparison caveat">
+  VCR's demo results are on a <strong>prepared scenario with known ground truth</strong>, not arbitrary open-source PRs.
+  The industry benchmarks above are measured on real-world PRs with diverse codebases.
+  VCR's production results will be lower than demo results &mdash; but the evaluation methodology
+  itself is directly applicable to production deployments.
+</Callout>
+
+<!-- ============ Sources ============ -->
+<h2>Sources</h2>
+
+<ul>
+  <li><a href="https://arxiv.org/html/2603.11078">CR-Bench: Evaluating the Real-World Utility of AI Code Review Agents</a> (arxiv:2603.11078)</li>
+  <li><a href="https://dev.to/jet_xu/drowning-in-ai-code-review-noise-a-framework-to-measure-signal-vs-noise-304e">Signal-to-Noise Framework for AI Code Review</a> (Jet Xu)</li>
+  <li><a href="https://arxiv.org/abs/2604.07494">Triage: Routing SE Tasks to Cost-Effective LLM Tiers via Code Quality Signals</a> (arxiv:2604.07494)</li>
+  <li><a href="https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3">Spotify: Feedback Loops for Background Coding Agents</a></li>
+  <li><a href="https://graphite.com/guides/ai-code-review-false-positives">Expected False-Positive Rate from AI Code Review Tools</a> (Graphite)</li>
+  <li><a href="https://www.codeant.ai/blogs/ai-code-review-benchmark-results-from-200-000-real-pull-requests">AI Code Review Benchmark 2026</a> (CodeAnt / Martian)</li>
+</ul>
+
+</DocLayout>
+
+<style>
+  /* Evaluation Diagram */
+  .eval-diagram {
+    margin: 2rem 0;
+    text-align: center;
+  }
+  .eval-diagram__row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .eval-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 24px;
+    border-radius: 12px;
+    min-width: 80px;
+  }
+  .eval-box--red { background: #fef2f2; border: 1px solid #fca5a5; }
+  .eval-box--green { background: #ecfdf5; border: 1px solid #a7f3d0; }
+  .eval-box--gray { background: #f3f4f6; border: 1px solid #d1d5db; }
+  .eval-box__num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .eval-box--red .eval-box__num { color: #dc2626; }
+  .eval-box--green .eval-box__num { color: #059669; }
+  .eval-box--gray .eval-box__num { color: #9ca3af; }
+  .eval-box__label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-top: 4px;
+  }
+  .eval-arrow, .eval-plus {
+    font-size: 1.5rem;
+    color: #9ca3af;
+  }
+  .eval-diagram__caption {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 12px;
+    font-style: italic;
+  }
+
+  /* Framework Grid */
+  .framework-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 1.5rem 0;
+  }
+  @media (min-width: 768px) {
+    .framework-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .framework-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    background: #fafbfc;
+  }
+  .framework-card__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .framework-card__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #10b981;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .framework-card__title {
+    font-size: 1rem;
+    margin: 0;
+  }
+  .framework-card__source {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin: 0 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .framework-card p { font-size: 0.88rem; }
+  .framework-card ul { font-size: 0.88rem; padding-left: 1.2em; }
+
+  /* Classification Legend */
+  .classification-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .classification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.85rem;
+  }
+  .classification-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  .classification-dot--green { background: #10b981; }
+  .classification-dot--blue { background: #3b82f6; }
+  .classification-dot--red { background: #ef4444; }
+
+  /* SNR Tiers */
+  .snr-tiers {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .snr-tier {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.85rem;
+  }
+  .snr-tier__label {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0;
+    text-align: center;
+    min-width: 48px;
+  }
+  .snr-tier__label--t1 { background: #fef2f2; color: #dc2626; }
+  .snr-tier__label--t2 { background: #fffbeb; color: #d97706; }
+  .snr-tier__label--noise { background: #f3f4f6; color: #9ca3af; }
+
+  /* Pipeline Steps */
+  .pipeline-eval {
+    margin: 2rem 0;
+  }
+  .pipeline-eval__step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .pipeline-eval__icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #10b981;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .pipeline-eval__content h4 {
+    margin: 4px 0 4px;
+    font-size: 0.95rem;
+  }
+  .pipeline-eval__content p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #6b7280;
+  }
+  .pipeline-eval__connector {
+    width: 2px;
+    height: 20px;
+    background: #d1d5db;
+    margin-left: 15px;
+  }
+
+  /* Results Grid */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 1.5rem 0;
+  }
+  @media (min-width: 768px) {
+    .results-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .result-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+  }
+  .result-card--green {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+  }
+  .result-card__value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #059669;
+  }
+  .result-card__label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-top: 4px;
+  }
+  .result-card__detail {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+
+  /* Layer Bars */
+  .layer-bars {
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .layer-bar__label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .layer-bar__name {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .layer-bar__cost {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
+  .layer-bar__track {
+    background: #f3f4f6;
+    border-radius: 8px;
+    height: 32px;
+    overflow: hidden;
+  }
+  .layer-bar__fill {
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: white;
+    min-width: fit-content;
+  }
+  .layer-bar__fill--l1 { background: #3b82f6; }
+  .layer-bar__fill--l2 { background: #8b5cf6; }
+  .layer-bar__fill--l3 { background: #10b981; }
+</style>
