@@ -48,20 +48,29 @@ A **Proactive Scanner** runs independently on cron — catching convention drift
 
 **[virtuslab.github.io/visdom-code-review](https://virtuslab.github.io/visdom-code-review/)**
 
+### Guides (start here)
+
+| Page | Audience | What it covers |
+|------|----------|----------------|
+| [For Leaders](https://virtuslab.github.io/visdom-code-review/guide/leaders/) | EM, VP Eng, CTO, CFO | Business case, ROI, engagement model, metrics |
+| [For Platform Engineers](https://virtuslab.github.io/visdom-code-review/guide/platform-engineers/) | Platform, DevOps, Staff | Architecture, pilot guide, configuration, metrics setup |
+| [For Developers](https://virtuslab.github.io/visdom-code-review/guide/developers/) | Developers on the team | Daily workflow changes, how to read/feedback VCR comments |
+| [Before/After Scenarios](https://virtuslab.github.io/visdom-code-review/before-after/) | Everyone | 4 scenarios showing what changes with VCR |
+
+### Technical Reference
+
 | Page | What it covers |
 |------|----------------|
-| [Overview](https://virtuslab.github.io/visdom-code-review/) | Problem, solution, design principles, personas |
-| [Architecture](https://virtuslab.github.io/visdom-code-review/architecture/) | Layer diagram, risk gating, TORS, proactive scanner |
-| [Layer 0](https://virtuslab.github.io/visdom-code-review/layers/context-collection/) | Context collection, repository knowledge layer |
-| [Layer 1](https://virtuslab.github.io/visdom-code-review/layers/deterministic-gate/) | Deterministic gate, TORS filtering |
-| [Layer 2](https://virtuslab.github.io/visdom-code-review/layers/ai-quick-scan/) | AI Quick Scan, risk classifier, 8 risks with mitigations |
-| [Layer 3](https://virtuslab.github.io/visdom-code-review/layers/ai-deep-review/) | Deep review, Review Lenses, circular test detection |
-| [Reporter](https://virtuslab.github.io/visdom-code-review/reporter/) | PR comment format, inline comments, output channels |
-| [Proactive Scanner](https://virtuslab.github.io/visdom-code-review/proactive-scanner/) | Convention drift, coverage trends, tech debt scans |
-| [Configuration](https://virtuslab.github.io/visdom-code-review/configuration/) | `vcr-config.yaml` reference, repo structure, GitHub Actions |
-| [Metrics](https://virtuslab.github.io/visdom-code-review/metrics/) | Per-layer metrics, ITS/CPI/TORS, feedback mechanism |
-| [Before/After](https://virtuslab.github.io/visdom-code-review/before-after/) | 4 scenarios: security vuln, flaky tests, convention drift, budget |
-| [Reference Implementations](https://virtuslab.github.io/visdom-code-review/reference-implementations/) | Tech-agnostic table, VL references, open questions |
+| [Architecture](https://virtuslab.github.io/visdom-code-review/reference/architecture/) | Layer diagram, risk gating, TORS, proactive scanner |
+| [Layer 0](https://virtuslab.github.io/visdom-code-review/reference/layers/context-collection/) | Context collection, repository knowledge layer |
+| [Layer 1](https://virtuslab.github.io/visdom-code-review/reference/layers/deterministic-gate/) | Deterministic gate, TORS filtering |
+| [Layer 2](https://virtuslab.github.io/visdom-code-review/reference/layers/ai-quick-scan/) | AI Quick Scan, risk classifier, 8 risks with mitigations |
+| [Layer 3](https://virtuslab.github.io/visdom-code-review/reference/layers/ai-deep-review/) | Deep review, Review Lenses, circular test detection |
+| [Reporter](https://virtuslab.github.io/visdom-code-review/reference/reporter/) | PR comment format, inline comments, output channels |
+| [Proactive Scanner](https://virtuslab.github.io/visdom-code-review/reference/proactive-scanner/) | Convention drift, coverage trends, tech debt scans |
+| [Configuration](https://virtuslab.github.io/visdom-code-review/reference/configuration/) | `vcr-config.yaml` reference, repo structure, GitHub Actions |
+| [Metrics](https://virtuslab.github.io/visdom-code-review/reference/metrics/) | Per-layer metrics, ITS/CPI/TORS, feedback mechanism |
+| [Reference Implementations](https://virtuslab.github.io/visdom-code-review/reference/reference-implementations/) | Tech-agnostic table, VL references, open questions |
 
 ## VISDOM SDLC Metrics
 

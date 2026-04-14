@@ -1,0 +1,406 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import Callout from '../../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="For Platform Engineers"
+  subtitle="How to evaluate, pilot, and operate VISDOM Code Review on your infrastructure."
+  section="Guide"
+  tags={[
+    { label: "Guide", variant: "green" },
+    { label: "Platform", variant: "outline" },
+  ]}
+  prev={{ label: "For Leaders", href: `${base}guide/leaders/` }}
+  next={{ label: "For Developers", href: `${base}guide/developers/` }}
+>
+
+<!-- Architecture in 60 seconds -->
+<h2>Architecture in 60 seconds</h2>
+
+<p>
+  Every pull request passes through layers of increasing depth and cost. A risk classifier at
+  Layer 2 gates whether the expensive Layer 3 runs. The Proactive Scanner operates independently
+  on a cron schedule.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>What it does</th>
+      <th>Time</th>
+      <th>AI?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Layer 0</strong> &mdash; Context Collection</td>
+      <td>Collects diff, metadata, coverage, file classifications, repo knowledge, test reliability data</td>
+      <td>&lt;10s</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td><strong>Layer 1</strong> &mdash; Deterministic Gate</td>
+      <td>Linters, SAST, secret scan, coverage delta, TORS filtering. Cannot be prompt-injected.</td>
+      <td>&lt;60s</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td><strong>Layer 2</strong> &mdash; AI Quick Scan</td>
+      <td>Fast AI pass over diff. Risk classification (LOW&rarr;CRITICAL). Max 5 quick findings. AI-code detection.</td>
+      <td>&lt;2 min</td>
+      <td>Yes (Haiku-class)</td>
+    </tr>
+    <tr>
+      <td><strong>Layer 3</strong> &mdash; AI Deep Review</td>
+      <td>Full analysis with repo context, history, conventions. Multiple review lenses in parallel. MEDIUM+ risk only.</td>
+      <td>&lt;10 min</td>
+      <td>Yes (Sonnet/Opus-class)</td>
+    </tr>
+    <tr>
+      <td><strong>Reporter</strong></td>
+      <td>Aggregates all layers into structured PR comment, inline comments, GitHub Check, optional Slack.</td>
+      <td>&lt;30s</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td><strong>Proactive Scanner</strong></td>
+      <td>Cron-based repo analysis: coverage trends, tech debt, convention drift, security baseline.</td>
+      <td>Scheduled</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="reference" title="Full architecture reference">
+  <p>
+    For the complete layer diagram, data flows, and output schemas, see the
+    <a href={`${base}reference/architecture/`}>Architecture Reference</a>.
+  </p>
+</Callout>
+
+<!-- What you need before starting -->
+<h2>What you need before starting</h2>
+
+<p>
+  The following prerequisites are required for a pilot deployment. The first reference
+  implementation targets GitHub; other platforms follow the same process with different adapters.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Prerequisite</th>
+      <th>Details</th>
+      <th>Required?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GitHub repository with PRs</td>
+      <td>The v1 reference implementation is GitHub-only. Active PR flow needed for meaningful pilot data.</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>CI pipeline with test coverage reports</td>
+      <td>VCR reads coverage deltas to assess risk. Any format supported by your coverage tool.</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>AI API key</td>
+      <td>Anthropic (default). OpenAI and Azure OpenAI are configurable alternatives.</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>30 days of test history</td>
+      <td>Required for TORS (Test Oracle Reliability Score) bootstrap. Without it, start with TORS disabled and build up data over the first month.</td>
+      <td>Recommended</td>
+    </tr>
+    <tr>
+      <td><code>.vcr/</code> directory in repo root</td>
+      <td>Contains <code>vcr-config.yaml</code>, convention docs, review lenses, and custom rules.</td>
+      <td>Yes (created during setup)</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="tip" title="No test history?">
+  <p>
+    You can start without TORS and build up reliability data during the pilot. Set
+    <code>layer1.tors.enabled: false</code> in your config, then enable it after 30 days of CI data
+    have been collected.
+  </p>
+</Callout>
+
+<!-- Running a pilot -->
+<h2>Running a pilot</h2>
+
+<p>
+  A pilot typically runs on 1-2 teams over 4-6 weeks. The steps below assume GitHub Actions
+  as the CI platform.
+</p>
+
+<h3>Step 1: Install</h3>
+<p>
+  Add the VCR GitHub Actions workflow and configuration directory to your repository:
+</p>
+<ul>
+  <li><code>.github/workflows/vcr-review.yaml</code> &mdash; triggers on PR open/update</li>
+  <li><code>.vcr/vcr-config.yaml</code> &mdash; main configuration file</li>
+  <li><code>.vcr/conventions.md</code> &mdash; your team's coding conventions (AI reads this)</li>
+</ul>
+
+<h3>Step 2: Configure path classifications</h3>
+<p>
+  Define which paths in your repository are <code>critical</code>, <code>sensitive</code>,
+  <code>standard</code>, or <code>low_risk</code>. This determines review depth and cost.
+</p>
+
+<h3>Step 3: Start conservative &mdash; Layer 2 only</h3>
+<p>
+  For the first week, run Layer 2 (AI Quick Scan) only. Observe findings, check false positive
+  rates, and calibrate risk classification against your team's expectations. Layer 3 stays disabled.
+</p>
+
+<h3>Step 4: Enable Layer 3</h3>
+<p>
+  After the first week, enable Layer 3 for MEDIUM-risk and above. Monitor finding quality,
+  acceptance rates, and cost. Tune risk thresholds based on actual data.
+</p>
+
+<h3>Step 5: Add custom lenses</h3>
+<p>
+  If your domain has specific review needs (compliance, regulatory, domain-specific patterns),
+  add custom review lenses under <code>.vcr/lenses/custom/</code>. Each lens is a prompt template
+  that defines what the AI looks for.
+</p>
+
+<h3>Step 6: Enable the Proactive Scanner</h3>
+<p>
+  Set up a weekly cron job for convention drift detection, coverage trends, and security baseline
+  scanning. This runs independently of the PR flow and creates GitHub Issues for critical findings.
+</p>
+
+<!-- Key configuration decisions -->
+<h2>Key configuration decisions</h2>
+
+<p>
+  The following choices have the most impact on VCR's effectiveness and cost. Get these right
+  during the pilot and adjust based on data.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Decision</th>
+      <th>Options</th>
+      <th>Guidance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Path classification</td>
+      <td><code>critical</code>, <code>sensitive</code>, <code>standard</code>, <code>low_risk</code></td>
+      <td>Start with auth, payments, and infrastructure as <code>critical</code>. API layers as <code>sensitive</code>. Everything else as <code>standard</code>. Docs and tests as <code>low_risk</code>.</td>
+    </tr>
+    <tr>
+      <td>Risk override rules</td>
+      <td>Per-path overrides in <code>layer2.risk_overrides</code></td>
+      <td>Use <code>always_high</code> for auth paths. Use <code>always_skip_layer3</code> for docs and markdown.</td>
+    </tr>
+    <tr>
+      <td>Model selection</td>
+      <td>Configurable per layer</td>
+      <td>Haiku-class for Layer 2 (fast, cheap). Sonnet-class for Layer 3 (balanced). Opus-class for CRITICAL PRs only (most capable, most expensive).</td>
+    </tr>
+    <tr>
+      <td>Budget caps</td>
+      <td><code>budget.max_daily_layer3_spend</code></td>
+      <td>Set a daily cap during pilot (e.g., $50/day). Prevents runaway costs if risk classification is miscalibrated.</td>
+    </tr>
+    <tr>
+      <td>Tone</td>
+      <td><code>direct</code>, <code>constructive</code>, <code>educational</code></td>
+      <td><code>constructive</code> is the default and works for most teams. Use <code>educational</code> for teams with many junior developers. Use <code>direct</code> for experienced teams that prefer brevity.</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="reference" title="Full configuration reference">
+  <p>
+    For the complete <code>vcr-config.yaml</code> schema, repository structure, and all configurable
+    options, see the <a href={`${base}reference/configuration/`}>Configuration Reference</a>.
+  </p>
+</Callout>
+
+<!-- Metrics to set up -->
+<h2>Metrics to set up</h2>
+
+<p>
+  Track these five metrics from day one of the pilot. They provide the minimum signal needed
+  to evaluate whether VCR is working and where to tune.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Why it matters for a pilot</th>
+      <th>Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Time to first comment</strong></td>
+      <td>Measures whether developers get feedback before context-switching. The primary developer experience metric.</td>
+      <td>&lt;5 min (Layer 2 only), &lt;15 min (Layer 2 + Layer 3)</td>
+    </tr>
+    <tr>
+      <td><strong>Finding acceptance rate</strong></td>
+      <td>Are VCR's findings useful? Low acceptance means prompts or risk classification need tuning.</td>
+      <td>&gt;60%</td>
+    </tr>
+    <tr>
+      <td><strong>Layer 3 trigger rate</strong></td>
+      <td>What percentage of PRs trigger the expensive deep review? Too low means you are missing risk. Too high means you are overspending.</td>
+      <td>30-50% of PRs</td>
+    </tr>
+    <tr>
+      <td><strong>Cost per PR</strong></td>
+      <td>Total AI cost per pull request across all layers. Validates budget assumptions.</td>
+      <td>$0.05-2.00 depending on risk level</td>
+    </tr>
+    <tr>
+      <td><strong>TORS</strong></td>
+      <td>Test Oracle Reliability Score &mdash; what percentage of test failures are real. If TORS is low, your agents and developers are wasting time on flaky tests.</td>
+      <td>&gt;85%</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="reference" title="Full metrics framework">
+  <p>
+    For the complete per-layer metrics, end-to-end SDLC integration, and feedback mechanism,
+    see the <a href={`${base}reference/metrics/`}>Metrics Framework</a> reference.
+  </p>
+</Callout>
+
+<!-- Known risks -->
+<h2>Known risks</h2>
+
+<p>
+  The following risks are inherent to any AI-assisted review system. VCR mitigates each through
+  its layered architecture, but you should be aware of them when evaluating the system.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Risk</th>
+      <th>Mitigation in VCR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LLM hallucination (false findings)</td>
+      <td>Layer 1 is fully deterministic. Layer 2 has confidence thresholds. Layer 3 findings require concrete file/line references.</td>
+    </tr>
+    <tr>
+      <td>Prompt injection via PR content</td>
+      <td>Layer 1 cannot be injected (no AI). AI layers use structured prompts with diff isolation.</td>
+    </tr>
+    <tr>
+      <td>Over-reliance on AI review</td>
+      <td>VCR explicitly directs human reviewers to focus areas. It supplements, not replaces.</td>
+    </tr>
+    <tr>
+      <td>Cost runaway on high-risk PRs</td>
+      <td>Daily budget caps. Risk-based gating. Layer 3 only triggers for MEDIUM+ risk.</td>
+    </tr>
+    <tr>
+      <td>Circular Test Trap (AI tests verify AI code)</td>
+      <td>Layer 2 detects AI-generated code. Layer 3 Test Quality lens identifies circular tests.</td>
+    </tr>
+    <tr>
+      <td>Flaky test noise (Lying Oracle)</td>
+      <td>TORS filters unreliable tests from feedback signal. Agents do not iterate on flaky failures.</td>
+    </tr>
+    <tr>
+      <td>Convention drift across teams</td>
+      <td>Proactive Scanner detects diverging patterns weekly. Conventions lens enforces in PR flow.</td>
+    </tr>
+    <tr>
+      <td>Model degradation over time</td>
+      <td>Feedback mechanism (developer reactions) detects declining finding quality. Model selection is configurable.</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="reference" title="Detailed risk analysis">
+  <p>
+    For the full risk analysis including mitigation strategies and monitoring guidance,
+    see the <a href={`${base}reference/layers/ai-quick-scan/`}>AI Quick Scan</a> layer reference.
+  </p>
+</Callout>
+
+<!-- Reference implementations -->
+<h2>Reference implementations</h2>
+
+<p>
+  VCR is a process framework. VirtusLab provides reference implementations for each component,
+  but every piece is substitutable with equivalent tooling that your organization already operates.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Reference implementation</th>
+      <th>Alternatives</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Repository knowledge layer</td>
+      <td>ViDIA (VirtusLab, MIT)</td>
+      <td>Sourcegraph, custom DuckDB/SQLite, GitHub CODEOWNERS + scripts</td>
+    </tr>
+    <tr>
+      <td>CI infrastructure</td>
+      <td>VISDOM Machine-Speed CI</td>
+      <td>Bazel + EngFlow, Nx, Turborepo, Gradle remote cache</td>
+    </tr>
+    <tr>
+      <td>SAST</td>
+      <td>Semgrep (open source)</td>
+      <td>CodeQL, SonarQube, Snyk Code</td>
+    </tr>
+    <tr>
+      <td>Secret scanning</td>
+      <td>gitleaks (open source)</td>
+      <td>truffleHog, GitHub secret scanning</td>
+    </tr>
+    <tr>
+      <td>AI provider</td>
+      <td>Anthropic (Claude Haiku/Sonnet/Opus)</td>
+      <td>OpenAI GPT-4o, Azure OpenAI, Google Gemini</td>
+    </tr>
+    <tr>
+      <td>CI/CD platform</td>
+      <td>GitHub Actions</td>
+      <td>GitLab CI, Azure Pipelines, Jenkins</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="reference" title="Full reference implementations">
+  <p>
+    For detailed component descriptions and integration guidance, see the
+    <a href={`${base}reference/reference-implementations/`}>Reference Implementations</a> page.
+  </p>
+</Callout>
+
+</DocLayout>

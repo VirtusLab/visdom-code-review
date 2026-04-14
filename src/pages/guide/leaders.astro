@@ -1,0 +1,315 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import Callout from '../../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="For Engineering Leaders"
+  subtitle="What VISDOM Code Review changes for your organization — and what it costs."
+  section="Guide"
+  tags={[
+    { label: "Guide", variant: "green" },
+    { label: "Leaders", variant: "outline" },
+  ]}
+  next={{ label: "For Platform Engineers", href: `${base}guide/platform-engineers/` }}
+>
+
+<!-- The problem you're paying for -->
+<h2>The problem you're paying for</h2>
+
+<p>
+  Most engineering organizations experience four compounding costs around code review.
+  They are often invisible because they are spread across teams, tools, and timezones.
+</p>
+
+<h3>Senior time burned on review</h3>
+<p>
+  Your most experienced engineers spend 30-50% of their time reviewing code written by mid-level
+  and junior developers. That time is not spent on architecture, mentoring, or shipping their own work.
+</p>
+<Callout type="warning" title="The math">
+  <p>
+    10 senior engineers &times; 2 hours/day &times; $100/hour = <strong>$4,000 per day</strong> in review labor alone.
+    Over a quarter, that is $260,000 of senior capacity absorbed by review.
+  </p>
+</Callout>
+
+<h3>Slow feedback kills velocity</h3>
+<p>
+  When a developer pushes a pull request, they typically wait 24-48 hours for a human review &mdash;
+  longer across timezones. During that wait, they context-switch to other work. When review comments
+  arrive, they must reload the original context to respond. This feedback loop is the single largest
+  drag on developer throughput in most organizations.
+</p>
+
+<h3>Hidden AI costs (the 4x Hidden Tax)</h3>
+<p>
+  When leadership asks "what does AI cost us?", the answer is usually the license fee. But the
+  license is only about 25% of the real cost. The full picture includes four categories:
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Cost category</th>
+      <th>Example (50-seat team)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>AI tool licenses</td>
+      <td>$950/month</td>
+    </tr>
+    <tr>
+      <td>Compute overhead (CI, builds, agent loops)</td>
+      <td>$4,200/month</td>
+    </tr>
+    <tr>
+      <td>Token spend (API calls, context, retries)</td>
+      <td>$3,800/month</td>
+    </tr>
+    <tr>
+      <td>Human review overhead (senior time on AI-generated code)</td>
+      <td>$8,500/month</td>
+    </tr>
+    <tr>
+      <td><strong>Total</strong></td>
+      <td><strong>$17,450/month</strong> (18x the reported budget)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Risk: AI code ships with vulnerabilities</h3>
+<p>
+  AI-generated code often comes with AI-generated tests. Those tests verify what the code <em>does</em>,
+  not what it <em>should do</em> &mdash; the Circular Test Trap. Your CI pipeline confirms what the
+  AI wants to hear. A human reviewer, under time pressure, sees green tests and approves. The
+  vulnerability ships to production.
+</p>
+
+<!-- What changes -->
+<h2>What changes</h2>
+
+<p>
+  VCR is a multi-layered review pipeline that sits between your developers and your human reviewers.
+  It provides automated, structured feedback on every pull request &mdash; fast enough that developers
+  get comments before they context-switch.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Before VCR</th>
+      <th>After VCR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Time to first feedback</td>
+      <td>24-48 hours</td>
+      <td>&lt;10 minutes</td>
+    </tr>
+    <tr>
+      <td>Senior review time</td>
+      <td>2+ hours/day per senior</td>
+      <td>30-50% reduction (pre-annotated PRs, focused attention)</td>
+    </tr>
+    <tr>
+      <td>Escaped defects</td>
+      <td>Discovered in production</td>
+      <td>Trending down (multi-layer catch before merge)</td>
+    </tr>
+    <tr>
+      <td>Cost visibility</td>
+      <td>License fee only</td>
+      <td>Full 4x breakdown on a real-time dashboard</td>
+    </tr>
+    <tr>
+      <td>Convention consistency</td>
+      <td>Varies by team, geography, reviewer</td>
+      <td>Enforced automatically across all teams (PL/UK/IN)</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="tip" title="What VCR does not replace">
+  <p>
+    VCR does not replace human reviewers. It makes them faster and more focused by handling
+    routine checks automatically and highlighting exactly where human judgment is needed.
+  </p>
+</Callout>
+
+<!-- The engagement model -->
+<h2>The engagement model</h2>
+
+<p>
+  VCR is deployed as a consulting engagement with a clear handover. Your team owns and operates
+  the system after the engagement ends.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Phase</th>
+      <th>Duration</th>
+      <th>What happens</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. Assessment</strong></td>
+      <td>2-3 weeks</td>
+      <td>Analyze your current review process, CI pipeline, test reliability, and team structure. Identify where the biggest time and cost sinks are.</td>
+    </tr>
+    <tr>
+      <td><strong>2. Pilot</strong></td>
+      <td>4-6 weeks</td>
+      <td>Deploy VCR on 1-2 teams. Working pipeline, real pull requests, real feedback. No simulations.</td>
+    </tr>
+    <tr>
+      <td><strong>3. Tune &amp; Measure</strong></td>
+      <td>2-4 weeks</td>
+      <td>Track metrics against your baseline. Tune risk thresholds, prompt quality, and review depth until findings match your team's standards.</td>
+    </tr>
+    <tr>
+      <td><strong>4. Handover</strong></td>
+      <td>1-2 weeks</td>
+      <td>Knowledge transfer complete. Your team owns the configuration, prompts, and pipeline. Documentation and runbooks delivered.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- What it costs -->
+<h2>What it costs</h2>
+
+<p>
+  Transparency on cost is a core design principle. Here is the honest breakdown.
+</p>
+
+<h3>VCR pipeline cost</h3>
+<table>
+  <thead>
+    <tr>
+      <th>PR risk level</th>
+      <th>Cost per PR</th>
+      <th>What runs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LOW (docs, config, small changes)</td>
+      <td>$0.05-0.10</td>
+      <td>Layer 1 + Layer 2 only</td>
+    </tr>
+    <tr>
+      <td>MEDIUM (standard feature work)</td>
+      <td>$0.20-0.50</td>
+      <td>Layer 1 + Layer 2 + targeted Layer 3</td>
+    </tr>
+    <tr>
+      <td>HIGH / CRITICAL (auth, payments, infra)</td>
+      <td>$1.00-2.00</td>
+      <td>Full Layer 3 deep review with multiple lenses</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>At scale</h3>
+<p>
+  For a 200-developer organization producing approximately 300 pull requests per day, the AI
+  component of VCR costs <strong>$2,000-5,000 per month</strong>.
+</p>
+
+<Callout type="info" title="Compare against the current hidden cost">
+  <p>
+    The same organization typically spends $15,000-20,000 per month in hidden costs &mdash;
+    compute waste from agent loops, token burn from retries, and senior time spent on routine review.
+    VCR makes those costs visible and reduces them structurally.
+  </p>
+</Callout>
+
+<p>
+  ROI is typically positive within <strong>2 months of the pilot phase</strong>, driven primarily by
+  reduced senior review time and fewer wasted agent iterations.
+</p>
+
+<!-- Metrics you'll see -->
+<h2>Metrics you'll see</h2>
+
+<p>
+  VCR tracks the following metrics throughout the engagement. Each connects to a business outcome
+  you can report to your board or executive team.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>What it tells you</th>
+      <th>Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>ITS (Iterations-to-Success)</strong></td>
+      <td>How many attempts it takes an AI agent or developer to get a task through CI. High ITS means your pipeline is fighting your team.</td>
+      <td>1-3 (healthy), 5-10 (warning), 20+ (structural failure)</td>
+    </tr>
+    <tr>
+      <td><strong>CPI (Cost-per-Iteration)</strong></td>
+      <td>The full cost of each development iteration &mdash; tokens, compute, CI, and review. Tells you whether your process is getting cheaper or more expensive over time.</td>
+      <td>Trending down</td>
+    </tr>
+    <tr>
+      <td><strong>TORS (Test Oracle Reliability Score)</strong></td>
+      <td>What percentage of your test failures are real bugs vs. flaky noise. Low TORS means your CI is lying to your agents and developers.</td>
+      <td>&gt;85%</td>
+    </tr>
+    <tr>
+      <td><strong>Escaped defects</strong></td>
+      <td>Bugs that reach production in areas covered by VCR. The primary outcome metric &mdash; are fewer issues reaching your customers?</td>
+      <td>Trending down</td>
+    </tr>
+    <tr>
+      <td><strong>Senior review time</strong></td>
+      <td>Hours per week your senior engineers spend on code review. Reduction here means more capacity for architecture and mentoring.</td>
+      <td>-30% vs. baseline</td>
+    </tr>
+    <tr>
+      <td><strong>Developer satisfaction</strong></td>
+      <td>Survey-based measure of how developers perceive the review process. Fast, helpful feedback improves morale; slow, inconsistent feedback erodes it.</td>
+      <td>Improving quarter over quarter</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="reference" title="Full metrics reference">
+  <p>
+    For the complete per-layer metrics framework including targets and measurement methodology,
+    see the <a href={`${base}reference/metrics/`}>Metrics Framework</a> reference.
+  </p>
+</Callout>
+
+<!-- Next steps -->
+<h2>Next steps</h2>
+
+<ul>
+  <li>
+    <strong>See it in action:</strong> review the
+    <a href={`${base}before-after/`}>Before/After Scenarios</a> for concrete examples
+    of VCR handling security vulnerabilities, flaky test loops, convention drift, and budget visibility.
+  </li>
+  <li>
+    <strong>Understand the architecture:</strong> share the
+    <a href={`${base}guide/platform-engineers/`}>Platform Engineers guide</a> with the team
+    who will evaluate and implement VCR.
+  </li>
+  <li>
+    <strong>Start a conversation:</strong> contact the VirtusLab VISDOM team to discuss an
+    assessment for your organization.
+  </li>
+</ul>
+
+</DocLayout>

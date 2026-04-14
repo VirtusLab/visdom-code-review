@@ -1,0 +1,260 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import Callout from '../../components/Callout.astro';
+import PersonaCard from '../../components/PersonaCard.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="For Developers"
+  subtitle="What changes in your daily PR workflow — and why it's not another noisy bot."
+  section="Guide"
+  tags={[
+    { label: "Guide", variant: "green" },
+    { label: "Developers", variant: "outline" },
+  ]}
+  prev={{ label: "For Platform Engineers", href: `${base}guide/platform-engineers/` }}
+  next={{ label: "Scenarios", href: `${base}before-after/` }}
+>
+
+<p>
+  You've seen bots on PRs before. They post 40 comments, half are wrong, and you ignore all of them
+  by the second week. VCR is built to be the opposite of that. Here's what actually changes in your
+  day-to-day.
+</p>
+
+<!-- What you'll see on your PRs -->
+<h2>What you'll see on your PRs</h2>
+
+<p>
+  VCR posts <strong>one summary comment</strong> per PR. Not fifteen. Not one per file. One comment,
+  at the top, with everything you need.
+</p>
+
+<p>Here's what it looks like:</p>
+
+<div class="bg-visdom-gray-50 border border-visdom-gray-200 rounded-lg p-4 mb-6 text-sm font-mono">
+  <p class="font-semibold text-visdom-gray-900 !mb-2">VISDOM Code Review — Risk: HIGH</p>
+  <p class="!mb-1"><strong>Blocking (must fix):</strong></p>
+  <p class="text-red-700 !mb-1">&nbsp;&nbsp;1. CRITICAL — Security — auth.ts:42 — SQL injection via unsanitized input</p>
+  <p class="text-red-700 !mb-2">&nbsp;&nbsp;2. HIGH — Testing — No tests for new /api/reset endpoint</p>
+  <p class="!mb-1"><strong>Recommendations (should fix):</strong></p>
+  <p class="text-amber-700 !mb-1">&nbsp;&nbsp;3. MEDIUM — Performance — users.ts:88 — N+1 query in loop</p>
+  <p class="text-amber-700 !mb-2">&nbsp;&nbsp;4. MEDIUM — Circular Test — auth.test.ts — Tests mirror implementation</p>
+  <p class="!mb-1"><strong>Suggestions (nice to have):</strong></p>
+  <p class="text-visdom-gray-500 !mb-2">&nbsp;&nbsp;Extract validation logic to shared utility (auth.ts:30-45)</p>
+  <p class="!mb-1"><strong>Reviewer Guidance:</strong> Focus on auth.ts (security) and test coverage gap.</p>
+  <p class="!mb-0"><strong>Suggested reviewer:</strong> @senior-krakow (top expertise for this module)</p>
+</div>
+
+<p>The limits are hard-coded so VCR can't flood your PR:</p>
+
+<ul>
+  <li><strong>Max 5 quick findings</strong> at the summary level (Layer 2)</li>
+  <li><strong>Max 15 inline comments</strong> on specific lines (Layer 3 — deep review)</li>
+  <li>If nothing important is found, you see this and nothing else:</li>
+</ul>
+
+<div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 mb-6 text-sm font-mono text-emerald-800">
+  VCR: No issues found (risk: LOW)
+</div>
+
+<Callout type="tip" title="Silence is the default">
+  <p>Most PRs are fine. VCR is designed to stay quiet when there's nothing worth saying.
+  If you're not hearing from it, that's working as intended.</p>
+</Callout>
+
+<!-- How the risk levels work -->
+<h2>How the risk levels work</h2>
+
+<p>
+  Every PR gets a risk level. This determines how deep VCR looks and how much of your (and your
+  reviewer's) time it asks for.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Risk</th>
+      <th>What triggers it</th>
+      <th>What happens</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-emerald-100 text-emerald-700">LOW</span></td>
+      <td>Small change, safe paths, tests pass</td>
+      <td>Fast scan only, done in ~2 min. No deep review.</td>
+    </tr>
+    <tr>
+      <td><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-100 text-amber-700">MEDIUM</span></td>
+      <td>Sensitive path or coverage drop</td>
+      <td>Deep review kicks in. More thorough analysis.</td>
+    </tr>
+    <tr>
+      <td><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-700">HIGH</span></td>
+      <td>Critical path (auth, payments, infra)</td>
+      <td>Full multi-lens analysis. ~10 min.</td>
+    </tr>
+    <tr>
+      <td><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-800">CRITICAL</span></td>
+      <td>All the above + AI-generated code on a critical path</td>
+      <td>Full analysis + your senior gets pinged directly.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  The mental model is simple: <strong>if you touch auth, expect CRITICAL. If you touch docs,
+  expect LOW.</strong> That's it.
+</p>
+
+<!-- What VCR catches that you might miss -->
+<h2>What VCR catches that you might miss</h2>
+
+<p>
+  These aren't theoretical. These are the patterns that slip through every day in teams that
+  ship AI-assisted code.
+</p>
+
+<h3>Circular tests</h3>
+<p>
+  Your test passes, but it's testing that the code does what it does — not what it <em>should</em> do.
+  Copilot generated both the code and the test, so the test is just a mirror of the implementation.
+  VCR flags this pattern explicitly: "This test verifies implementation, not specification."
+</p>
+
+<h3>Hallucinated APIs</h3>
+<p>
+  Copilot used <code>crypto.subtle.timingSafeEqual</code> but you're on Node 18 where that API
+  doesn't exist in that form. The code looks right. The types might even check out. But it'll crash
+  at runtime. VCR's AI-Code Safety lens catches these because it checks what actually exists in your
+  runtime environment.
+</p>
+
+<h3>Convention drift</h3>
+<p>
+  You used a Factory pattern, but this module uses direct instantiation everywhere else. It's not
+  <em>wrong</em>, but it'll confuse the next person (and the next agent) who works here. VCR flags
+  it so you can decide — maybe the Factory is better and the module should migrate, or maybe
+  you should match the existing style.
+</p>
+
+<h3>Over-engineering</h3>
+<p>
+  Three wrapper classes for one function? AI code generators love building abstractions nobody asked
+  for. VCR spots unnecessary complexity and tells you: "This could be a single function call."
+</p>
+
+<Callout type="info" title="It's not a linter">
+  <p>VCR doesn't care about your semicolons, import order, or variable names.
+  That's what ESLint, Prettier, and your IDE are for. VCR looks at the stuff
+  that actually causes incidents.</p>
+</Callout>
+
+<!-- How to give feedback -->
+<h2>How to give feedback</h2>
+
+<p>
+  VCR learns from your reactions. Every finding has reaction buttons on the PR comment.
+  Use them — it takes one click and directly shapes what VCR comments on next time.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Reaction</th>
+      <th>Meaning</th>
+      <th>What happens</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>&#128077;</td>
+      <td>Helpful — you fixed it</td>
+      <td>VCR gains confidence in this category for your codebase</td>
+    </tr>
+    <tr>
+      <td>&#128078;</td>
+      <td>False positive, not relevant</td>
+      <td>VCR reduces weight for this pattern in your context</td>
+    </tr>
+    <tr>
+      <td>&#129300;</td>
+      <td>Not sure, needs discussion</td>
+      <td>Flagged for team review — helps calibrate edge cases</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="tip" title="Your feedback matters">
+  <p>Thumbs-down a bad finding and VCR learns. The more your team reacts, the fewer
+  false positives you'll see over time. This is how VCR avoids becoming another
+  bot you ignore.</p>
+</Callout>
+
+<!-- What VCR does NOT do -->
+<h2>What VCR does NOT do</h2>
+
+<p>Let's be clear about the boundaries so you don't have wrong expectations.</p>
+
+<ul>
+  <li><strong>Won't auto-fix your code</strong> — v1 reports findings. You decide what to do. (Auto-fix is planned for v2.)</li>
+  <li><strong>Won't replace human review</strong> — your senior still approves the PR. VCR tells them where to look, not what to decide.</li>
+  <li><strong>Won't block your PR</strong> — unless your team explicitly configures it to. By default, VCR advises.</li>
+  <li><strong>Won't comment on formatting, naming, or import order</strong> — that's what your linter is for. VCR focuses on things that cause actual problems.</li>
+</ul>
+
+<!-- For senior developers -->
+<h2>For senior developers</h2>
+
+<p>
+  If you're the person who approves PRs and sets standards for your team, here's what changes
+  for you specifically.
+</p>
+
+<p>
+  <strong>You'll review fewer PRs, but with better context.</strong> VCR pre-annotates every PR
+  with risk level, specific findings, and exactly which files need your attention. Instead of reading
+  every line of a 400-line diff, you focus on the 3 files that matter.
+</p>
+
+<p>
+  <strong>VCR tells you WHERE to look, not what to decide.</strong> It's a guide, not a replacement.
+  "Focus your review on auth.ts (security findings) and test coverage gap" — that's the kind of
+  guidance you get.
+</p>
+
+<h3>Customization you'll care about</h3>
+
+<ul>
+  <li><strong>Custom Review Lenses</strong> — add domain-specific review categories for your modules.
+  If your team has specific patterns for database migrations or event sourcing, you can teach VCR
+  to check for them.</li>
+  <li><strong>Conventions file</strong> — add your team's standards to <code>.vcr/conventions.md</code>
+  and VCR reads them. "We use direct instantiation, not Factory pattern" — that kind of thing.
+  VCR will flag deviations.</li>
+</ul>
+
+<p>
+  Full details on lenses and configuration:
+  <a href={`${base}reference/configuration/`}>Configuration Reference</a>
+</p>
+
+<!-- Persona cards -->
+<h2>What developers are saying</h2>
+
+<PersonaCard name="Junior in Bangalore" role="Frontend Developer" color="blue">
+  <p>VCR taught me about circular tests. I didn't know my tests were just mirrors of my
+  implementation — they passed, so I thought they were fine. Now I actually write tests that
+  check behavior, not just that the code runs.</p>
+</PersonaCard>
+
+<PersonaCard name="Senior in Krakow" role="Tech Lead" color="green">
+  <p>I review 40% fewer PRs but catch more real issues. The AI-Code Safety lens caught a
+  hallucinated API last week that I would have missed — it looked completely correct at first
+  glance. VCR told me exactly which line to look at and why.</p>
+</PersonaCard>
+
+</DocLayout>

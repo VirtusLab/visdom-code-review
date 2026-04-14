@@ -1,6 +1,6 @@
 ---
-import DocLayout from '../layouts/DocLayout.astro';
-import Callout from '../components/Callout.astro';
+import DocLayout from '../../layouts/DocLayout.astro';
+import Callout from '../../components/Callout.astro';
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -15,7 +15,7 @@ const base = import.meta.env.BASE_URL;
     { label: "CPI", variant: "outline" },
     { label: "TORS", variant: "outline" },
   ]}
-  prev={{ label: "Configuration", href: `${base}configuration/` }}
+  prev={{ label: "Configuration", href: `${base}reference/configuration/` }}
   next={{ label: "Before/After", href: `${base}before-after/` }}
 >
 

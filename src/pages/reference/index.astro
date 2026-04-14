@@ -1,0 +1,110 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import LayerBadge from '../../components/LayerBadge.astro';
+import Callout from '../../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+<DocLayout
+  title="Technical Reference"
+  subtitle="Full architecture documentation, layer specifications, configuration reference, and metrics framework."
+  section="Home"
+  tags={[
+    { label: "Reference", variant: "gray" },
+  ]}
+  next={{ label: "Architecture", href: `${base}reference/architecture/` }}
+>
+
+<p>
+  This is the technical reference for VISDOM Code Review. It covers the full architecture,
+  each layer in detail, configuration options, metrics framework, and reference implementations.
+</p>
+
+<Callout type="tip" title="Looking for the guide?">
+  <p>
+    If you're evaluating VCR, start with the role-specific guides:
+    <a href={`${base}guide/leaders/`}>For Leaders</a>,
+    <a href={`${base}guide/platform-engineers/`}>For Platform Engineers</a>, or
+    <a href={`${base}guide/developers/`}>For Developers</a>.
+  </p>
+</Callout>
+
+<h2>Architecture</h2>
+
+<div class="space-y-3 mb-8">
+  <a href={`${base}reference/architecture/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+    <h3 class="!mt-0 !mb-1 text-base">Architecture Overview</h3>
+    <p class="text-sm text-visdom-gray-500 !mb-0">Layered Review Agent model, risk-based gating, design decisions, VISDOM SDLC integration.</p>
+  </a>
+</div>
+
+<h2>Layers</h2>
+
+<div class="space-y-3 mb-8">
+  <a href={`${base}reference/layers/context-collection/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+    <div class="flex items-center gap-2 mb-1">
+      <LayerBadge layer={0} />
+      <span class="text-xs text-visdom-gray-400">&lt;10s</span>
+    </div>
+    <p class="text-sm text-visdom-gray-500 !mb-0">Deterministic context gathering, repository knowledge layer, TORS input, path classification.</p>
+  </a>
+
+  <a href={`${base}reference/layers/deterministic-gate/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+    <div class="flex items-center gap-2 mb-1">
+      <LayerBadge layer={1} />
+      <span class="text-xs text-visdom-gray-400">&lt;60s</span>
+    </div>
+    <p class="text-sm text-visdom-gray-500 !mb-0">Zero AI. Linters, SAST, secrets, coverage delta, TORS filtering. Cannot be prompt-injected.</p>
+  </a>
+
+  <a href={`${base}reference/layers/ai-quick-scan/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+    <div class="flex items-center gap-2 mb-1">
+      <LayerBadge layer={2} />
+      <span class="text-xs text-visdom-gray-400">&lt;2 min</span>
+    </div>
+    <p class="text-sm text-visdom-gray-500 !mb-0">AI Quick Scan, risk classifier, 8 documented risks with evidence and mitigations.</p>
+  </a>
+
+  <a href={`${base}reference/layers/ai-deep-review/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+    <div class="flex items-center gap-2 mb-1">
+      <LayerBadge layer={3} />
+      <span class="text-xs text-visdom-gray-400">&lt;10 min</span>
+    </div>
+    <p class="text-sm text-visdom-gray-500 !mb-0">Deep review with Review Lenses, circular test detection, custom lenses.</p>
+  </a>
+</div>
+
+<h2>Output & Scanning</h2>
+
+<div class="space-y-3 mb-8">
+  <a href={`${base}reference/reporter/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+    <h3 class="!mt-0 !mb-1 text-base">Reporter</h3>
+    <p class="text-sm text-visdom-gray-500 !mb-0">PR comment format, inline comments, output channels.</p>
+  </a>
+
+  <a href={`${base}reference/proactive-scanner/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+    <h3 class="!mt-0 !mb-1 text-base">Proactive Scanner</h3>
+    <p class="text-sm text-visdom-gray-500 !mb-0">Cron-based repository analysis: convention drift, coverage trends, tech debt, security baseline.</p>
+  </a>
+</div>
+
+<h2>Configuration & Metrics</h2>
+
+<div class="space-y-3 mb-8">
+  <a href={`${base}reference/configuration/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+    <h3 class="!mt-0 !mb-1 text-base">Configuration</h3>
+    <p class="text-sm text-visdom-gray-500 !mb-0"><code>vcr-config.yaml</code> reference, repository structure, GitHub Actions workflow.</p>
+  </a>
+
+  <a href={`${base}reference/metrics/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+    <h3 class="!mt-0 !mb-1 text-base">Metrics Framework</h3>
+    <p class="text-sm text-visdom-gray-500 !mb-0">Per-layer metrics, ITS/CPI/TORS definitions, feedback mechanism.</p>
+  </a>
+
+  <a href={`${base}reference/reference-implementations/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
+    <h3 class="!mt-0 !mb-1 text-base">Reference Implementations</h3>
+    <p class="text-sm text-visdom-gray-500 !mb-0">Technology-agnostic component table, VirtusLab references, out of scope, open questions.</p>
+  </a>
+</div>
+
+</DocLayout>

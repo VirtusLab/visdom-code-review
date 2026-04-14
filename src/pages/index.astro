@@ -1,231 +1,186 @@
 ---
 import DocLayout from '../layouts/DocLayout.astro';
-import Callout from '../components/Callout.astro';
 import PersonaCard from '../components/PersonaCard.astro';
 import ResourceCard from '../components/ResourceCard.astro';
-import LayerBadge from '../components/LayerBadge.astro';
 
 const base = import.meta.env.BASE_URL;
 ---
 <DocLayout
-  title="VISDOM Code Review"
-  subtitle="A multi-layered, AI-driven code review framework for enterprise teams. Safety net for AI-generated code."
+  title="Your team writes code with AI. Your review process doesn't know that."
+  subtitle="VISDOM Code Review is a reference process for enterprise code review in the age of AI-assisted development. Not a tool — a process."
   tags={[
     { label: "VISDOM", variant: "green" },
-    { label: "Code Review", variant: "gray" },
-    { label: "Enterprise", variant: "outline" },
+    { label: "Reference Process", variant: "outline" },
   ]}
-  next={{ label: "Architecture", href: `${base}architecture/` }}
 >
 
-<h2>What It Is</h2>
-
 <p>
-  VISDOM Code Review (VCR) is a <strong>multi-layered, AI-driven code review framework</strong> for enterprise teams.
-  It provides structured, automated review of pull requests — from deterministic static analysis through
-  AI-powered deep review — and proactive repository-wide quality scanning.
+  Your developers use Copilot, Claude, Cursor. Your CI says the code is fine. Your tests pass.
+  But 45% of AI-generated code contains OWASP vulnerabilities that those tests will never catch — because
+  <strong>the AI wrote the tests too</strong>.
 </p>
 
 <p>
-  VCR is part of the <a href="https://virtuslab.com/services/visdom">VISDOM</a> Agent-Ready SDLC offering,
-  sitting within the <strong>Automated Risk Assessment</strong> pillar alongside Context Fabric and Machine-Speed CI.
+  Meanwhile, your senior engineers spend half their day reviewing code from distributed teams across
+  time zones. PRs wait 24-48 hours. Standards drift between offices. Nobody trusts the AI output enough
+  to ship it fast, but everybody's using it anyway.
 </p>
 
 <p>
-  The framework is <strong>process-first and technology-agnostic</strong>. It defines what to check, when, and how deep —
-  not which specific tools to use. Reference implementations are provided for GitHub + GitHub Actions,
-  with the process portable to any platform.
+  VISDOM Code Review (VCR) is how we solve this at VirtusLab — and how we help our clients solve it.
+  It's a <strong>structured, multi-layered review process</strong> that we deploy on your teams, configure for
+  your stack, and hand over for you to own.
 </p>
 
-<h2>The Problem</h2>
+<h2>Pick your path</h2>
 
-<p>Enterprise teams want to deploy AI-generated code but lack a safety net. Four pain points converge:</p>
-
-<ul>
-  <li><strong>Senior bottleneck</strong> — seniors spend 30-50% of time reviewing junior/mid code</li>
-  <li><strong>Inconsistent quality</strong> — distributed teams (PL/UK/IN) apply different review standards</li>
-  <li><strong>Slow feedback loop</strong> — PRs wait 24-48h for review due to timezone gaps</li>
-  <li><strong>AI-code trust gap</strong> — teams are afraid to ship AI-generated code because existing CI is a lying oracle</li>
-</ul>
-
-<Callout type="warning" title="The Lying Oracle">
-  <p>
-    CI pipelines treat test results as ground truth, but flaky tests lie intermittently
-    (Google: 84% of pass-to-fail transitions are flaky) and AI-generated tests lie systematically
-    (Circular Test Trap — tests verify what code <em>does</em>, not what it <em>should do</em>).
-    VCR addresses both failure modes.
-  </p>
-  <p>
-    Read more: <a href="https://virtuslab.com/blog/ai/the-fallacy">The Agent-Ready SDLC, Post #3</a>
-  </p>
-</Callout>
-
-<h2>How It Works</h2>
-
-<p>Every PR passes through layers of increasing depth and cost:</p>
-
-<div class="flex flex-col gap-3 my-6">
-  <a href={`${base}layers/context-collection/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
-    <div class="flex items-center gap-3 mb-1">
-      <LayerBadge layer={0} />
-      <span class="text-xs text-visdom-gray-400">&lt;10s</span>
+<div class="grid sm:grid-cols-3 gap-4 my-6">
+  <a href={`${base}guide/leaders/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="text-2xl">📊</span>
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">For Leaders</span>
     </div>
-    <p class="text-sm text-visdom-gray-600 !mb-0">Deterministic context gathering from repository knowledge, git data, and test reliability history.</p>
+    <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Engineering Managers, VPs, CTOs</h3>
+    <p class="text-sm text-visdom-gray-500 !mb-0">Business case, ROI model, what changes for your org, how we engage.</p>
   </a>
 
-  <a href={`${base}layers/deterministic-gate/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
-    <div class="flex items-center gap-3 mb-1">
-      <LayerBadge layer={1} />
-      <span class="text-xs text-visdom-gray-400">&lt;60s</span>
+  <a href={`${base}guide/platform-engineers/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="text-2xl">🔧</span>
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">For Engineers</span>
     </div>
-    <p class="text-sm text-visdom-gray-600 !mb-0">Zero AI. Linters, SAST, secret scan, coverage delta. 100% repeatable. Cannot be prompt-injected.</p>
+    <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Platform & DevOps Engineers</h3>
+    <p class="text-sm text-visdom-gray-500 !mb-0">Architecture, how to run a pilot, configuration, metrics setup.</p>
   </a>
 
-  <a href={`${base}layers/ai-quick-scan/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
-    <div class="flex items-center gap-3 mb-1">
-      <LayerBadge layer={2} />
-      <span class="text-xs text-visdom-gray-400">&lt;2 min</span>
+  <a href={`${base}guide/developers/`} class="block border-2 border-visdom-gray-200 hover:border-visdom-green rounded-lg p-5 no-underline transition-colors group">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="text-2xl">💻</span>
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">For Developers</span>
     </div>
-    <p class="text-sm text-visdom-gray-600 !mb-0">Fast AI pass over diff. Risk classification (LOW→CRITICAL). Quick findings (max 5). AI-code detection.</p>
-  </a>
-
-  <a href={`${base}layers/ai-deep-review/`} class="block border border-visdom-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow no-underline">
-    <div class="flex items-center gap-3 mb-1">
-      <LayerBadge layer={3} />
-      <span class="text-xs text-visdom-gray-400">&lt;10 min · MEDIUM+ risk only</span>
-    </div>
-    <p class="text-sm text-visdom-gray-600 !mb-0">Full analysis with repo context, history, conventions. Multiple Review Lenses in parallel.</p>
+    <h3 class="!mt-0 !text-base group-hover:text-visdom-green-dark">Developers on the team</h3>
+    <p class="text-sm text-visdom-gray-500 !mb-0">What changes in your daily PR workflow, how to read and give feedback.</p>
   </a>
 </div>
 
-<Callout type="tip" title="Layered cost model">
-  <p>
-    LOW-risk PRs complete in under 2 minutes at ~$0.05. Only MEDIUM+ risk triggers the expensive Layer 3.
-    This is how VCR scales to hundreds of PRs/day without cost explosion.
-  </p>
-</Callout>
+<h2>The short version</h2>
 
-<h2>Design Principles</h2>
+<p>Every PR passes through layers of increasing depth — fast and cheap for trivial changes, thorough for risky ones:</p>
+
+<div class="bg-visdom-gray-50 border border-visdom-gray-200 rounded-lg p-5 mb-6 font-mono text-sm">
+<pre class="!bg-transparent !p-0 !mb-0 text-visdom-gray-600"><code>PR opened
+  │
+  ▼
+Layer 0  Context Collection          &lt;10s    deterministic
+Layer 1  Deterministic Gate          &lt;60s    linters, SAST, secrets
+Layer 2  AI Quick Scan               &lt;2min   risk classification
+Layer 3  AI Deep Review              &lt;10min  only MEDIUM+ risk
+  │
+  ▼
+Structured PR comment + reviewer guidance</code></pre>
+</div>
+
+<p>
+  A LOW-risk PR gets feedback in under 2 minutes at ~$0.05.
+  A CRITICAL PR gets deep analysis across security, performance, architecture, and AI-code patterns — and
+  your senior reviewer gets a pre-annotated PR that tells them exactly where to look.
+</p>
+
+<h2>What this is not</h2>
 
 <ul>
-  <li><strong>Process-first, tool-agnostic</strong> — defines steps, inputs, outputs, quality gates. Reference implementations are provided; the process is portable.</li>
-  <li><strong>Layered depth</strong> — review depth scales with risk. Cheap and fast for trivial PRs, thorough for critical ones.</li>
-  <li><strong>Opinionated defaults, full flexibility</strong> — ships with "VISDOM Standard" review categories. Clients can add, remove, or replace.</li>
-  <li><strong>Deterministic backstop</strong> — Layer 1 cannot be fooled by prompt injection, hallucination, or non-determinism. It is the floor.</li>
-  <li><strong>Precision over recall</strong> — better to miss a LOW finding than report a false positive. Silence is OK.</li>
+  <li><strong>Not a SaaS product</strong> — it's a reference process we implement on your infrastructure during a consulting engagement</li>
+  <li><strong>Not tied to specific tools</strong> — the process works with any LLM provider, any CI platform, any code host. We provide reference implementations, you can swap components</li>
+  <li><strong>Not a replacement for human review</strong> — it's a force multiplier. Seniors review fewer PRs, but with better context and focus</li>
 </ul>
 
-<h2>Deliverable Model</h2>
+<h2>What your team is saying right now</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Component</th>
-      <th>What you get</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Framework</strong></td>
-      <td>Process definition, configuration schema, prompt templates, reference implementation</td>
-    </tr>
-    <tr>
-      <td><strong>Pilot deployment</strong></td>
-      <td>Working pipeline on 1-2 client teams, configured for their stack</td>
-    </tr>
-    <tr>
-      <td><strong>Knowledge transfer</strong></td>
-      <td>Client team owns and operates VCR after engagement</td>
-    </tr>
-    <tr>
-      <td><strong>Reference platform</strong></td>
-      <td>GitHub + GitHub Actions (first). Other platforms follow the same process.</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2>How Different Roles See It</h2>
-
-<PersonaCard name="Katja" role="Engineering Manager" color="green">
-  <p>"My seniors spend half their time reviewing junior PRs from our India team. VCR gives them back that time — the AI catches the obvious stuff, and reviewers only focus on what the PR comment highlights."</p>
-  <p><strong>What Katja should do</strong> — measure senior review time before/after pilot. Track comment engagement rate.</p>
+<PersonaCard name="Your Engineering Manager" role="Katja's problem" color="green">
+  <p>"My seniors in Kraków spend half their day reviewing PRs from the India team. The quality is inconsistent, feedback takes 24 hours, and we're shipping AI-generated code without really understanding what it does."</p>
 </PersonaCard>
 
-<PersonaCard name="Rajesh" role="Senior Developer" color="blue">
-  <p>"I was skeptical about AI reviewing my code, but the risk classifier is smart — it doesn't bother me with LOW-risk PRs. And the AI-Code Safety lens caught a hallucinated API I missed in a Copilot-generated PR."</p>
-  <p><strong>What Rajesh should do</strong> — customize <code>.vcr/conventions.md</code> with team-specific patterns. Add custom lenses for domain rules.</p>
+<PersonaCard name="Your Platform Engineer" role="Ewa's problem" color="purple">
+  <p>"Our agents burn $30 per task because they loop on flaky tests. The CI lies to them. And nobody's tracking the real cost — leadership thinks AI costs us $950/month in Copilot licenses."</p>
 </PersonaCard>
 
-<PersonaCard name="Ewa" role="Platform Engineer" color="purple">
-  <p>"The TORS filtering alone was worth it. Our agents were burning $30 on flaky test loops. Now they get clean signals and converge in 3 iterations instead of 47."</p>
-  <p><strong>What Ewa should do</strong> — integrate VCR metrics (ITS, CPI, TORS) into the team dashboard. Set budget caps.</p>
+<PersonaCard name="Your Senior Developer" role="Rajesh's problem" color="blue">
+  <p>"Copilot-generated PRs look clean but they're over-engineered — unnecessary Factory patterns, hallucinated APIs, tests that mirror the implementation instead of verifying it. I catch this stuff, but I can't review everything."</p>
 </PersonaCard>
 
-<PersonaCard name="Marcus" role="CFO" color="amber">
-  <p>"I approved 50 Copilot licenses at $950/month. Nobody told me the real cost was $17,000. VCR's dashboard finally gave me visibility into the 4x hidden tax."</p>
-  <p><strong>What Marcus should do</strong> — review the <a href={`${base}metrics/`}>Metrics Framework</a> and the 4x Hidden Tax breakdown.</p>
-</PersonaCard>
+<p>
+  <a href={`${base}before-after/`}>See concrete before/after scenarios →</a>
+</p>
 
-<h2>Further Reading</h2>
+<h2>How we work with you</h2>
+
+<div class="space-y-4 mb-8">
+  <div class="flex gap-4 items-start">
+    <span class="flex-shrink-0 w-8 h-8 rounded-full bg-visdom-green text-white flex items-center justify-center text-sm font-bold">1</span>
+    <div>
+      <h3 class="!mt-0 !mb-1">Assessment</h3>
+      <p class="text-sm !mb-0">We analyze your current review process, CI pipeline, test reliability, and team structure. We identify where VCR layers address your specific gaps.</p>
+    </div>
+  </div>
+  <div class="flex gap-4 items-start">
+    <span class="flex-shrink-0 w-8 h-8 rounded-full bg-visdom-green text-white flex items-center justify-center text-sm font-bold">2</span>
+    <div>
+      <h3 class="!mt-0 !mb-1">Pilot on 1-2 teams</h3>
+      <p class="text-sm !mb-0">We deploy VCR on your infrastructure — configured for your stack, your conventions, your risk thresholds. Working pipeline, real PRs, real feedback.</p>
+    </div>
+  </div>
+  <div class="flex gap-4 items-start">
+    <span class="flex-shrink-0 w-8 h-8 rounded-full bg-visdom-green text-white flex items-center justify-center text-sm font-bold">3</span>
+    <div>
+      <h3 class="!mt-0 !mb-1">Tune and measure</h3>
+      <p class="text-sm !mb-0">We track ITS, CPI, TORS, and developer satisfaction. We tune prompts, risk thresholds, and lens configurations based on real data from your teams.</p>
+    </div>
+  </div>
+  <div class="flex gap-4 items-start">
+    <span class="flex-shrink-0 w-8 h-8 rounded-full bg-visdom-green text-white flex items-center justify-center text-sm font-bold">4</span>
+    <div>
+      <h3 class="!mt-0 !mb-1">Handover</h3>
+      <p class="text-sm !mb-0">Your team owns VCR. We transfer knowledge, documentation, and operational ownership. You roll out to more teams on your own timeline.</p>
+    </div>
+  </div>
+</div>
+
+<h2>Part of VISDOM</h2>
+
+<p>
+  VCR sits within the <strong>Automated Risk Assessment</strong> pillar of
+  <a href="https://virtuslab.com/services/visdom">VISDOM</a> — VirtusLab's Agent-Ready SDLC offering.
+  Alongside Context Fabric and Machine-Speed CI, it forms the infrastructure that makes
+  AI-assisted development reliable at enterprise scale.
+</p>
+
+<p>
+  Read the thinking behind it: <a href="https://virtuslab.com/blog/ai/the-fallacy">The Agent-Ready SDLC series</a>
+</p>
+
+<h2>Go deeper</h2>
 
 <div class="grid sm:grid-cols-3 gap-3 mb-8">
   <ResourceCard
-    title="Architecture"
-    description="Layered Review Agent model — how the layers compose."
-    href={`${base}architecture/`}
-    tag="DOCS"
-    tagColor="green"
-  />
-  <ResourceCard
-    title="Before / After"
-    description="4 concrete scenarios showing what changes with VCR."
+    title="Before / After Scenarios"
+    description="4 concrete scenarios showing what changes when VCR is deployed."
     href={`${base}before-after/`}
     tag="SCENARIOS"
     tagColor="blue"
   />
   <ResourceCard
-    title="Configuration"
-    description="vcr-config.yaml reference and repo structure."
-    href={`${base}configuration/`}
+    title="Technical Reference"
+    description="Full architecture, layer docs, configuration, metrics framework."
+    href={`${base}reference/`}
     tag="REFERENCE"
     tagColor="purple"
   />
-</div>
-
-<h2>From the Field</h2>
-
-<div class="grid sm:grid-cols-2 gap-3 mb-8">
   <ResourceCard
-    title="Introducing Roast: Structured AI workflows"
-    description="Shopify's open-source framework for structured AI code review — the primary inspiration for VCR's layered approach."
-    href="https://shopify.engineering/introducing-roast"
-    tag="ARTICLE"
+    title="Reference Implementations"
+    description="Technology-agnostic table of components and alternatives."
+    href={`${base}reference/reference-implementations/`}
+    tag="REFERENCE"
     tagColor="green"
-    source="shopify.engineering"
-  />
-  <ResourceCard
-    title="How we built a high-quality AI code review agent"
-    description="Augment Code's engineering challenges: false positives, context management, precision vs recall trade-offs."
-    href="https://www.augmentcode.com/blog/how-we-built-high-quality-ai-code-review-agent"
-    tag="ARTICLE"
-    tagColor="green"
-    source="augmentcode.com"
-  />
-  <ResourceCard
-    title="Measuring Determinism in LLMs for Code Review"
-    description="Academic study on non-determinism: Claude at 0.85 correlation, GPT-4o at 0.79. Why risk classification needs deterministic signals."
-    href="https://arxiv.org/html/2502.20747v1"
-    tag="RESEARCH"
-    tagColor="blue"
-    source="arxiv.org"
-  />
-  <ResourceCard
-    title="Spotify Honk: Background Coding Agents"
-    description="Spotify's post-mortem on background agents. LLM-as-judge vetoes 25% of agent output — 12.5% structural failure rate."
-    href="https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3"
-    tag="CASE STUDY"
-    tagColor="amber"
-    source="engineering.atspotify.com"
   />
 </div>
 

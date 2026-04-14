@@ -1,6 +1,6 @@
 ---
-import DocLayout from '../../layouts/DocLayout.astro';
-import Callout from '../../components/Callout.astro';
+import DocLayout from '../../../layouts/DocLayout.astro';
+import Callout from '../../../components/Callout.astro';
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -14,8 +14,8 @@ const base = import.meta.env.BASE_URL;
     { label: "Deterministic", variant: "outline" },
     { label: "TORS", variant: "green" },
   ]}
-  prev={{ label: "Layer 0 — Context Collection", href: `${base}layers/context-collection/` }}
-  next={{ label: "Layer 2 — AI Quick Scan", href: `${base}layers/ai-quick-scan/` }}
+  prev={{ label: "Layer 0 — Context Collection", href: `${base}reference/layers/context-collection/` }}
+  next={{ label: "Layer 2 — AI Quick Scan", href: `${base}reference/layers/ai-quick-scan/` }}
 >
 
 <p>

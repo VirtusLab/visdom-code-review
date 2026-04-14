@@ -7,150 +7,165 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <DocLayout
-  title="Before / After Scenarios"
-  subtitle="Concrete scenarios showing what changes when VCR is deployed."
-  section="Scenarios"
+  title="Before / After"
+  subtitle="What actually changes when you deploy VISDOM Code Review. Four real scenarios."
   tags={[
     { label: "Scenarios", variant: "green" },
   ]}
-  prev={{ label: "Metrics", href: `${base}metrics/` }}
-  next={{ label: "Reference Implementations", href: `${base}reference-implementations/` }}
 >
 
 <p>
-  Four real-world scenarios illustrating VCR's impact on security, agent efficiency,
-  team consistency, and cost visibility.
+  Every tool promises to make things better. Here are four situations your team has already lived
+  through — and what they look like with VCR in the pipeline. No theory. Just the difference.
 </p>
 
 <!-- Scenario 1 -->
-<BeforeAfter title="Scenario 1: AI-Generated Code with Security Vulnerability">
+<BeforeAfter title="The AI wrote the code. The AI wrote the tests. The CI said it was fine.">
   <Fragment slot="before">
-    <ol>
-      <li>Developer uses Copilot to generate auth code</li>
-      <li>Copilot generates matching tests (Circular Test Trap &mdash; tests verify implementation, not spec)</li>
-      <li>CI passes (tests are green, but they test "does code do what code does")</li>
-      <li>Human reviewer waits 24-48h (timezone gap PL&rarr;IN)</li>
-      <li>Senior approves &mdash; "looks clean, tests pass"</li>
-      <li>SQL injection ships to production</li>
-      <li>Incident after 3 weeks. Rollback. Postmortem.</li>
-    </ol>
-    <p><strong>Cost:</strong> 0 automated review time, 24-48h to human review, incident cost $50-200K, team loses trust in AI-generated code.</p>
+    <p>
+      A developer uses Copilot to write authentication code. Copilot also writes the tests.
+      CI runs the tests — they pass. Everything looks clean.
+    </p>
+    <p>
+      A senior reviewer picks it up 24 hours later. The diff looks reasonable, the tests are green,
+      the code reads well. Approved.
+    </p>
+    <p>
+      Three weeks later: SQL injection in production. Incident. Rollback. Postmortem. The tests
+      never caught it because <strong>they were testing that the code does what it does, not what
+      it should do</strong>. The AI wrote both sides of the contract.
+    </p>
+    <p><strong>Impact:</strong> $50-200K incident cost. Team loses trust in AI-generated code.
+    Adoption stalls.</p>
   </Fragment>
   <Fragment slot="after">
-    <ol>
-      <li>Developer pushes same PR</li>
-      <li>Layer 0 (&lt;10s): repository knowledge shows auth module is hot path with 3 recent reverts</li>
-      <li>Layer 1 (&lt;60s): Semgrep catches SQL injection pattern. Secret scan clean. TORS excludes 2 known flaky tests</li>
-      <li>Layer 2 (&lt;2 min): Risk=CRITICAL (critical path + AI-generated + coverage drop). Circular test detected</li>
-      <li>Layer 3 (&lt;10 min): Security lens confirms injection + finds missing token expiry check. AI-Code Safety lens flags hallucinated API and unnecessary Factory pattern. Test Quality lens explains why tests are circular</li>
-      <li>Reporter: structured comment with 2 blocking findings, reviewer guidance, suggested expert reviewer</li>
-      <li>Senior reviews within 1h (pre-annotated, knows exactly where to look)</li>
-      <li>Request Changes &rarr; developer fixes &rarr; VCR re-runs (&lt;10 min) &rarr; merge</li>
-    </ol>
-    <p><strong>Cost:</strong> &lt;10 min automated review, &lt;1h to human review, $0.50-2.00 VCR cost, $0 incident cost.</p>
+    <p>
+      Same developer, same PR. VCR runs automatically.
+    </p>
+    <p>
+      In under 60 seconds, the deterministic layer catches the SQL injection pattern. It also flags
+      the tests as circular — "these tests verify implementation, not specification."
+    </p>
+    <p>
+      The deep review layer confirms the injection, finds a missing token expiry check, and spots a
+      hallucinated API call that Copilot invented (looks right, doesn't exist in this Node version).
+    </p>
+    <p>
+      The senior reviewer gets a pre-annotated PR. Two blocking findings, clear guidance on where to
+      look. Review takes 30 minutes instead of a full afternoon. Developer fixes the issues.
+      VCR re-runs in under 10 minutes. Merged.
+    </p>
+    <p><strong>Impact:</strong> Less than $2 in VCR compute. Zero incidents. Under an hour from PR to merge.</p>
   </Fragment>
 </BeforeAfter>
 
 <!-- Scenario 2 -->
-<BeforeAfter title="Scenario 2: Agent Loop on Flaky Tests (The Lying Oracle)">
+<BeforeAfter title="The agent that spent $30 fixing a test that wasn't broken">
   <Fragment slot="before">
-    <ol>
-      <li>Agent gets task &rarr; writes fix &rarr; pushes &rarr; CI (15 min)</li>
-      <li>CI fails on flaky test. Agent doesn't know it's flaky &rarr; "fixes" non-existent problem</li>
-      <li>12-47 iterations over 11+ hours. Context grows. Each iteration more expensive</li>
-      <li>Agent "succeeds" when flaky test happens to pass. Submits PR with +847 lines of unnecessary changes</li>
-      <li>Senior spends 4h trying to understand what happened. Rejects</li>
-    </ol>
-    <p><strong>Cost:</strong> 47 iterations x 15 min = 11.75h wall time, $23+ tokens/compute, 4h senior review wasted. Net value: zero.</p>
+    <p>
+      An AI coding agent gets a task. It writes a fix, pushes, and waits for CI. Fifteen minutes later,
+      CI fails — on a flaky test that has nothing to do with the change.
+    </p>
+    <p>
+      The agent doesn't know it's flaky. It tries to "fix" the failure. Then tries again.
+      And again. Forty-seven iterations over twelve hours, each one more expensive as the context
+      window grows. Eventually the flaky test happens to pass on its own. The agent declares victory.
+    </p>
+    <p>
+      The PR is 847 lines of unnecessary changes. A senior engineer spends four hours trying to
+      understand what happened, then rejects the entire thing.
+    </p>
+    <p><strong>Impact:</strong> $23+ in compute and tokens. Twelve hours of wall time. Four hours
+    of senior time. Net value delivered: zero.</p>
   </Fragment>
   <Fragment slot="after">
-    <ol>
-      <li>Agent pushes fix &rarr; Machine-Speed CI (&lt;30s)</li>
-      <li>VCR Layer 1: TORS filters flaky test from feedback signal. Agent sees: "14/14 reliable tests: pass. 1 flaky test excluded &mdash; do not fix"</li>
-      <li>Agent: "All reliable tests pass. Done." &mdash; 3 iterations, 1.5 min</li>
-      <li>Layer 2: Risk=LOW, small diff, tests pass. No Layer 3 needed</li>
-      <li>Human review: 10 min, clean diff</li>
-    </ol>
-    <p><strong>Cost:</strong> 3 iterations x 30s = 1.5 min wall time, $0.90, 10 min review.</p>
+    <p>
+      Same agent, same task. VCR's test reliability system (TORS) already knows which tests are
+      flaky. It filters the flaky test from the feedback signal before the agent ever sees it.
+    </p>
+    <p>
+      The agent sees: "14 of 14 reliable tests pass. 1 flaky test excluded — do not fix."
+      Three iterations. Done in 90 seconds.
+    </p>
+    <p>
+      The PR is a clean 12-line diff. Human review takes 10 minutes.
+    </p>
+    <p><strong>Impact:</strong> $0.90 in compute. 90 seconds of agent time. 10 minutes of human time.
+    Clean code shipped.</p>
   </Fragment>
 </BeforeAfter>
 
 <!-- Scenario 3 -->
-<BeforeAfter title="Scenario 3: Convention Drift in Mixed Teams">
+<BeforeAfter title="Six months of 'it works on my team'">
   <Fragment slot="before">
-    <p>Month 1-6: PL team uses direct service calls, IN team uses repository pattern. Nobody notices &mdash; each team reviews their own code. CI passes (patterns aren't enforced).</p>
-    <p>Month 7: "Why does integrating these modules take 3 sprints?" &mdash; 6 months of convention drift.</p>
-    <p><strong>Cost:</strong> 40-80 person-days to fix.</p>
+    <p>
+      Your Poland team writes services using one pattern. Your India team uses a different one.
+      Each team reviews their own PRs, so nobody notices the divergence. CI doesn't enforce
+      architectural patterns — it just checks that tests pass.
+    </p>
+    <p>
+      Six months later, someone tries to integrate the two modules. "Why does this take three
+      sprints?" Because six months of convention drift means the code can't talk to itself.
+    </p>
+    <p><strong>Impact:</strong> 40 to 80 person-days to untangle. Delayed roadmap.
+    Friction between teams.</p>
   </Fragment>
   <Fragment slot="after">
-    <p>Week 2: VCR Proactive Scanner detects pattern divergence via repository knowledge layer.</p>
-    <p>Auto-created issue: "Convention drift in user-service &mdash; drift rate 14%&rarr;31% over 2 weeks."</p>
-    <p>ITS correlation: ITS trending up for the module (code getting harder for agents to reason about).</p>
-    <p>Tech lead addresses in Week 3.</p>
-    <p><strong>Cost:</strong> 2-3 person-days vs 40-80 later.</p>
+    <p>
+      VCR's Proactive Scanner runs weekly across the repository. In week two, it detects the
+      divergence: "Convention drift in user-service — drift rate went from 14% to 31% in two weeks."
+    </p>
+    <p>
+      It auto-creates an issue and flags the trend to the tech lead. The lead addresses it in
+      week three while it's still a small fix.
+    </p>
+    <p><strong>Impact:</strong> 2-3 person-days instead of 40-80. Caught before anyone felt pain.</p>
   </Fragment>
 </BeforeAfter>
 
 <!-- Scenario 4 -->
-<BeforeAfter title="Scenario 4: Budget Visibility (The 4x Hidden Tax)">
+<BeforeAfter title="The $950 AI budget that was really $17,000">
   <Fragment slot="before">
-    <p>CFO asks "How much does AI cost?"</p>
-    <p>Answer: "50 Copilot licenses x $19 = $950/month."</p>
-    <p>Reality: $950 license + $4,200 compute + $3,800 tokens + $8,500 review overhead = <strong>$17,450/month</strong> (18x budget).</p>
+    <p>
+      The CFO asks: "How much does AI cost us?" The answer: "50 Copilot licenses at $19 each.
+      $950 a month."
+    </p>
+    <p>
+      The real number: $950 in licenses, plus $4,200 in compute for agent loops and CI reruns,
+      plus $3,800 in LLM tokens, plus $8,500 in senior engineer time spent reviewing AI-generated
+      code that shouldn't have made it to their desk.
+    </p>
+    <p><strong>Real cost: $17,450 per month.</strong> Eighteen times what was reported.
+    Nobody had visibility into the hidden costs.</p>
   </Fragment>
   <Fragment slot="after">
-    <p>VCR dashboard shows real-time breakdown of all 4 cost categories.</p>
-    <p>Layered model reduces compute (caching) and tokens (TORS filtering, targeted context).</p>
-    <p>Pre-annotated PRs reduce senior review time by 30-50%.</p>
-    <p>CFO sees: <strong>$6,450/month total</strong> (63% reduction), with full audit trail.</p>
+    <p>
+      VCR's dashboard shows the full breakdown: licenses, compute, tokens, and human review time.
+      All four cost categories, tracked in real time.
+    </p>
+    <p>
+      The layered review model means cheap checks run first, expensive analysis only triggers when
+      needed. TORS filtering eliminates wasted agent loops. Pre-annotated PRs cut senior review time
+      by 30-50%.
+    </p>
+    <p><strong>New cost: $6,450 per month.</strong> A 63% reduction — with a full audit trail
+    showing exactly where every dollar goes.</p>
   </Fragment>
 </BeforeAfter>
 
 <!-- Summary -->
-<h2>Summary</h2>
+<h2>The pattern</h2>
 
-<Callout type="tip" title="Key takeaway">
-  <p>
-    VCR shifts review cost from expensive human time and wasted agent iterations to cheap, fast automated layers &mdash;
-    catching issues in minutes instead of days or weeks.
-  </p>
+<Callout type="tip" title="What's actually happening here">
+  <p>In every scenario, the same thing changes: expensive problems (incidents, wasted compute,
+  senior time, integration debt) get caught early by cheap, fast automated layers. Minutes instead
+  of days. Dollars instead of thousands.</p>
 </Callout>
 
-<table>
-  <thead>
-    <tr>
-      <th>Dimension</th>
-      <th>Before</th>
-      <th>After</th>
-      <th>Metric</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Security vulnerability</td>
-      <td>Ships to production; $50-200K incident</td>
-      <td>Caught in &lt;15 min; $0.50-2.00 VCR cost</td>
-      <td>Escaped defects &rarr; 0</td>
-    </tr>
-    <tr>
-      <td>Flaky test loops</td>
-      <td>47 iterations, 11.75h, $23+</td>
-      <td>3 iterations, 1.5 min, $0.90</td>
-      <td>ITS: 47 &rarr; 3; CPI: $23 &rarr; $0.90</td>
-    </tr>
-    <tr>
-      <td>Convention drift</td>
-      <td>Detected at month 7; 40-80 person-days</td>
-      <td>Detected at week 2; 2-3 person-days</td>
-      <td>Drift detection lead time: months &rarr; weeks</td>
-    </tr>
-    <tr>
-      <td>Budget visibility</td>
-      <td>$950/mo reported; $17,450/mo actual</td>
-      <td>$6,450/mo fully tracked (63% reduction)</td>
-      <td>4x Hidden Tax: invisible &rarr; fully visible</td>
-    </tr>
-  </tbody>
-</table>
+<p>
+  Want the technical details behind these scenarios? Architecture, layer definitions, configuration
+  options, and metrics are all in the
+  <a href={`${base}reference/`}>Technical Reference</a>.
+</p>
 
 </DocLayout>

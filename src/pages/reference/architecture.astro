@@ -1,7 +1,7 @@
 ---
-import DocLayout from '../layouts/DocLayout.astro';
-import Callout from '../components/Callout.astro';
-import LayerBadge from '../components/LayerBadge.astro';
+import DocLayout from '../../layouts/DocLayout.astro';
+import Callout from '../../components/Callout.astro';
+import LayerBadge from '../../components/LayerBadge.astro';
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -14,7 +14,7 @@ const base = import.meta.env.BASE_URL;
     { label: "Layered Model", variant: "outline" },
   ]}
   prev={{ label: "Overview", href: `${base}` }}
-  next={{ label: "Layer 0 — Context Collection", href: `${base}layers/context-collection/` }}
+  next={{ label: "Layer 0 — Context Collection", href: `${base}reference/layers/context-collection/` }}
 >
 
 <h2>Mental Model</h2>
@@ -26,7 +26,7 @@ const base = import.meta.env.BASE_URL;
 </p>
 
 <p>
-  Separately, a <a href={`${base}proactive-scanner/`}>Proactive Scanner</a> runs on cron, analyzing the repository
+  Separately, a <a href={`${base}reference/proactive-scanner/`}>Proactive Scanner</a> runs on cron, analyzing the repository
   independent of PR flow.
 </p>
 
@@ -218,7 +218,7 @@ If TORS &lt; threshold → test excluded from feedback signal</code></pre>
 </p>
 
 <p>
-  <a href={`${base}proactive-scanner/`}>Read more about the Proactive Scanner →</a>
+  <a href={`${base}reference/proactive-scanner/`}>Read more about the Proactive Scanner →</a>
 </p>
 
 <h2>VISDOM SDLC Integration</h2>
@@ -255,7 +255,7 @@ If TORS &lt; threshold → test excluded from feedback signal</code></pre>
 </table>
 
 <p>
-  <a href={`${base}metrics/`}>Full metrics framework →</a>
+  <a href={`${base}reference/metrics/`}>Full metrics framework →</a>
 </p>
 
 </DocLayout>
