@@ -241,7 +241,12 @@ You are a code reviewer. Review this diff.
    rather than testing against a specification?
 
 ## Output format
-{structured JSON schema}
+Respond with JSON matching the Layer 2 output schema:
+- risk_classification: LOW | MEDIUM | HIGH | CRITICAL
+- risk_signals: array of { signal, value, weight }
+- findings: array of { severity, file, line, category, description, suggestion, confidence }
+- ai_generated: { detected: bool, confidence: float, signals: array }
+- circular_tests: array of { test_file, test_name, reason }
 ```
 
 ### Risk Classification Logic
