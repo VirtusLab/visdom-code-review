@@ -1,0 +1,116 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import Callout from '../../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="Layer 1 — Deterministic Gate"
+  subtitle="Zero AI. Existing tooling. 100% repeatable. Cannot be prompt-injected."
+  section="Architecture"
+  tags={[
+    { label: "Layer 1", variant: "gray" },
+    { label: "Deterministic", variant: "outline" },
+    { label: "TORS", variant: "green" },
+  ]}
+  prev={{ label: "Layer 0 — Context Collection", href: `${base}layers/context-collection` }}
+  next={{ label: "Layer 2 — AI Quick Scan", href: `${base}layers/ai-quick-scan` }}
+>
+
+<p>
+  Layer 1 runs zero AI. It executes existing static analysis tooling and produces 100% repeatable results.
+  Because it is fully deterministic, it <strong>cannot be prompt-injected</strong> &mdash; this is the floor of the review pipeline.
+</p>
+
+<h2>Default Checks (VISDOM Standard)</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Check</th>
+      <th>Reference tooling</th>
+      <th>Block PR?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Linting</td>
+      <td>ESLint / Checkstyle / Pylint (per stack)</td>
+      <td>Configurable</td>
+    </tr>
+    <tr>
+      <td>Formatting</td>
+      <td>Prettier / google-java-format</td>
+      <td>Configurable</td>
+    </tr>
+    <tr>
+      <td>Secret detection</td>
+      <td>gitleaks / truffleHog</td>
+      <td><strong>Always block</strong></td>
+    </tr>
+    <tr>
+      <td>SAST (static security)</td>
+      <td>Semgrep / CodeQL</td>
+      <td>Configurable per severity</td>
+    </tr>
+    <tr>
+      <td>Test coverage delta</td>
+      <td>Coverage tool + custom threshold</td>
+      <td>Configurable</td>
+    </tr>
+    <tr>
+      <td>Build passes</td>
+      <td>Existing CI</td>
+      <td><strong>Always block</strong></td>
+    </tr>
+    <tr>
+      <td>Dependency audit</td>
+      <td><code>npm audit</code> / Dependabot / Snyk</td>
+      <td>Configurable per severity</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>TORS Filtering</h2>
+
+<p>
+  Layer 1 consults the <strong>Test Oracle Reliability Score</strong> for the current test suite. Tests with reliability
+  below a configurable threshold (default: 0.5) are <strong>excluded from the signal</strong> sent to subsequent layers and to agents.
+</p>
+
+<p>
+  This prevents the Lying Oracle problem: agents do not "fix" flaky tests, and Layer 2/3 do not reason over false failures.
+</p>
+
+<pre><code>TORS = (real failures) / (total failures)
+
+If TORS &lt; threshold -> test excluded from feedback signal
+Agent receives: "14/14 reliable tests: PASS. 1 flaky test excluded."</code></pre>
+
+<h2>Output</h2>
+
+<p>Layer 1 produces <code>layer1-results.json</code>:</p>
+
+<pre set:html={`<code>{
+  "passed": false,
+  "blocking_findings": [...],
+  "non_blocking_findings": [...],
+  "coverage_delta": -2.3,
+  "new_dependencies": ["lodash@4.17.21"],
+  "tors": {
+    "overall": 0.94,
+    "excluded_flaky_tests": ["test_user_search_pagination"],
+    "reliable_tests_passed": 14,
+    "reliable_tests_total": 14
+  }
+}</code>`} />
+
+<Callout type="tip" title="Key Principle">
+  <p>
+    Layer 1 does <strong>not</strong> stop the review pipeline (unless a blocking finding is present). Results flow as
+    additional context to Layer 2 and 3 &mdash; the AI knows what linters already caught and does not repeat those findings.
+  </p>
+</Callout>
+
+</DocLayout>

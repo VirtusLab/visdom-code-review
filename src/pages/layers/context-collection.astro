@@ -1,0 +1,139 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import Callout from '../../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="Layer 0 — Context Collection"
+  subtitle="Deterministic context gathering from repository knowledge, git data, and test reliability history."
+  section="Architecture"
+  tags={[
+    { label: "Layer 0", variant: "gray" },
+    { label: "Deterministic", variant: "outline" },
+  ]}
+  prev={{ label: "Architecture", href: `${base}architecture` }}
+  next={{ label: "Layer 1 — Deterministic Gate", href: `${base}layers/deterministic-gate` }}
+>
+
+<p>
+  Fully deterministic. Zero AI. Layer 0 collects everything subsequent layers need, producing a single
+  <code>review-context.json</code> document that is the source of truth for the entire review pipeline.
+</p>
+
+<h2>Required Data</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Source</th>
+      <th>What we collect</th>
+      <th>Format</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Git diff</td>
+      <td>Changed files, added/removed lines, hunks</td>
+      <td>Unified diff</td>
+    </tr>
+    <tr>
+      <td>PR metadata</td>
+      <td>Title, description, author, labels, linked issues, draft status</td>
+      <td>JSON</td>
+    </tr>
+    <tr>
+      <td>Test coverage</td>
+      <td>Coverage of affected files, delta vs base branch</td>
+      <td>JSON report</td>
+    </tr>
+    <tr>
+      <td>File classification</td>
+      <td>Type per file: critical / sensitive / standard / low_risk (from config)</td>
+      <td>Tags</td>
+    </tr>
+    <tr>
+      <td>Repo conventions</td>
+      <td>Linter configs, <code>CODEOWNERS</code>, architecture docs, convention files</td>
+      <td>Raw</td>
+    </tr>
+    <tr>
+      <td>Repository knowledge layer</td>
+      <td>Code ownership, dependency graph, PR history, commit heatmap, expertise scores</td>
+      <td>Structured query results</td>
+    </tr>
+    <tr>
+      <td>Test reliability data</td>
+      <td>Known flaky tests, per-test pass/fail history</td>
+      <td>JSON (TORS input)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Repository Knowledge Layer</h2>
+
+<p>
+  Layer 0 requires access to a <strong>pre-indexed repository knowledge layer</strong> &mdash; a deterministic data source
+  that provides code ownership, dependency graphs, commit analytics, and PR history without re-parsing the repository on every run.
+</p>
+
+<p>This layer must be:</p>
+<ul>
+  <li><strong>Deterministic</strong> &mdash; same commit = same data</li>
+  <li><strong>Pre-indexed</strong> &mdash; queries complete in seconds, not minutes</li>
+  <li><strong>Reusable</strong> &mdash; shared across agents and review runs, not rebuilt per session</li>
+</ul>
+
+<Callout type="reference" title="Reference Implementation">
+  <p>
+    Reference implementation: <a href="https://github.com/virtuslab/vidia">ViDIA</a> (VirtusLab, MIT license) &mdash;
+    DuckDB analytics over git history, dependency graphs, and PR discussions, served as MCP tools or CLI. Pinned by SHA256,
+    reusable across sessions.
+  </p>
+  <p>
+    Alternative implementations: any system that exposes the required data (ownership, dependencies, history, expertise)
+    via API or CLI. Examples: GitHub CODEOWNERS + custom scripts, Sourcegraph code intelligence, custom DuckDB/SQLite indexes
+    over git log.
+  </p>
+</Callout>
+
+<h2>Test Reliability Data (TORS Input)</h2>
+
+<p>
+  Layer 0 also collects <strong>test reliability history</strong> &mdash; per-test pass/fail data used to compute the
+  Test Oracle Reliability Score (TORS). This data feeds into Layer 1 and Layer 2 to filter flaky test signals from agent feedback.
+</p>
+
+<p>Sources: CI historical data, test result databases, flaky test tracking tools.</p>
+
+<h2>Path Classification</h2>
+
+<p>
+  Path classification is client-configured. Each file in the diff is tagged by the first matching rule:
+</p>
+
+<pre><code>path_classifications:
+  critical:
+    - "src/auth/**"
+    - "src/payments/**"
+    - "infra/**"
+    - "*.tf"
+  sensitive:
+    - "src/api/**"
+    - "src/middleware/**"
+  standard:
+    - "src/**"
+  low_risk:
+    - "docs/**"
+    - "*.md"
+    - "test/**"</code></pre>
+
+<h2>Output</h2>
+
+<p>
+  Layer 0 produces <code>review-context.json</code> &mdash; a structured document consumed by all subsequent layers.
+  This is the single source of truth for the review.
+</p>
+
+</DocLayout>

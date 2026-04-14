@@ -1,0 +1,102 @@
+---
+import DocLayout from '../layouts/DocLayout.astro';
+import Callout from '../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="Proactive Scanner"
+  subtitle="Cron-based repository analysis independent of PR flow. Catches drift before it becomes debt."
+  section="Architecture"
+  tags={[
+    { label: "Proactive", variant: "green" },
+    { label: "Cron", variant: "outline" },
+  ]}
+  prev={{ label: "Reporter", href: `${base}reporter` }}
+  next={{ label: "Configuration", href: `${base}configuration` }}
+>
+
+<p>
+  The Proactive Scanner runs <strong>independently of PR flow</strong>. It performs scheduled repository analysis
+  to surface trends, drift, and debt before they compound into incidents.
+</p>
+
+<h2>Scan Modes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Mode</th>
+      <th>Frequency</th>
+      <th>What it does</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Coverage Trends</strong></td>
+      <td>Daily</td>
+      <td>Tracks test coverage per module over time</td>
+    </tr>
+    <tr>
+      <td><strong>Tech Debt Scan</strong></td>
+      <td>Weekly</td>
+      <td>Large files, circular dependencies, dead code, growing complexity</td>
+    </tr>
+    <tr>
+      <td><strong>Convention Drift</strong></td>
+      <td>Weekly</td>
+      <td>Does new code diverge from established patterns? Cross-team comparison</td>
+    </tr>
+    <tr>
+      <td><strong>Security Baseline</strong></td>
+      <td>Daily</td>
+      <td>Full SAST scan, dependency vulnerabilities</td>
+    </tr>
+    <tr>
+      <td><strong>AI-Code Audit</strong></td>
+      <td>Weekly</td>
+      <td>Which modules have high AI-generated code density, what's the quality</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Convention Drift Detection</h2>
+
+<p>
+  Particularly valuable for mixed teams across geographies. The scanner compares coding patterns
+  between contributors and flags divergence before it hardens into conflicting conventions.
+</p>
+
+<pre><code>Repository knowledge layer data:
+  Module: user-service
+  Team A commits: 89% direct service calls
+  Team B commits: 73% repository pattern
+
+DRIFT DETECTED:
+"user-service has diverging patterns between contributors.
+ Drift rate: 14% → 31% over 2 weeks."
+
+ITS correlation: ITS for user-service trending up (4 → 7)
+→ agents need more iterations = code getting harder to reason about</code></pre>
+
+<Callout type="tip" title="Why this matters">
+  <p>
+    Rising ITS (Iterations-to-Success) in a module often correlates with convention drift.
+    When patterns diverge, both humans and AI agents take more iterations to produce correct code.
+  </p>
+</Callout>
+
+<h2>Output</h2>
+
+<p>
+  The Proactive Scanner produces three types of output:
+</p>
+
+<ul>
+  <li><strong>Report</strong> &mdash; Markdown/HTML with trends, delivered on schedule</li>
+  <li><strong>GitHub Issues</strong> &mdash; Auto-created for critical findings that need team action</li>
+  <li><strong>Metrics</strong> &mdash; JSON for dashboard integration and historical tracking</li>
+</ul>
+
+</DocLayout>

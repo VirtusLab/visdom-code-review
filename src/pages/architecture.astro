@@ -1,0 +1,261 @@
+---
+import DocLayout from '../layouts/DocLayout.astro';
+import Callout from '../components/Callout.astro';
+import LayerBadge from '../components/LayerBadge.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+<DocLayout
+  title="Architecture"
+  subtitle="Layered Review Agent — review depth scales with risk."
+  section="Overview"
+  tags={[
+    { label: "Architecture", variant: "green" },
+    { label: "Layered Model", variant: "outline" },
+  ]}
+  prev={{ label: "Overview", href: `${base}` }}
+  next={{ label: "Layer 0 — Context Collection", href: `${base}layers/context-collection` }}
+>
+
+<h2>Mental Model</h2>
+
+<p>
+  Every PR passes through layers of increasing depth and cost. Each layer produces structured output
+  consumed by subsequent layers and the final report. A risk classifier at Layer 2 gates whether
+  the expensive Layer 3 runs.
+</p>
+
+<p>
+  Separately, a <a href={`${base}proactive-scanner`}>Proactive Scanner</a> runs on cron, analyzing the repository
+  independent of PR flow.
+</p>
+
+<h2>Layer Diagram</h2>
+
+<div class="bg-visdom-gray-50 border border-visdom-gray-200 rounded-lg p-6 mb-8 font-mono text-sm">
+<pre class="!bg-transparent !p-0 !mb-0 text-visdom-gray-700"><code>┌──────────────────────────────────────────────────────────┐
+│                    PR Opened / Updated                    │
+└──────────────┬───────────────────────────────────────────┘
+               │
+               ▼
+┌──────────────────────────────────────────────────────────┐
+│  LAYER 0: Context Collection                  (&lt;10s)     │
+│  Deterministic. Diff, metadata, repo knowledge, TORS.    │
+└──────────────┬───────────────────────────────────────────┘
+               │
+               ▼
+┌──────────────────────────────────────────────────────────┐
+│  LAYER 1: Deterministic Gate                  (&lt;60s)     │
+│  Zero AI. Linters, SAST, secret scan, coverage delta.    │
+│  100% repeatable. Cannot be prompt-injected.             │
+└──────────────┬───────────────────────────────────────────┘
+               │
+               ▼
+┌──────────────────────────────────────────────────────────┐
+│  LAYER 2: AI Quick Scan + Risk Classifier    (&lt;2 min)    │
+│  Fast AI pass over diff. Risk: LOW→CRITICAL.             │
+│  Quick findings (max 5). AI-code detection.              │
+└──────────────┬───────────────────────────────────────────┘
+               │ (MEDIUM+ risk only)
+               ▼
+┌──────────────────────────────────────────────────────────┐
+│  LAYER 3: AI Deep Review                     (&lt;10 min)   │
+│  Full analysis with repo context, history, conventions.  │
+│  Multiple Review Lenses run in parallel.                 │
+└──────────────┬───────────────────────────────────────────┘
+               │
+               ▼
+┌──────────────────────────────────────────────────────────┐
+│  REPORTER: Aggregation + PR Comment                      │
+│  Structured summary, inline comments, reviewer guidance. │
+└──────────────────────────────────────────────────────────┘</code></pre>
+</div>
+
+<h2>Layer Summary</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>Type</th>
+      <th>Time</th>
+      <th>Cost/PR</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><LayerBadge layer={0} label="L0" /></td>
+      <td>Deterministic</td>
+      <td>&lt;10s</td>
+      <td>~$0</td>
+      <td>Gather context: diff, ownership, dependencies, test reliability</td>
+    </tr>
+    <tr>
+      <td><LayerBadge layer={1} label="L1" /></td>
+      <td>Deterministic</td>
+      <td>&lt;60s</td>
+      <td>~$0</td>
+      <td>Static analysis, secrets, SAST, coverage. Immune to prompt injection</td>
+    </tr>
+    <tr>
+      <td><LayerBadge layer={2} label="L2" /></td>
+      <td>AI-powered</td>
+      <td>&lt;2 min</td>
+      <td>$0.01-0.05</td>
+      <td>Risk classification, quick findings, AI-code detection</td>
+    </tr>
+    <tr>
+      <td><LayerBadge layer={3} label="L3" /></td>
+      <td>AI-powered</td>
+      <td>&lt;10 min</td>
+      <td>$0.10-2.00</td>
+      <td>Deep review with Review Lenses. Only for MEDIUM+ risk</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Key Design Decisions</h2>
+
+<h3>Risk-Based Gating</h3>
+
+<p>
+  The risk classifier at Layer 2 is the economic hinge of the system. It determines whether a PR
+  gets the expensive Layer 3 analysis or completes at Layer 2. The target: 30-50% of PRs trigger Layer 3.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Risk Level</th>
+      <th>Layer 3?</th>
+      <th>Estimated Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">LOW</span></td>
+      <td>Skip</td>
+      <td>~$0.01-0.05</td>
+    </tr>
+    <tr>
+      <td><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">MEDIUM</span></td>
+      <td>Yes, standard depth</td>
+      <td>~$0.10-0.50</td>
+    </tr>
+    <tr>
+      <td><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-700">HIGH</span></td>
+      <td>Yes, full depth + extra lenses</td>
+      <td>~$0.50-2.00</td>
+    </tr>
+    <tr>
+      <td><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">CRITICAL</span></td>
+      <td>Yes, full depth + mandatory senior review flag</td>
+      <td>~$0.50-2.00</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="tip" title="Deterministic signals first">
+  <p>
+    Risk classification is <strong>primarily deterministic</strong> — path classification, diff size,
+    coverage delta, module stability. AI judgment is one input among several, not the sole decider.
+    This mitigates the non-determinism problem (same PR, different risk score on re-run).
+  </p>
+</Callout>
+
+<h3>Deterministic Backstop</h3>
+
+<p>
+  Layer 1 is immune to prompt injection, hallucination, and non-determinism. Even if an attacker
+  manipulates the AI layers via code comments or PR descriptions, Layer 1's secret scanning
+  and SAST analysis still catches deterministic patterns. It is the floor — the minimum guarantee.
+</p>
+
+<h3>Precision Over Recall</h3>
+
+<p>
+  VCR is tuned for precision, not recall. Better to miss a LOW-severity finding than report
+  a false positive. The "Cry Wolf" effect — developers ignoring all AI comments after too many
+  false positives — is the single biggest risk to adoption.
+</p>
+
+<ul>
+  <li>Layer 2: max <strong>5 findings</strong>, confidence threshold 0.8</li>
+  <li>Layer 3: max <strong>15 inline comments</strong> per PR</li>
+  <li>If nothing important found: <code>✅ VCR: No issues found (risk: LOW)</code></li>
+</ul>
+
+<h3>TORS — Test Oracle Reliability Score</h3>
+
+<p>
+  VCR measures which tests are reliable and which are flaky. Flaky tests are excluded from
+  the feedback signal sent to agents and AI layers. This prevents the
+  <a href="https://virtuslab.com/blog/ai/the-fallacy">Lying Oracle</a> problem:
+  agents don't "fix" tests that aren't broken.
+</p>
+
+<pre><code>TORS = (real failures) / (total failures)
+If TORS &lt; threshold → test excluded from feedback signal</code></pre>
+
+<h2>Proactive Scanner</h2>
+
+<p>
+  Independent of PR flow. Runs on cron (daily/weekly). Scans the repository for:
+</p>
+
+<ul>
+  <li><strong>Coverage trends</strong> — per-module test coverage over time</li>
+  <li><strong>Tech debt</strong> — large files, circular dependencies, growing complexity</li>
+  <li><strong>Convention drift</strong> — does new code diverge from established patterns? Cross-team comparison</li>
+  <li><strong>Security baseline</strong> — full SAST scan, dependency vulnerabilities</li>
+  <li><strong>AI-code audit</strong> — which modules have high AI-generated code density</li>
+</ul>
+
+<p>
+  Particularly valuable for mixed teams across geographies, where convention drift
+  can accumulate unnoticed for months.
+</p>
+
+<p>
+  <a href={`${base}proactive-scanner`}>Read more about the Proactive Scanner →</a>
+</p>
+
+<h2>VISDOM SDLC Integration</h2>
+
+<p>
+  VCR connects to the broader VISDOM Agent-Ready SDLC metrics framework:
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>What it measures</th>
+      <th>VCR's role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>ITS</strong> (Iterations-to-Success)</td>
+      <td>Iterations from task to passing CI</td>
+      <td>Reduces ITS by filtering flaky tests and providing early feedback</td>
+    </tr>
+    <tr>
+      <td><strong>CPI</strong> (Cost-per-Iteration)</td>
+      <td>Tokens + compute + CI + review per iteration</td>
+      <td>Reduces review component; TORS reduces wasted iterations</td>
+    </tr>
+    <tr>
+      <td><strong>TORS</strong> (Test Oracle Reliability Score)</td>
+      <td>% of test failures that are real regressions</td>
+      <td>Directly measured by Layer 1; feeds risk classification</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  <a href={`${base}metrics`}>Full metrics framework →</a>
+</p>
+
+</DocLayout>

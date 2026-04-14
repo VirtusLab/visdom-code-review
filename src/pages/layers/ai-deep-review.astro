@@ -1,0 +1,145 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import Callout from '../../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="Layer 3 — AI Deep Review"
+  subtitle="Full analysis with repo context, history, and conventions. Multiple Review Lenses."
+  section="Architecture"
+  tags={[
+    { label: "Layer 3", variant: "gray" },
+    { label: "AI-Powered", variant: "green" },
+    { label: "Review Lenses", variant: "outline" },
+  ]}
+  prev={{ label: "Layer 2 — AI Quick Scan", href: `${base}layers/ai-quick-scan` }}
+  next={{ label: "Reporter", href: `${base}reporter` }}
+>
+
+<p>
+  Full analysis. Triggered only for MEDIUM+ risk PRs. Expensive but high-value. Each review category runs as an
+  independent <strong>Review Lens</strong> &mdash; a separate prompt with its own focus area and output schema.
+  Lenses run in parallel.
+</p>
+
+<h2>Input</h2>
+
+<p>Everything from previous layers, plus:</p>
+
+<ul>
+  <li><strong>Full files</strong> (not just diff) &mdash; AI sees the entire module</li>
+  <li><strong>Related files</strong> &mdash; files imported by changed files (from dependency graph)</li>
+  <li><strong>Conventions doc</strong> &mdash; extracted from repo conventions, architecture docs, ADRs</li>
+  <li><strong>Historical context</strong> &mdash; how this module evolved (from repository knowledge layer)</li>
+</ul>
+
+<h2>Review Lenses (VISDOM Standard)</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Lens</th>
+      <th>Focus</th>
+      <th>When active</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Security</strong></td>
+      <td>Injection, auth bypass, data exposure, OWASP Top 10</td>
+      <td>Always on MEDIUM+</td>
+    </tr>
+    <tr>
+      <td><strong>Performance</strong></td>
+      <td>N+1 queries, unnecessary allocations, blocking calls, O(n^2)</td>
+      <td>MEDIUM+ with DB/API paths</td>
+    </tr>
+    <tr>
+      <td><strong>Architecture</strong></td>
+      <td>Consistency with repo patterns, separation of concerns, coupling</td>
+      <td>HIGH+</td>
+    </tr>
+    <tr>
+      <td><strong>Test Quality</strong></td>
+      <td>New paths have tests, assertion quality, edge cases, <strong>circular test detection</strong></td>
+      <td>Always on MEDIUM+</td>
+    </tr>
+    <tr>
+      <td><strong>AI-Code Safety</strong></td>
+      <td>Over-engineering, hallucinated APIs, unnecessary abstractions, generic patterns</td>
+      <td>When AI-generated flag is set</td>
+    </tr>
+    <tr>
+      <td><strong>Conventions</strong></td>
+      <td>Naming, file structure, import patterns, error handling patterns</td>
+      <td>Always on MEDIUM+</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Circular Test Detection</h2>
+
+<p>
+  The Test Quality lens includes explicit detection of circular tests &mdash; tests derived from implementation rather
+  than specification:
+</p>
+
+<pre><code>Examine new/modified tests. For each test, determine:
+1. Does this test verify behavior described in a spec/issue/PR description?
+   OR does it mirror the implementation logic?
+2. Does this test cover negative paths, edge cases, invalid inputs?
+   OR only the happy path that the implementation handles?
+3. Would this test FAIL if the implementation had a subtle bug
+   (off-by-one, missing null check, wrong status code)?
+   OR would it pass because it tests the same logic?
+
+Flag as CIRCULAR if the test would pass regardless of correctness.</code></pre>
+
+<Callout type="tip" title="Why This Matters">
+  <p>
+    Circular tests are the core failure mode of AI-generated test suites. They verify what code <em>does</em>, not what
+    it <em>should do</em>. A circular test suite gives 100% coverage and 0% confidence.
+  </p>
+</Callout>
+
+<h2>Custom Lenses</h2>
+
+<p>
+  Clients add their own Review Lenses via configuration. Each custom lens specifies a prompt file and activation conditions:
+</p>
+
+<pre><code>custom_lenses:
+  - name: "Banking Compliance"
+    prompt_file: "lenses/banking-compliance.md"
+    active_when: "paths match src/transactions/**"
+  - name: "GDPR Data Handling"
+    prompt_file: "lenses/gdpr.md"
+    active_when: "paths match src/user/** OR src/analytics/**"</code></pre>
+
+<h2>Output per Lens</h2>
+
+<p>Each lens produces structured findings in a consistent JSON schema:</p>
+
+<pre set:html={`<code>{
+  "lens": "security",
+  "findings": [
+    {
+      "severity": "HIGH",
+      "file": "src/api/auth.ts",
+      "line": 42,
+      "category": "SQL Injection",
+      "description": "User input interpolated directly into query",
+      "suggestion": "Use parameterized query: db.query('SELECT ...', [userId])",
+      "confidence": 0.95
+    }
+  ]
+}</code>`} />
+
+<p>
+  Findings from all lenses are aggregated by the <a href={`${base}reporter`}>Reporter</a> into a single structured PR comment
+  with inline annotations.
+</p>
+
+</DocLayout>

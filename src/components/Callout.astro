@@ -1,0 +1,32 @@
+---
+interface Props {
+  type?: 'info' | 'warning' | 'tip' | 'reference';
+  title?: string;
+}
+
+const { type = 'info', title } = Astro.props;
+
+const styles = {
+  info: 'bg-blue-50 border-blue-200 text-blue-800',
+  warning: 'bg-amber-50 border-amber-200 text-amber-800',
+  tip: 'bg-visdom-green-light border-emerald-200 text-emerald-800',
+  reference: 'bg-visdom-gray-50 border-visdom-gray-200 text-visdom-gray-700',
+};
+
+const icons = {
+  info: '💡',
+  warning: '⚠️',
+  tip: '✅',
+  reference: '📦',
+};
+---
+<div class={`rounded-lg border p-4 mb-6 ${styles[type]}`}>
+  {title && (
+    <p class="font-semibold text-sm mb-1 !text-inherit">
+      {icons[type]} {title}
+    </p>
+  )}
+  <div class="text-sm [&>p]:!text-inherit [&>p]:!mb-1 [&>p:last-child]:!mb-0">
+    <slot />
+  </div>
+</div>

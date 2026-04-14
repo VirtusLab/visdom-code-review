@@ -1,0 +1,136 @@
+---
+import DocLayout from '../layouts/DocLayout.astro';
+import Callout from '../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="Reference Implementations"
+  subtitle="VCR is a process framework. These are reference implementations for pilot deployments."
+  section="Reference"
+  tags={[
+    { label: "Reference", variant: "gray" },
+    { label: "Technology-Agnostic", variant: "outline" },
+  ]}
+  prev={{ label: "Before/After", href: `${base}before-after` }}
+  next={null}
+>
+
+<p>
+  VCR defines <strong>required capabilities</strong>, not required tools. The following reference implementations
+  are provided by VirtusLab for pilot deployments. Clients may substitute with equivalent tooling that satisfies
+  the same capability contract.
+</p>
+
+<h2>Component Reference</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Required Capability</th>
+      <th>Reference Implementation</th>
+      <th>Alternatives</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Repository knowledge layer</td>
+      <td>Pre-indexed ownership, dependencies, history, expertise</td>
+      <td><a href="https://github.com/virtuslab/vidia">ViDIA</a> (VirtusLab, MIT)</td>
+      <td>Sourcegraph code intelligence, custom DuckDB/SQLite over git log, GitHub CODEOWNERS + scripts</td>
+    </tr>
+    <tr>
+      <td>CI infrastructure</td>
+      <td>Sub-2-minute feedback loops for agent iteration</td>
+      <td>VISDOM Machine-Speed CI</td>
+      <td>Bazel + EngFlow, Nx, Turborepo, Gradle remote cache</td>
+    </tr>
+    <tr>
+      <td>SAST</td>
+      <td>Static security analysis</td>
+      <td>Semgrep (open source)</td>
+      <td>CodeQL, SonarQube, Snyk Code</td>
+    </tr>
+    <tr>
+      <td>Secret scanning</td>
+      <td>Detect leaked credentials</td>
+      <td>gitleaks (open source)</td>
+      <td>truffleHog, GitHub secret scanning</td>
+    </tr>
+    <tr>
+      <td>AI provider</td>
+      <td>LLM API access</td>
+      <td>Anthropic (Claude Haiku/Sonnet/Opus)</td>
+      <td>OpenAI GPT-4o, Azure OpenAI, Google Gemini</td>
+    </tr>
+    <tr>
+      <td>CI/CD platform</td>
+      <td>Workflow execution</td>
+      <td>GitHub Actions</td>
+      <td>GitLab CI, Azure Pipelines, Jenkins</td>
+    </tr>
+    <tr>
+      <td>Code hosting</td>
+      <td>PR integration</td>
+      <td>GitHub</td>
+      <td>GitLab, Bitbucket, Azure DevOps</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>VirtusLab Reference Implementations</h3>
+
+<Callout type="reference" title="ViDIA — Repository Knowledge Layer">
+  <p>
+    <a href="https://github.com/virtuslab/vidia">ViDIA</a> (VirtusLab, MIT license) provides DuckDB analytics
+    over git history, dependency graphs, and PR discussions, served as MCP tools or CLI. Pinned by SHA256,
+    reusable across sessions. This is the primary data source for Layer 0 context collection.
+  </p>
+</Callout>
+
+<Callout type="reference" title="VISDOM Machine-Speed CI">
+  <p>
+    Remote caching, incremental builds, and test impact analysis designed for sub-2-minute feedback loops.
+    Enables agent-driven development where each iteration gets fast CI signal, keeping ITS low and CPI manageable.
+  </p>
+</Callout>
+
+<Callout type="reference" title="VCR GitHub Action">
+  <p>
+    <code>virtuslab/vcr-action@v1</code> &mdash; the reference CI integration. Handles checkout, context collection,
+    layer execution, and reporter output in a single GitHub Actions step. See
+    <a href={`${base}configuration`}>Configuration</a> for the full workflow YAML.
+  </p>
+</Callout>
+
+<h2>Out of Scope (v1)</h2>
+
+<p>
+  The following capabilities are intentionally excluded from v1 to maintain focus and deliverability:
+</p>
+
+<ul>
+  <li><strong>Auto-fix</strong> &mdash; VCR v1 reports findings. It does not auto-fix code. Planned for v2: agent applies suggested fixes, VCR re-reviews.</li>
+  <li><strong>Fine-tuning</strong> &mdash; v1 uses off-the-shelf models with prompt engineering. Fine-tuning on client data is a v2 consideration.</li>
+  <li><strong>Multi-repo</strong> &mdash; v1 targets single-repo setup. Monorepo and multi-repo orchestration is v2.</li>
+  <li><strong>GitLab/Azure DevOps</strong> &mdash; v1 reference implementation is GitHub-only. Process is portable; adapters for other platforms follow.</li>
+  <li><strong>Self-hosted LLM</strong> &mdash; v1 uses cloud API providers. Self-hosted/air-gapped deployment is an enterprise v2 feature.</li>
+</ul>
+
+<h2>Open Questions</h2>
+
+<Callout type="warning" title="Active Discussion">
+  <p>These questions are under active discussion for the v1 release.</p>
+</Callout>
+
+<ul>
+  <li><strong>AI-generated flag source</strong> &mdash; How to reliably detect AI-generated code? PR labels? Git metadata? Heuristic detection? Need to define the primary signal.</li>
+  <li><strong>Feedback loop automation</strong> &mdash; At what maturity level do developer reactions automatically adjust prompts vs manual tuning by VirtusLab?</li>
+  <li><strong>TORS bootstrap</strong> &mdash; New clients have no test reliability history. What's the cold-start strategy? Run 30 days of data collection before enabling TORS filtering?</li>
+  <li><strong>Reviewer assignment</strong> &mdash; Should VCR assign reviewers based on expertise data, or only suggest? Organizational politics may make auto-assignment problematic.</li>
+  <li><strong>PR blocking policy</strong> &mdash; Should VCR ever block a PR merge (via GitHub Check), or only advise? Who decides the policy &mdash; VCR config or org-level setting?</li>
+</ul>
+
+</DocLayout>

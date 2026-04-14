@@ -1,0 +1,426 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import Callout from '../../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="Layer 2 — AI Quick Scan"
+  subtitle="Fast AI pass over the diff. Risk classification + quick findings + AI-code detection."
+  section="Architecture"
+  tags={[
+    { label: "Layer 2", variant: "gray" },
+    { label: "AI-Powered", variant: "green" },
+    { label: "Risk Classifier", variant: "outline" },
+  ]}
+  prev={{ label: "Layer 1 — Deterministic Gate", href: `${base}layers/deterministic-gate` }}
+  next={{ label: "Layer 3 — AI Deep Review", href: `${base}layers/ai-deep-review` }}
+>
+
+<p>
+  Layer 2 is the first AI contact with the code. It has two goals: (1) fast feedback on obvious problems, and
+  (2) risk classification of the PR to determine whether the expensive Layer 3 runs.
+</p>
+
+<h2>Input</h2>
+
+<ul>
+  <li><code>review-context.json</code> from Layer 0</li>
+  <li><code>layer1-results.json</code> from Layer 1</li>
+  <li>Diff only (not full files) + ~50 lines surrounding context per hunk</li>
+</ul>
+
+<h2>Prompt Structure</h2>
+
+<pre set:html={`<code>You are a code reviewer. Review this diff.
+
+## Context
+- PR: {title}, author: {author}
+- Affected paths: {paths} (classification: {critical/sensitive/standard})
+- Layer 1 findings: {summary}
+- Repository knowledge: {ownership, recent changes, module stability}
+
+## Tasks
+1. RISK CLASSIFICATION: Assess PR risk (LOW/MEDIUM/HIGH/CRITICAL)
+   Signals: size, affected paths, complexity, test coverage delta, module stability
+2. QUICK FINDINGS: Report obvious problems (max 5):
+   - Obvious bugs, missing error handling
+   - Missing tests for new code paths
+   - Copy-paste / dead code
+   - DO NOT comment on: naming style, missing docs, import order, formatting
+     (these are handled by Layer 1 linters)
+3. AI-CODE DETECTION: Does this code appear AI-generated?
+   Signals: over-engineering, unnecessary abstractions, generic variable names
+4. CIRCULAR TEST DETECTION: Do new tests mirror implementation logic
+   rather than testing against a specification?
+
+## Output format
+Respond with JSON matching the Layer 2 output schema:
+- risk_classification: LOW | MEDIUM | HIGH | CRITICAL
+- risk_signals: array of { signal, value, weight }
+- findings: array of { severity, file, line, category, description,
+                        suggestion, confidence }
+- ai_generated: { detected: bool, confidence: float, signals: array }
+- circular_tests: array of { test_file, test_name, reason }</code>`} />
+
+<h2>Risk Classification Logic</h2>
+
+<p>
+  Risk classification is <strong>primarily deterministic</strong>, with AI judgment as one input among several:
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Signal</th>
+      <th>Source</th>
+      <th>Weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Path classification</td>
+      <td>Config (deterministic)</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <td>Diff size</td>
+      <td>Git (deterministic)</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <td>Coverage delta</td>
+      <td>CI (deterministic)</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <td>Module stability</td>
+      <td>Repository knowledge layer (deterministic)</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <td>AI-generated flag</td>
+      <td>Layer 2 AI detection</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <td>AI complexity assessment</td>
+      <td>Layer 2 AI judgment</td>
+      <td>Low</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code>CRITICAL: critical path + large diff + coverage drop
+HIGH:     critical path OR (large diff + sensitive path)
+MEDIUM:   sensitive path OR AI-generated flag OR coverage drop &gt;5%
+LOW:      small diff + standard/low_risk paths + coverage stable</code></pre>
+
+<h2>Gate Decision</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Risk</th>
+      <th>Layer 3?</th>
+      <th>Estimated cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LOW</td>
+      <td>Skip</td>
+      <td>~$0.01&ndash;0.05 per PR</td>
+    </tr>
+    <tr>
+      <td>MEDIUM</td>
+      <td>Yes, standard depth</td>
+      <td>~$0.10&ndash;0.50 per PR</td>
+    </tr>
+    <tr>
+      <td>HIGH</td>
+      <td>Yes, full depth + extra lenses</td>
+      <td>~$0.50&ndash;2.00 per PR</td>
+    </tr>
+    <tr>
+      <td>CRITICAL</td>
+      <td>Yes, full depth + mandatory senior review flag</td>
+      <td>~$0.50&ndash;2.00 per PR</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  Client can override: "always run Layer 3 on all PRs" or "skip Layer 3 for <code>docs/**</code>".
+</p>
+
+<h2>Risk Analysis: What Can Go Wrong</h2>
+
+<p>
+  Layer 2 is the hinge of the system &mdash; it determines cost, depth, and trust.
+  The following risks have been researched and mitigated in the design.
+</p>
+
+<!-- Risk 1 -->
+<h3>Risk 1: Non-determinism</h3>
+
+<Callout type="warning" title="Risk: Non-determinism">
+  <p>
+    LLMs produce different outputs for identical inputs, even at temperature=0. The same PR reviewed twice may receive
+    different risk scores.
+  </p>
+</Callout>
+
+<p>
+  <strong>Evidence:</strong> Research measuring consistency across 5 identical runs found Claude Sonnet at 0.85 correlation,
+  GPT-4o at 0.79. Subjective assessments (e.g., "maintainability") dropped to 0.53 correlation.
+</p>
+
+<p>
+  <strong>Mitigation:</strong> Risk classification uses deterministic signals as primary inputs (path classification,
+  diff size, coverage delta). AI judgment is one signal among several, not the sole decider. For borderline cases near
+  risk thresholds, optional consensus (2&ndash;3 runs, majority vote).
+</p>
+
+<!-- Risk 2 -->
+<h3>Risk 2: "Cry Wolf" Effect &mdash; Developer Alert Fatigue</h3>
+
+<Callout type="warning" title="Risk: Cry Wolf Effect">
+  <p>
+    Too many comments lead developers to auto-dismiss everything, including real findings.
+  </p>
+</Callout>
+
+<p>
+  <strong>Evidence:</strong> CodeRabbit produces 8&ndash;20 comments per PR. After ~10 days, teammates auto-dismissed all
+  of them. GitHub Copilot intentionally limits to 2&ndash;5 comments with 71% actionable rate and stays silent in 29% of cases.
+  Industry rule: &lt;30&ndash;40% action rate = noise.
+</p>
+
+<p><strong>Mitigation:</strong></p>
+<ul>
+  <li>Hard cap: Layer 2 max <strong>5 findings</strong>, prioritized by severity</li>
+  <li>Confidence threshold: do not report findings below 0.8 confidence</li>
+  <li>Silence is OK: if nothing important, report <code>VCR: No issues found (risk: LOW)</code></li>
+  <li>Precision over recall: better to miss a LOW finding than report a false positive</li>
+</ul>
+
+<!-- Risk 3 -->
+<h3>Risk 3: Large Diff Degradation</h3>
+
+<Callout type="warning" title="Risk: Large Diff Degradation">
+  <p>
+    AI accuracy degrades on large PRs (&gt;500 changed lines). The "lost in the middle" phenomenon means content at the
+    beginning and end of context gets 85&ndash;95% accuracy, while the middle drops to 76&ndash;82%.
+  </p>
+</Callout>
+
+<p>
+  <strong>Evidence:</strong> Models with claimed 200K token context become unreliable around 130K tokens, with sudden
+  performance drops.
+</p>
+
+<p><strong>Mitigation:</strong></p>
+<ul>
+  <li>Chunk strategy: for PRs &gt;500 lines, Layer 2 analyzes per-file and aggregates at the end</li>
+  <li>Repository knowledge layer provides targeted context (relevant files only, not everything)</li>
+  <li>PR size warning: PRs &gt;1000 lines get automatic recommendation to split</li>
+  <li>Layer 3 uses selective context informed by dependency graph, not "entire module"</li>
+</ul>
+
+<!-- Risk 4 -->
+<h3>Risk 4: Prompt Injection via PR Content</h3>
+
+<Callout type="warning" title="Risk: Prompt Injection">
+  <p>
+    Malicious or "creative" code comments, PR descriptions, or commit messages can contain instructions that manipulate the
+    AI reviewer.
+  </p>
+</Callout>
+
+<p>
+  <strong>Evidence:</strong> Anthropic's own Claude Code Security Review action warns it is "not hardened against prompt
+  injection." OWASP ranks prompt injection as #1 risk for LLMs. Every file, comment, and PR description is a potential
+  injection surface.
+</p>
+
+<p><strong>Mitigation:</strong></p>
+<ul>
+  <li>Input sanitization: strip suspicious instruction patterns before passing to AI</li>
+  <li>Segregated prompts: system prompt with hard rules ("NEVER skip security analysis") separated from user content</li>
+  <li>Canary checks: include known-bad patterns in test &mdash; if AI misses them, injection likely occurred</li>
+  <li><strong>Layer 1 as backstop:</strong> deterministic SAST/secret scan is immune to prompt injection. Even if Layer 2 AI is manipulated, Layer 1 still blocks.</li>
+</ul>
+
+<!-- Risk 5 -->
+<h3>Risk 5: Cost Explosion at Scale</h3>
+
+<Callout type="warning" title="Risk: Cost Explosion">
+  <p>
+    Enterprise with 200 developers at 1&ndash;2 PRs/day = 200&ndash;400 PRs/day. Deep review at $0.50&ndash;2.00/PR scales
+    to $2,000&ndash;16,000/month.
+  </p>
+</Callout>
+
+<p>
+  <strong>Evidence:</strong> Claude Code Review averages $15&ndash;25 per PR (full agentic review). At 100 PRs/day,
+  monthly cost reaches $45,000&ndash;75,000.
+</p>
+
+<p><strong>Mitigation:</strong></p>
+<ul>
+  <li>Layered cost model: Layer 2 (small/fast model) at $0.01&ndash;0.05. Layer 3 (capable model) only for MEDIUM+ risk</li>
+  <li>Budget caps in configuration: <code>max_daily_layer3_budget: $50</code></li>
+  <li>Model tiering: fast model for Layer 2, capable model for Layer 3 standard, most capable for CRITICAL</li>
+  <li>Prompt caching reduces cost of repeated context</li>
+  <li>Track cost-per-useful-finding, not cost-per-PR</li>
+</ul>
+
+<!-- Risk 6 -->
+<h3>Risk 6: Generic / Surface-Level Feedback</h3>
+
+<Callout type="warning" title="Risk: Generic Feedback">
+  <p>
+    Without repo context, AI falls back to generic "code reviewer" mode &mdash; commenting on naming, suggesting docstrings,
+    flagging missing type hints. Nothing a senior would not see in 5 seconds.
+  </p>
+</Callout>
+
+<p>
+  <strong>Evidence:</strong> Augment Code found early versions using "pattern-based grep-search" for context produced
+  generic findings. Quality improved only after semantic retrieval + organizational context.
+</p>
+
+<p><strong>Mitigation:</strong></p>
+<ul>
+  <li>Repository knowledge layer provides repo-specific conventions, patterns, ownership</li>
+  <li>Anti-patterns in prompts: "DO NOT comment on naming style, missing docs, import order, formatting"</li>
+  <li>Conventions file (<code>.vcr/conventions.md</code>) &mdash; client defines "in our repo we do X, not Y"</li>
+  <li>Minimum severity in Layer 2: Quick Scan does not report below MEDIUM</li>
+</ul>
+
+<!-- Risk 7 -->
+<h3>Risk 7: AI Reviewing AI &mdash; Blind Spots</h3>
+
+<Callout type="warning" title="Risk: AI Reviewing AI">
+  <p>
+    AI-generated code has patterns that another AI model may not catch because it produces similar patterns itself.
+    Over-engineering, unnecessary abstractions, and hallucinated APIs look "clean" to an AI reviewer.
+  </p>
+</Callout>
+
+<p>
+  <strong>Evidence:</strong> Veracode 2025 tested 100+ LLMs: 45% of AI-generated code contains OWASP vulnerabilities.
+  Models' own tests caught none of them. Spotify's LLM-as-judge vetoes 25% of agent output &mdash; meaning 1 in 4 passes
+  CI but is wrong.
+</p>
+
+<p><strong>Mitigation:</strong></p>
+<ul>
+  <li>Dedicated "AI-Code Safety" lens targeting specific AI patterns: hallucinated APIs, unnecessary abstractions, over-engineering, Factory/Builder where direct instantiation is convention</li>
+  <li>Repository knowledge layer can compare new code complexity against module baseline</li>
+  <li>Optional cross-model review: if code was generated by model A, review with model B</li>
+</ul>
+
+<!-- Risk 8 -->
+<h3>Risk 8: Cross-Cultural Interpretation</h3>
+
+<Callout type="warning" title="Risk: Cross-Cultural Interpretation">
+  <p>
+    "This code needs refactoring" lands differently for a senior in Krakow, a mid in London, and a junior in Bangalore.
+    AI comments without cultural sensitivity can be demotivating or ignored.
+  </p>
+</Callout>
+
+<p>
+  <strong>Evidence:</strong> Shopify research found that feedback must be constructive, not evaluative, for distributed teams.
+</p>
+
+<p><strong>Mitigation:</strong></p>
+<ul>
+  <li>Structured finding format: always Problem &rarr; Why it matters &rarr; Concrete fix suggestion</li>
+  <li>Configurable tone: <code>tone: direct | constructive | educational</code>. Default: <code>constructive</code></li>
+  <li>No blame attribution: VCR says "this code has..." never "you wrote..."</li>
+</ul>
+
+<h2>Risk Priority Matrix</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Risk</th>
+      <th>Severity</th>
+      <th>Likelihood</th>
+      <th>Primary mitigation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2</td>
+      <td>Cry Wolf</td>
+      <td>CRITICAL</td>
+      <td>HIGH</td>
+      <td>Hard cap, confidence threshold, silence is OK</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Generic feedback</td>
+      <td>HIGH</td>
+      <td>HIGH</td>
+      <td>Repo context, anti-patterns in prompts, min severity</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Non-determinism</td>
+      <td>HIGH</td>
+      <td>HIGH</td>
+      <td>Deterministic signals primary in risk classifier</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>AI reviewing AI</td>
+      <td>HIGH</td>
+      <td>MEDIUM</td>
+      <td>Dedicated AI-Code Safety lens</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Large diff degradation</td>
+      <td>HIGH</td>
+      <td>MEDIUM</td>
+      <td>Chunk per-file, selective context, PR size warning</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Prompt injection</td>
+      <td>CRITICAL</td>
+      <td>LOW&ndash;MED</td>
+      <td>Input sanitization, Layer 1 backstop</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Cost explosion</td>
+      <td>MEDIUM</td>
+      <td>MEDIUM</td>
+      <td>Layered cost model, budget caps</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Cross-cultural</td>
+      <td>MEDIUM</td>
+      <td>MEDIUM</td>
+      <td>Structured format, configurable tone</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="warning" title="Most Dangerous Risks">
+  <p>
+    <strong>Risks #2 (Cry Wolf) and #6 (Generic feedback) are the most dangerous</strong> &mdash; they lead to abandonment.
+    If developers stop reading VCR comments, all other mitigations are irrelevant.
+  </p>
+</Callout>
+
+</DocLayout>

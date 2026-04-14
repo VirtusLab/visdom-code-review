@@ -1,0 +1,124 @@
+---
+import DocLayout from '../layouts/DocLayout.astro';
+import Callout from '../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="Reporter"
+  subtitle="Aggregated findings, inline comments, and reviewer guidance in a single structured PR comment."
+  section="Architecture"
+  tags={[
+    { label: "Output", variant: "green" },
+  ]}
+  prev={{ label: "Layer 3 — AI Deep Review", href: `${base}layers/ai-deep-review` }}
+  next={{ label: "Proactive Scanner", href: `${base}proactive-scanner` }}
+>
+
+<p>
+  The Reporter collects results from <strong>all layers</strong> into one structured PR comment. Rather than
+  scattering findings across multiple bot comments, VCR produces a single, scannable summary that guides
+  both human reviewers and automated workflows.
+</p>
+
+<h2>PR Comment Format</h2>
+
+<p>
+  Every PR receives exactly one VCR comment. The format is consistent across all risk levels, so reviewers
+  always know where to look.
+</p>
+
+<div class="border border-visdom-gray-200 rounded-lg bg-visdom-gray-50 p-5 mb-6">
+<pre><code>## 🔍 VISDOM Code Review — Risk: HIGH
+
+### Summary
+This PR modifies authentication middleware and adds a new API endpoint.
+Layer 3 deep review was triggered (critical path + coverage drop).
+
+### 🚨 Blocking (must fix)
+| # | Severity | Category | File | Finding |
+|---|----------|----------|------|---------|
+| 1 | CRITICAL | Security | auth.ts:42 | SQL injection via unsanitized input |
+| 2 | HIGH | Testing | - | No tests for new /api/reset endpoint |
+
+### ⚠️ Recommendations (should fix)
+| # | Severity | Category | File | Finding |
+|---|----------|----------|------|---------|
+| 3 | MEDIUM | Performance | users.ts:88 | N+1 query in loop |
+| 4 | MEDIUM | Circular Test | auth.test.ts | Tests mirror implementation, don't verify spec |
+
+### 💡 Suggestions (nice to have)
+- Consider extracting validation logic to shared utility (auth.ts:30-45)
+
+### 📊 Stats
+- Files reviewed: 8 | Lines changed: +142 / -38
+- Coverage delta: -2.3% (67.2% → 64.9%)
+- Layers: L1 ✅ → L2 (HIGH) → L3 (Security, Performance, Testing, Architecture)
+- AI-generated code detected: Yes (confidence: 0.82)
+- TORS: 94% (2 flaky tests excluded from signal)
+
+### 🧑‍💻 Reviewer Guidance
+Focus your review on: **auth.ts** (security findings) and **test coverage gap**.
+Suggested reviewer: @senior-krakow (top expertise for this module).</code></pre>
+</div>
+
+<h2>Inline Comments</h2>
+
+<p>
+  In addition to the summary comment, VCR posts <strong>inline comments</strong> on specific PR lines &mdash;
+  directly where the problem is. Each inline comment includes category, severity, and a concrete fix suggestion.
+</p>
+
+<Callout type="warning" title="Hard Cap">
+  <p>
+    Maximum <strong>15 inline comments</strong> per PR (configurable via <code>reporter.max_inline_comments</code>).
+    This prevents notification flood and keeps signal-to-noise high.
+  </p>
+</Callout>
+
+<h2>Output Channels</h2>
+
+<p>
+  VCR supports multiple output channels. All channels are configurable in
+  <a href={`${base}configuration`}><code>vcr-config.yaml</code></a>.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th>When</th>
+      <th>Format</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PR Comment</td>
+      <td>Always</td>
+      <td>Markdown summary</td>
+    </tr>
+    <tr>
+      <td>PR Inline Comments</td>
+      <td>Always</td>
+      <td>Per-finding inline</td>
+    </tr>
+    <tr>
+      <td>GitHub Check</td>
+      <td>Always</td>
+      <td>Pass/Fail status check</td>
+    </tr>
+    <tr>
+      <td>Slack notification</td>
+      <td>Configurable</td>
+      <td>Summary + PR link</td>
+    </tr>
+    <tr>
+      <td>Metrics export</td>
+      <td>Always</td>
+      <td>JSON for dashboard/tracking</td>
+    </tr>
+  </tbody>
+</table>
+
+</DocLayout>

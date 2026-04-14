@@ -1,0 +1,25 @@
+---
+interface Props {
+  layer: 0 | 1 | 2 | 3;
+  label?: string;
+}
+
+const { layer, label } = Astro.props;
+
+const colors = {
+  0: 'bg-visdom-gray-100 text-visdom-gray-700 border-visdom-gray-300',
+  1: 'bg-blue-100 text-blue-700 border-blue-300',
+  2: 'bg-amber-100 text-amber-700 border-amber-300',
+  3: 'bg-purple-100 text-purple-700 border-purple-300',
+};
+
+const labels = {
+  0: 'Layer 0 — Context',
+  1: 'Layer 1 — Deterministic',
+  2: 'Layer 2 — AI Quick Scan',
+  3: 'Layer 3 — AI Deep Review',
+};
+---
+<span class={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${colors[layer]}`}>
+  {label || labels[layer]}
+</span>

@@ -1,0 +1,351 @@
+---
+import DocLayout from '../layouts/DocLayout.astro';
+import Callout from '../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="Metrics Framework"
+  subtitle="Per-layer metrics with concrete targets, plus end-to-end VISDOM SDLC integration."
+  section="Reference"
+  tags={[
+    { label: "Metrics", variant: "green" },
+    { label: "ITS", variant: "outline" },
+    { label: "CPI", variant: "outline" },
+    { label: "TORS", variant: "outline" },
+  ]}
+  prev={{ label: "Configuration", href: `${base}configuration` }}
+  next={{ label: "Before/After", href: `${base}before-after` }}
+>
+
+<p>
+  Each layer has its own metrics, measured at its stage. End-to-end metrics align with the
+  VISDOM Agent-Ready SDLC metrics framework (ITS, CPI, TORS).
+</p>
+
+<!-- Layer 0 -->
+<h2>Layer 0 — Context Collection</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Target</th>
+      <th>Measured when</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Context build time</td>
+      <td>&lt;10s</td>
+      <td>After Layer 0 completes</td>
+    </tr>
+    <tr>
+      <td>Knowledge layer cache hit rate</td>
+      <td>&gt;90%</td>
+      <td>On each query</td>
+    </tr>
+    <tr>
+      <td>Context completeness</td>
+      <td>100% required fields</td>
+      <td>Validation of <code>review-context.json</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Layer 1 -->
+<h2>Layer 1 — Deterministic Gate</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Target</th>
+      <th>Measured when</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Gate execution time</td>
+      <td>&lt;60s</td>
+      <td>After Layer 1 completes</td>
+    </tr>
+    <tr>
+      <td>Secret detection recall</td>
+      <td>100% (zero false negatives)</td>
+      <td>Quarterly audit with known secrets</td>
+    </tr>
+    <tr>
+      <td>SAST findings per PR</td>
+      <td>Trending down</td>
+      <td>After each PR</td>
+    </tr>
+    <tr>
+      <td>Blocking rate</td>
+      <td>&lt;10% PRs blocked</td>
+      <td>After each PR</td>
+    </tr>
+    <tr>
+      <td>TORS</td>
+      <td>&gt;85%</td>
+      <td>Computed from test reliability data</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Layer 2 -->
+<h2>Layer 2 — AI Quick Scan</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Target</th>
+      <th>Measured when</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Scan time</td>
+      <td>&lt;2 min</td>
+      <td>After Layer 2 completes</td>
+    </tr>
+    <tr>
+      <td>Risk classification accuracy</td>
+      <td>&gt;85% agreement with human</td>
+      <td>Comparison: VCR risk vs reviewer judgment</td>
+    </tr>
+    <tr>
+      <td>Quick findings acceptance rate</td>
+      <td>&gt;60%</td>
+      <td>Developer reaction on findings</td>
+    </tr>
+    <tr>
+      <td>Layer 3 trigger rate</td>
+      <td>30-50% of PRs</td>
+      <td>After classification (too low = miss risk, too high = waste)</td>
+    </tr>
+    <tr>
+      <td>Token cost per scan</td>
+      <td>&lt;$0.05 avg</td>
+      <td>Per invocation</td>
+    </tr>
+    <tr>
+      <td>AI-code detection precision</td>
+      <td>&gt;80%</td>
+      <td>Comparison with known AI-generated PRs</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Layer 3 -->
+<h2>Layer 3 — AI Deep Review</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Target</th>
+      <th>Measured when</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Deep review time</td>
+      <td>&lt;10 min</td>
+      <td>After Layer 3 completes</td>
+    </tr>
+    <tr>
+      <td>Finding severity distribution</td>
+      <td>More HIGH/CRITICAL than LOW</td>
+      <td>If L3 produces mainly LOW findings, risk classifier is too aggressive</td>
+    </tr>
+    <tr>
+      <td>False positive rate</td>
+      <td>&lt;15%</td>
+      <td>Developer reaction per finding</td>
+    </tr>
+    <tr>
+      <td>Actionable finding rate</td>
+      <td>&gt;80%</td>
+      <td>Finding has concrete fix suggestion</td>
+    </tr>
+    <tr>
+      <td>Token cost per review</td>
+      <td>&lt;$2.00 avg</td>
+      <td>Per invocation</td>
+    </tr>
+    <tr>
+      <td>Circular test detection rate</td>
+      <td>Tracked, no target</td>
+      <td>Per PR with new/modified tests</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Reporter -->
+<h2>Reporter</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Target</th>
+      <th>Measured when</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Time to first comment</td>
+      <td>&lt;5 min (L2 only), &lt;15 min (L2+L3)</td>
+      <td>Timestamp PR open to first VCR comment</td>
+    </tr>
+    <tr>
+      <td>Comment engagement rate</td>
+      <td>&gt;50% PRs have reaction</td>
+      <td>24h after comment</td>
+    </tr>
+    <tr>
+      <td>Reviewer guidance accuracy</td>
+      <td>&gt;70%</td>
+      <td>Human reviewer confirms focus areas matched</td>
+    </tr>
+    <tr>
+      <td>Suggested reviewer acceptance</td>
+      <td>&gt;60%</td>
+      <td>Was the expertise-based suggestion used?</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Proactive Scanner -->
+<h2>Proactive Scanner</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Target</th>
+      <th>Measured when</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Scan completion rate</td>
+      <td>100% scheduled scans</td>
+      <td>After each cron run</td>
+    </tr>
+    <tr>
+      <td>Trend detection lead time</td>
+      <td>&gt;2 weeks before problem</td>
+      <td>Comparison: when scanner flagged vs when it became incident</td>
+    </tr>
+    <tr>
+      <td>Created issues resolution rate</td>
+      <td>&gt;50% within 30 days</td>
+      <td>Tracking auto-created issues</td>
+    </tr>
+    <tr>
+      <td>Convention drift detection</td>
+      <td>Drift flagged within 2 weeks</td>
+      <td>Cross-team pattern comparison</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- End-to-End -->
+<h2>End-to-End — VISDOM SDLC Metrics Integration</h2>
+
+<Callout type="reference" title="VISDOM Agent-Ready SDLC">
+  <p>
+    These metrics connect VCR to the broader VISDOM Agent-Ready SDLC framework described in the blog series.
+    ITS, CPI, and TORS are the three core metrics for measuring AI agent effectiveness across the software delivery lifecycle.
+  </p>
+</Callout>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Definition</th>
+      <th>Target</th>
+      <th>Connection to VISDOM SDLC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>ITS (Iterations-to-Success)</strong></td>
+      <td>Iterations from task assignment to passing CI</td>
+      <td>1-3 healthy, 5-10 warning, 20+ structural failure</td>
+      <td>VCR reduces ITS by filtering flaky tests (TORS) and providing early feedback before agent iterates</td>
+    </tr>
+    <tr>
+      <td><strong>CPI (Cost-per-Iteration)</strong></td>
+      <td>Tokens + compute + CI + review per iteration</td>
+      <td>Trending down</td>
+      <td>VCR reduces review component of CPI; TORS reduces wasted iterations</td>
+    </tr>
+    <tr>
+      <td><strong>TORS (Test Oracle Reliability Score)</strong></td>
+      <td>% of test failures that are real regressions</td>
+      <td>&gt;85%</td>
+      <td>Directly measured by Layer 1; feeds into Layer 2 risk classification</td>
+    </tr>
+    <tr>
+      <td><strong>Escaped defects</strong></td>
+      <td>Bugs in production in areas covered by VCR</td>
+      <td>Trending down</td>
+      <td>Primary outcome metric</td>
+    </tr>
+    <tr>
+      <td><strong>4x Hidden Tax visibility</strong></td>
+      <td>License + compute + tokens + review breakdown</td>
+      <td>Fully tracked</td>
+      <td>VCR dashboard provides real-time cost breakdown</td>
+    </tr>
+    <tr>
+      <td><strong>Senior review time</strong></td>
+      <td>Time seniors spend on code review</td>
+      <td>-30% vs baseline</td>
+      <td>VCR pre-annotates PRs, focuses reviewer attention</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Feedback Mechanism -->
+<h2>Feedback Mechanism</h2>
+
+<p>Each VCR finding supports developer reactions that feed back into per-layer metrics:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Reaction</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>&#128077;</td>
+      <td>Finding was helpful, fixed it</td>
+    </tr>
+    <tr>
+      <td>&#128078;</td>
+      <td>False positive / not relevant</td>
+    </tr>
+    <tr>
+      <td>&#129300;</td>
+      <td>Not sure, needs discussion</td>
+    </tr>
+  </tbody>
+</table>
+
+<Callout type="tip" title="Feedback loop maturity">
+  <p>
+    During pilot, VirtusLab analyzes reactions manually. In mature deployments, reactions inform
+    prompt tuning and risk classifier calibration automatically.
+  </p>
+</Callout>
+
+</DocLayout>

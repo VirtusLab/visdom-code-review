@@ -1,0 +1,167 @@
+---
+import DocLayout from '../layouts/DocLayout.astro';
+import Callout from '../components/Callout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<DocLayout
+  title="Configuration"
+  subtitle="Everything is configured via .vcr/vcr-config.yaml and the lenses directory."
+  section="Reference"
+  tags={[
+    { label: "Reference", variant: "gray" },
+  ]}
+  prev={{ label: "Proactive Scanner", href: `${base}proactive-scanner` }}
+  next={{ label: "Metrics", href: `${base}metrics` }}
+>
+
+<p>
+  VCR configuration lives in the <code>.vcr/</code> directory at the repository root. All behavior &mdash;
+  AI models, risk thresholds, lenses, output channels &mdash; is controlled declaratively.
+</p>
+
+<h2>Repository Structure</h2>
+
+<pre><code>.vcr/
+├── vcr-config.yaml          # Main configuration
+├── conventions.md            # Repo conventions (AI reads this)
+├── lenses/                   # Review lenses (prompts)
+│   ├── security.md
+│   ├── performance.md
+│   ├── architecture.md
+│   ├── test-quality.md
+│   ├── ai-code-safety.md
+│   ├── conventions.md
+│   └── custom/              # Client adds their own
+│       └── banking-compliance.md
+├── rules/                    # Deterministic rules (Layer 1)
+│   ├── semgrep-custom.yaml
+│   └── eslint-overrides.json
+└── templates/                # Output templates
+    ├── pr-comment.md
+    └── proactive-report.md</code></pre>
+
+<Callout type="tip" title="Custom Lenses">
+  <p>
+    Add domain-specific review lenses in <code>.vcr/lenses/custom/</code>. These are markdown files
+    that instruct the AI on what to look for &mdash; e.g., banking compliance, HIPAA, or internal API standards.
+  </p>
+</Callout>
+
+<h2>vcr-config.yaml</h2>
+
+<p>
+  The full configuration reference. All fields have sensible defaults; only override what you need.
+</p>
+
+<pre><code>version: "1.0"
+
+# AI provider
+ai:
+  provider: "anthropic"           # anthropic | openai | azure-openai
+  layer2_model: "claude-haiku-4-5"
+  layer3_model: "claude-sonnet-4-6"
+  layer3_critical_model: "claude-opus-4-6"  # Optional: most capable for CRITICAL
+
+# Repository knowledge layer
+context:
+  # Any system providing ownership, dependencies, history, expertise
+  # VCR queries this via CLI or MCP protocol
+  provider: "vidia"               # vidia | custom | github-native
+  queries:
+    ownership: true
+    dependencies: true
+    pr_history: true
+    expertise: true
+    commit_heatmap: true
+
+# Path classification
+path_classifications:
+  critical: ["src/auth/**", "src/payments/**", "infra/**", "*.tf"]
+  sensitive: ["src/api/**", "src/middleware/**"]
+  standard: ["src/**"]
+  low_risk: ["docs/**", "*.md", "test/**"]
+
+# Layer 1
+layer1:
+  secret_scan: true
+  sast: true
+  coverage_threshold: -5          # Max allowed coverage drop %
+  blocking_severity: "HIGH"
+  tors:
+    enabled: true
+    flaky_threshold: 0.5          # Tests below this reliability are excluded
+
+# Layer 2
+layer2:
+  always_run: true
+  max_findings: 5
+  min_confidence: 0.8
+  risk_overrides:
+    always_high: ["src/auth/**"]
+    always_skip_layer3: ["docs/**"]
+
+# Layer 3
+layer3:
+  enabled_lenses: ["security", "performance", "test-quality", "conventions"]
+  extra_lenses_for_high: ["architecture"]
+  extra_lenses_for_critical: ["architecture", "ai-code-safety"]
+  custom_lenses: ["custom/banking-compliance"]
+  chunk_threshold: 500            # Lines above which per-file chunking activates
+
+# Reporter
+reporter:
+  pr_comment: true
+  inline_comments: true
+  max_inline_comments: 15
+  github_check: true
+  tone: "constructive"            # direct | constructive | educational
+  slack_webhook: null
+
+# Proactive Scanner
+proactive:
+  enabled: true
+  schedule: "0 6 * * 1"          # Mondays 6 AM
+  scans: ["coverage_trends", "tech_debt", "security_baseline", "convention_drift"]
+  output: "github_issues"
+
+# Budget
+budget:
+  max_daily_layer3_spend: 50      # USD
+  track_cost_per_finding: true</code></pre>
+
+<h2>GitHub Actions Reference Implementation</h2>
+
+<p>
+  VCR runs as a GitHub Actions workflow. The reference implementation requires only three inputs:
+  the config path, an AI API key, and a GitHub token.
+</p>
+
+<pre set:html={`<code># .github/workflows/vcr-review.yaml
+name: VISDOM Code Review
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+jobs:
+  vcr-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: virtuslab/vcr-action@v1
+        with:
+          config: .vcr/vcr-config.yaml
+          ai_api_key: \${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: \${{ secrets.GITHUB_TOKEN }}</code>`} />
+
+<Callout type="info" title="fetch-depth: 0">
+  <p>
+    Full git history is required for Layer 0 context collection &mdash; ownership data, commit heatmaps,
+    and dependency analysis all depend on historical commits.
+  </p>
+</Callout>
+
+</DocLayout>
