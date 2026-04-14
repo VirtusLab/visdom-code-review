@@ -6,7 +6,7 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <DocLayout
-  title="Layer 3 — AI Deep Review"
+  title="Layer 3: AI Deep Review"
   subtitle="Full analysis with repo context, history, and conventions. Multiple Review Lenses."
   section="Architecture"
   tags={[
@@ -14,13 +14,13 @@ const base = import.meta.env.BASE_URL;
     { label: "AI-Powered", variant: "green" },
     { label: "Review Lenses", variant: "outline" },
   ]}
-  prev={{ label: "Layer 2 — AI Quick Scan", href: `${base}reference/layers/ai-quick-scan/` }}
+  prev={{ label: "Layer 2: AI Quick Scan", href: `${base}reference/layers/ai-quick-scan/` }}
   next={{ label: "Reporter", href: `${base}reference/reporter/` }}
 >
 
 <p>
   Full analysis. Triggered only for MEDIUM+ risk PRs. Expensive but high-value. Each review category runs as an
-  independent <strong>Review Lens</strong> &mdash; a separate prompt with its own focus area and output schema.
+  independent <strong>Review Lens</strong>, a separate prompt with its own focus area and output schema.
   Lenses run in parallel.
 </p>
 
@@ -29,10 +29,10 @@ const base = import.meta.env.BASE_URL;
 <p>Everything from previous layers, plus:</p>
 
 <ul>
-  <li><strong>Full files</strong> (not just diff) &mdash; AI sees the entire module</li>
-  <li><strong>Related files</strong> &mdash; files imported by changed files (from dependency graph)</li>
-  <li><strong>Conventions doc</strong> &mdash; extracted from repo conventions, architecture docs, ADRs</li>
-  <li><strong>Historical context</strong> &mdash; how this module evolved (from repository knowledge layer)</li>
+  <li><strong>Full files</strong> (not just diff): AI sees the entire module</li>
+  <li><strong>Related files</strong>: files imported by changed files (from dependency graph)</li>
+  <li><strong>Conventions doc</strong>: extracted from repo conventions, architecture docs, ADRs</li>
+  <li><strong>Historical context</strong>: how this module evolved (from repository knowledge layer)</li>
 </ul>
 
 <h2>Review Lenses (VISDOM Standard)</h2>
@@ -82,7 +82,7 @@ const base = import.meta.env.BASE_URL;
 <h2>Circular Test Detection</h2>
 
 <p>
-  The Test Quality lens includes explicit detection of circular tests &mdash; tests derived from implementation rather
+  The Test Quality lens includes explicit detection of <strong>circular tests</strong>, tests derived from implementation rather
   than specification:
 </p>
 

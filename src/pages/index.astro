@@ -7,7 +7,7 @@ const base = import.meta.env.BASE_URL;
 ---
 <DocLayout
   title="Your team writes code with AI. Your review process doesn't know that."
-  subtitle="VISDOM Code Review is a reference process for enterprise code review in the age of AI-assisted development. Not a tool — a process."
+  subtitle="VISDOM Code Review is a reference process for enterprise code review in the age of AI-assisted development. Not a tool. A process."
   tags={[
     { label: "VISDOM", variant: "green" },
     { label: "Reference Process", variant: "outline" },
@@ -16,7 +16,7 @@ const base = import.meta.env.BASE_URL;
 
 <p>
   Your developers use Copilot, Claude, Cursor. Your CI says the code is fine. Your tests pass.
-  But 45% of AI-generated code contains OWASP vulnerabilities that those tests will never catch — because
+  But 45% of AI-generated code contains OWASP vulnerabilities that those tests will never catch, because
   <strong>the AI wrote the tests too</strong>.
 </p>
 
@@ -27,7 +27,7 @@ const base = import.meta.env.BASE_URL;
 </p>
 
 <p>
-  VISDOM Code Review (VCR) is how we solve this at VirtusLab — and how we help our clients solve it.
+  <strong>VISDOM Code Review</strong> (<strong>VCR</strong>) is how we solve this at VirtusLab, and how we help our clients solve it.
   It's a <strong>structured, multi-layered review process</strong> that we deploy on your teams, configure for
   your stack, and hand over for you to own.
 </p>
@@ -65,7 +65,7 @@ const base = import.meta.env.BASE_URL;
 
 <h2>The short version</h2>
 
-<p>Every PR passes through layers of increasing depth — fast and cheap for trivial changes, thorough for risky ones:</p>
+<p>Every PR passes through layers of increasing depth, fast and cheap for trivial changes, thorough for risky ones:</p>
 
 <div class="bg-visdom-gray-50 border border-visdom-gray-200 rounded-lg p-5 mb-6 font-mono text-sm">
 <pre class="!bg-transparent !p-0 !mb-0 text-visdom-gray-600"><code>PR opened
@@ -82,16 +82,16 @@ Structured PR comment + reviewer guidance</code></pre>
 
 <p>
   A LOW-risk PR gets feedback in under 2 minutes at ~$0.05.
-  A CRITICAL PR gets deep analysis across security, performance, architecture, and AI-code patterns — and
+  A CRITICAL PR gets deep analysis across security, performance, architecture, and AI-code patterns, and
   your senior reviewer gets a pre-annotated PR that tells them exactly where to look.
 </p>
 
 <h2>What this is not</h2>
 
 <ul>
-  <li><strong>Not a SaaS product</strong> — it's a reference process we implement on your infrastructure during a consulting engagement</li>
-  <li><strong>Not tied to specific tools</strong> — the process works with any LLM provider, any CI platform, any code host. We provide reference implementations, you can swap components</li>
-  <li><strong>Not a replacement for human review</strong> — it's a force multiplier. Seniors review fewer PRs, but with better context and focus</li>
+  <li><strong>Not a SaaS product.</strong> It's a reference process we implement on your infrastructure during a consulting engagement.</li>
+  <li><strong>Not tied to specific tools.</strong> The process works with any LLM provider, any CI platform, any code host. We provide reference implementations, you can swap components.</li>
+  <li><strong>Not a replacement for human review.</strong> It's a force multiplier. Seniors review fewer PRs, but with better context and focus.</li>
 </ul>
 
 <h2>What your team is saying right now</h2>
@@ -101,11 +101,11 @@ Structured PR comment + reviewer guidance</code></pre>
 </PersonaCard>
 
 <PersonaCard name="Your Platform Engineer" role="Ewa's problem" color="purple">
-  <p>"Our agents burn $30 per task because they loop on flaky tests. The CI lies to them. And nobody's tracking the real cost — leadership thinks AI costs us $950/month in Copilot licenses."</p>
+  <p>"Our agents burn $30 per task because they loop on flaky tests. The CI lies to them. And nobody's tracking the real cost. Leadership thinks AI costs us $950/month in Copilot licenses."</p>
 </PersonaCard>
 
 <PersonaCard name="Your Senior Developer" role="Rajesh's problem" color="blue">
-  <p>"Copilot-generated PRs look clean but they're over-engineered — unnecessary Factory patterns, hallucinated APIs, tests that mirror the implementation instead of verifying it. I catch this stuff, but I can't review everything."</p>
+  <p>"Copilot-generated PRs look clean but they're over-engineered: unnecessary Factory patterns, hallucinated APIs, tests that mirror the implementation instead of verifying it. I catch this stuff, but I can't review everything."</p>
 </PersonaCard>
 
 <p>
@@ -126,14 +126,14 @@ Structured PR comment + reviewer guidance</code></pre>
     <span class="flex-shrink-0 w-8 h-8 rounded-full bg-visdom-green text-white flex items-center justify-center text-sm font-bold">2</span>
     <div>
       <h3 class="!mt-0 !mb-1">Pilot on 1-2 teams</h3>
-      <p class="text-sm !mb-0">We deploy VCR on your infrastructure — configured for your stack, your conventions, your risk thresholds. Working pipeline, real PRs, real feedback.</p>
+      <p class="text-sm !mb-0">We deploy VCR on your infrastructure, configured for your stack, your conventions, your risk thresholds. Working pipeline, real PRs, real feedback.</p>
     </div>
   </div>
   <div class="flex gap-4 items-start">
     <span class="flex-shrink-0 w-8 h-8 rounded-full bg-visdom-green text-white flex items-center justify-center text-sm font-bold">3</span>
     <div>
       <h3 class="!mt-0 !mb-1">Tune and measure</h3>
-      <p class="text-sm !mb-0">We track ITS, CPI, TORS, and developer satisfaction. We tune prompts, risk thresholds, and lens configurations based on real data from your teams.</p>
+      <p class="text-sm !mb-0">We track <strong>ITS</strong>, <strong>CPI</strong>, <strong>TORS</strong>, and developer satisfaction. We tune prompts, risk thresholds, and lens configurations based on real data from your teams.</p>
     </div>
   </div>
   <div class="flex gap-4 items-start">
@@ -149,7 +149,7 @@ Structured PR comment + reviewer guidance</code></pre>
 
 <p>
   VCR sits within the <strong>Automated Risk Assessment</strong> pillar of
-  <a href="https://virtuslab.com/services/visdom">VISDOM</a> — VirtusLab's Agent-Ready SDLC offering.
+  <a href="https://virtuslab.com/services/visdom">VISDOM</a>, VirtusLab's Agent-Ready SDLC offering.
   Alongside Context Fabric and Machine-Speed CI, it forms the infrastructure that makes
   AI-assisted development reliable at enterprise scale.
 </p>

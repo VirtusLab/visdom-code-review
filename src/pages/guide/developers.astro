@@ -8,7 +8,7 @@ const base = import.meta.env.BASE_URL;
 
 <DocLayout
   title="For Developers"
-  subtitle="What changes in your daily PR workflow — and why it's not another noisy bot."
+  subtitle="What changes in your daily PR workflow, and why it's not another noisy bot."
   section="Guide"
   tags={[
     { label: "Guide", variant: "green" },
@@ -20,7 +20,7 @@ const base = import.meta.env.BASE_URL;
 
 <p>
   You've seen bots on PRs before. They post 40 comments, half are wrong, and you ignore all of them
-  by the second week. VCR is built to be the opposite of that. Here's what actually changes in your
+  by the second week. <strong>VCR</strong> is built to be the opposite of that. Here's what actually changes in your
   day-to-day.
 </p>
 
@@ -35,13 +35,13 @@ const base = import.meta.env.BASE_URL;
 <p>Here's what it looks like:</p>
 
 <div class="bg-visdom-gray-50 border border-visdom-gray-200 rounded-lg p-4 mb-6 text-sm font-mono">
-  <p class="font-semibold text-visdom-gray-900 !mb-2">VISDOM Code Review — Risk: HIGH</p>
+  <p class="font-semibold text-visdom-gray-900 !mb-2">VISDOM Code Review | Risk: HIGH</p>
   <p class="!mb-1"><strong>Blocking (must fix):</strong></p>
-  <p class="text-red-700 !mb-1">&nbsp;&nbsp;1. CRITICAL — Security — auth.ts:42 — SQL injection via unsanitized input</p>
-  <p class="text-red-700 !mb-2">&nbsp;&nbsp;2. HIGH — Testing — No tests for new /api/reset endpoint</p>
+  <p class="text-red-700 !mb-1">&nbsp;&nbsp;1. CRITICAL | Security | auth.ts:42 | SQL injection via unsanitized input</p>
+  <p class="text-red-700 !mb-2">&nbsp;&nbsp;2. HIGH | Testing | No tests for new /api/reset endpoint</p>
   <p class="!mb-1"><strong>Recommendations (should fix):</strong></p>
-  <p class="text-amber-700 !mb-1">&nbsp;&nbsp;3. MEDIUM — Performance — users.ts:88 — N+1 query in loop</p>
-  <p class="text-amber-700 !mb-2">&nbsp;&nbsp;4. MEDIUM — Circular Test — auth.test.ts — Tests mirror implementation</p>
+  <p class="text-amber-700 !mb-1">&nbsp;&nbsp;3. MEDIUM | Performance | users.ts:88 | N+1 query in loop</p>
+  <p class="text-amber-700 !mb-2">&nbsp;&nbsp;4. MEDIUM | Circular Test | auth.test.ts | Tests mirror implementation</p>
   <p class="!mb-1"><strong>Suggestions (nice to have):</strong></p>
   <p class="text-visdom-gray-500 !mb-2">&nbsp;&nbsp;Extract validation logic to shared utility (auth.ts:30-45)</p>
   <p class="!mb-1"><strong>Reviewer Guidance:</strong> Focus on auth.ts (security) and test coverage gap.</p>
@@ -52,7 +52,7 @@ const base = import.meta.env.BASE_URL;
 
 <ul>
   <li><strong>Max 5 quick findings</strong> at the summary level (Layer 2)</li>
-  <li><strong>Max 15 inline comments</strong> on specific lines (Layer 3 — deep review)</li>
+  <li><strong>Max 15 inline comments</strong> on specific lines (<strong>Layer 3</strong>, deep review)</li>
   <li>If nothing important is found, you see this and nothing else:</li>
 </ul>
 
@@ -118,9 +118,9 @@ const base = import.meta.env.BASE_URL;
   ship AI-assisted code.
 </p>
 
-<h3>Circular tests</h3>
+<h3><strong>Circular tests</strong></h3>
 <p>
-  Your test passes, but it's testing that the code does what it does — not what it <em>should</em> do.
+  Your test passes, but it's testing that the code does what it does, not what it <em>should</em> do.
   Copilot generated both the code and the test, so the test is just a mirror of the implementation.
   VCR flags this pattern explicitly: "This test verifies implementation, not specification."
 </p>
@@ -137,7 +137,7 @@ const base = import.meta.env.BASE_URL;
 <p>
   You used a Factory pattern, but this module uses direct instantiation everywhere else. It's not
   <em>wrong</em>, but it'll confuse the next person (and the next agent) who works here. VCR flags
-  it so you can decide — maybe the Factory is better and the module should migrate, or maybe
+  it so you can decide. Maybe the Factory is better and the module should migrate, or maybe
   you should match the existing style.
 </p>
 
@@ -158,7 +158,7 @@ const base = import.meta.env.BASE_URL;
 
 <p>
   VCR learns from your reactions. Every finding has reaction buttons on the PR comment.
-  Use them — it takes one click and directly shapes what VCR comments on next time.
+  Use them. It takes one click and directly shapes what VCR comments on next time.
 </p>
 
 <table>
@@ -172,7 +172,7 @@ const base = import.meta.env.BASE_URL;
   <tbody>
     <tr>
       <td>&#128077;</td>
-      <td>Helpful — you fixed it</td>
+      <td>Helpful, you fixed it</td>
       <td>VCR gains confidence in this category for your codebase</td>
     </tr>
     <tr>
@@ -183,7 +183,7 @@ const base = import.meta.env.BASE_URL;
     <tr>
       <td>&#129300;</td>
       <td>Not sure, needs discussion</td>
-      <td>Flagged for team review — helps calibrate edge cases</td>
+      <td>Flagged for team review, helps calibrate edge cases</td>
     </tr>
   </tbody>
 </table>
@@ -200,10 +200,10 @@ const base = import.meta.env.BASE_URL;
 <p>Let's be clear about the boundaries so you don't have wrong expectations.</p>
 
 <ul>
-  <li><strong>Won't auto-fix your code</strong> — v1 reports findings. You decide what to do. (Auto-fix is planned for v2.)</li>
-  <li><strong>Won't replace human review</strong> — your senior still approves the PR. VCR tells them where to look, not what to decide.</li>
-  <li><strong>Won't block your PR</strong> — unless your team explicitly configures it to. By default, VCR advises.</li>
-  <li><strong>Won't comment on formatting, naming, or import order</strong> — that's what your linter is for. VCR focuses on things that cause actual problems.</li>
+  <li><strong>Won't auto-fix your code.</strong> v1 reports findings. You decide what to do. (Auto-fix is planned for v2.)</li>
+  <li><strong>Won't replace human review.</strong> Your senior still approves the PR. VCR tells them where to look, not what to decide.</li>
+  <li><strong>Won't block your PR</strong> unless your team explicitly configures it to. By default, VCR advises.</li>
+  <li><strong>Won't comment on formatting, naming, or import order.</strong> That's what your linter is for. VCR focuses on things that cause actual problems.</li>
 </ul>
 
 <!-- For senior developers -->
@@ -222,18 +222,18 @@ const base = import.meta.env.BASE_URL;
 
 <p>
   <strong>VCR tells you WHERE to look, not what to decide.</strong> It's a guide, not a replacement.
-  "Focus your review on auth.ts (security findings) and test coverage gap" — that's the kind of
+  "Focus your review on auth.ts (security findings) and test coverage gap." That's the kind of
   guidance you get.
 </p>
 
 <h3>Customization you'll care about</h3>
 
 <ul>
-  <li><strong>Custom Review Lenses</strong> — add domain-specific review categories for your modules.
+  <li><strong>Custom Review Lenses</strong>: add domain-specific review categories for your modules.
   If your team has specific patterns for database migrations or event sourcing, you can teach VCR
   to check for them.</li>
-  <li><strong>Conventions file</strong> — add your team's standards to <code>.vcr/conventions.md</code>
-  and VCR reads them. "We use direct instantiation, not Factory pattern" — that kind of thing.
+  <li><strong>Conventions file</strong>: add your team's standards to <code>.vcr/conventions.md</code>
+  and VCR reads them. "We use direct instantiation, not Factory pattern." That kind of thing.
   VCR will flag deviations.</li>
 </ul>
 
@@ -247,13 +247,13 @@ const base = import.meta.env.BASE_URL;
 
 <PersonaCard name="Junior in Bangalore" role="Frontend Developer" color="blue">
   <p>VCR taught me about circular tests. I didn't know my tests were just mirrors of my
-  implementation — they passed, so I thought they were fine. Now I actually write tests that
+  implementation. They passed, so I thought they were fine. Now I actually write tests that
   check behavior, not just that the code runs.</p>
 </PersonaCard>
 
 <PersonaCard name="Senior in Krakow" role="Tech Lead" color="green">
   <p>I review 40% fewer PRs but catch more real issues. The AI-Code Safety lens caught a
-  hallucinated API last week that I would have missed — it looked completely correct at first
+  hallucinated API last week that I would have missed. It looked completely correct at first
   glance. VCR told me exactly which line to look at and why.</p>
 </PersonaCard>
 

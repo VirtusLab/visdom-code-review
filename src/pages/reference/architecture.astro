@@ -7,14 +7,14 @@ const base = import.meta.env.BASE_URL;
 ---
 <DocLayout
   title="Architecture"
-  subtitle="Layered Review Agent — review depth scales with risk."
+  subtitle="Layered Review Agent: review depth scales with risk."
   section="Overview"
   tags={[
     { label: "Architecture", variant: "green" },
     { label: "Layered Model", variant: "outline" },
   ]}
   prev={{ label: "Overview", href: `${base}` }}
-  next={{ label: "Layer 0 — Context Collection", href: `${base}reference/layers/context-collection/` }}
+  next={{ label: "Layer 0: Context Collection", href: `${base}reference/layers/context-collection/` }}
 >
 
 <h2>Mental Model</h2>
@@ -158,7 +158,7 @@ const base = import.meta.env.BASE_URL;
 
 <Callout type="tip" title="Deterministic signals first">
   <p>
-    Risk classification is <strong>primarily deterministic</strong> — path classification, diff size,
+    Risk classification is <strong>primarily deterministic</strong>: path classification, diff size,
     coverage delta, module stability. AI judgment is one input among several, not the sole decider.
     This mitigates the non-determinism problem (same PR, different risk score on re-run).
   </p>
@@ -169,15 +169,15 @@ const base = import.meta.env.BASE_URL;
 <p>
   Layer 1 is immune to prompt injection, hallucination, and non-determinism. Even if an attacker
   manipulates the AI layers via code comments or PR descriptions, Layer 1's secret scanning
-  and SAST analysis still catches deterministic patterns. It is the floor — the minimum guarantee.
+  and SAST analysis still catches deterministic patterns. It is the floor, the minimum guarantee.
 </p>
 
 <h3>Precision Over Recall</h3>
 
 <p>
   VCR is tuned for precision, not recall. Better to miss a LOW-severity finding than report
-  a false positive. The "Cry Wolf" effect — developers ignoring all AI comments after too many
-  false positives — is the single biggest risk to adoption.
+  a false positive. The <strong>Cry Wolf effect</strong>, developers ignoring all AI comments after too many
+  false positives, is the single biggest risk to adoption.
 </p>
 
 <ul>
@@ -186,7 +186,7 @@ const base = import.meta.env.BASE_URL;
   <li>If nothing important found: <code>✅ VCR: No issues found (risk: LOW)</code></li>
 </ul>
 
-<h3>TORS — Test Oracle Reliability Score</h3>
+<h3>TORS: Test Oracle Reliability Score</h3>
 
 <p>
   VCR measures which tests are reliable and which are flaky. Flaky tests are excluded from
@@ -205,11 +205,11 @@ If TORS &lt; threshold → test excluded from feedback signal</code></pre>
 </p>
 
 <ul>
-  <li><strong>Coverage trends</strong> — per-module test coverage over time</li>
-  <li><strong>Tech debt</strong> — large files, circular dependencies, growing complexity</li>
-  <li><strong>Convention drift</strong> — does new code diverge from established patterns? Cross-team comparison</li>
-  <li><strong>Security baseline</strong> — full SAST scan, dependency vulnerabilities</li>
-  <li><strong>AI-code audit</strong> — which modules have high AI-generated code density</li>
+  <li><strong>Coverage trends</strong>: per-module test coverage over time</li>
+  <li><strong>Tech debt</strong>: large files, circular dependencies, growing complexity</li>
+  <li><strong>Convention drift</strong>: does new code diverge from established patterns? Cross-team comparison</li>
+  <li><strong>Security baseline</strong>: full SAST scan, dependency vulnerabilities</li>
+  <li><strong>AI-code audit</strong>: which modules have high AI-generated code density</li>
 </ul>
 
 <p>

@@ -6,7 +6,7 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <DocLayout
-  title="Layer 2 — AI Quick Scan"
+  title="Layer 2: AI Quick Scan"
   subtitle="Fast AI pass over the diff. Risk classification + quick findings + AI-code detection."
   section="Architecture"
   tags={[
@@ -14,8 +14,8 @@ const base = import.meta.env.BASE_URL;
     { label: "AI-Powered", variant: "green" },
     { label: "Risk Classifier", variant: "outline" },
   ]}
-  prev={{ label: "Layer 1 — Deterministic Gate", href: `${base}reference/layers/deterministic-gate/` }}
-  next={{ label: "Layer 3 — AI Deep Review", href: `${base}reference/layers/ai-deep-review/` }}
+  prev={{ label: "Layer 1: Deterministic Gate", href: `${base}reference/layers/deterministic-gate/` }}
+  next={{ label: "Layer 3: AI Deep Review", href: `${base}reference/layers/ai-deep-review/` }}
 >
 
 <p>
@@ -158,7 +158,7 @@ LOW:      small diff + standard/low_risk paths + coverage stable</code></pre>
 <h2>Risk Analysis: What Can Go Wrong</h2>
 
 <p>
-  Layer 2 is the hinge of the system &mdash; it determines cost, depth, and trust.
+  <strong>Layer 2</strong> is the hinge of the system. It determines cost, depth, and trust.
   The following risks have been researched and mitigated in the design.
 </p>
 
@@ -184,7 +184,7 @@ LOW:      small diff + standard/low_risk paths + coverage stable</code></pre>
 </p>
 
 <!-- Risk 2 -->
-<h3>Risk 2: "Cry Wolf" Effect &mdash; Developer Alert Fatigue</h3>
+<h3>Risk 2: <strong>Cry Wolf Effect</strong>, Developer Alert Fatigue</h3>
 
 <Callout type="warning" title="Risk: Cry Wolf Effect">
   <p>
@@ -249,7 +249,7 @@ LOW:      small diff + standard/low_risk paths + coverage stable</code></pre>
 <ul>
   <li>Input sanitization: strip suspicious instruction patterns before passing to AI</li>
   <li>Segregated prompts: system prompt with hard rules ("NEVER skip security analysis") separated from user content</li>
-  <li>Canary checks: include known-bad patterns in test &mdash; if AI misses them, injection likely occurred</li>
+  <li>Canary checks: include known-bad patterns in test. If AI misses them, injection likely occurred.</li>
   <li><strong>Layer 1 as backstop:</strong> deterministic SAST/secret scan is immune to prompt injection. Even if Layer 2 AI is manipulated, Layer 1 still blocks.</li>
 </ul>
 
@@ -282,7 +282,7 @@ LOW:      small diff + standard/low_risk paths + coverage stable</code></pre>
 
 <Callout type="warning" title="Risk: Generic Feedback">
   <p>
-    Without repo context, AI falls back to generic "code reviewer" mode &mdash; commenting on naming, suggesting docstrings,
+    Without repo context, AI falls back to generic "code reviewer" mode, commenting on naming, suggesting docstrings,
     flagging missing type hints. Nothing a senior would not see in 5 seconds.
   </p>
 </Callout>
@@ -296,12 +296,12 @@ LOW:      small diff + standard/low_risk paths + coverage stable</code></pre>
 <ul>
   <li>Repository knowledge layer provides repo-specific conventions, patterns, ownership</li>
   <li>Anti-patterns in prompts: "DO NOT comment on naming style, missing docs, import order, formatting"</li>
-  <li>Conventions file (<code>.vcr/conventions.md</code>) &mdash; client defines "in our repo we do X, not Y"</li>
+  <li>Conventions file (<code>.vcr/conventions.md</code>): client defines "in our repo we do X, not Y"</li>
   <li>Minimum severity in Layer 2: Quick Scan does not report below MEDIUM</li>
 </ul>
 
 <!-- Risk 7 -->
-<h3>Risk 7: AI Reviewing AI &mdash; Blind Spots</h3>
+<h3>Risk 7: AI Reviewing AI, Blind Spots</h3>
 
 <Callout type="warning" title="Risk: AI Reviewing AI">
   <p>
@@ -312,7 +312,7 @@ LOW:      small diff + standard/low_risk paths + coverage stable</code></pre>
 
 <p>
   <strong>Evidence:</strong> Veracode 2025 tested 100+ LLMs: 45% of AI-generated code contains OWASP vulnerabilities.
-  Models' own tests caught none of them. Spotify's LLM-as-judge vetoes 25% of agent output &mdash; meaning 1 in 4 passes
+  Models' own tests caught none of them. Spotify's LLM-as-judge vetoes 25% of agent output, meaning 1 in 4 passes
   CI but is wrong.
 </p>
 
@@ -418,7 +418,7 @@ LOW:      small diff + standard/low_risk paths + coverage stable</code></pre>
 
 <Callout type="warning" title="Most Dangerous Risks">
   <p>
-    <strong>Risks #2 (Cry Wolf) and #6 (Generic feedback) are the most dangerous</strong> &mdash; they lead to abandonment.
+    <strong>Risks #2 (Cry Wolf) and #6 (Generic feedback) are the most dangerous.</strong> They lead to abandonment.
     If developers stop reading VCR comments, all other mitigations are irrelevant.
   </p>
 </Callout>

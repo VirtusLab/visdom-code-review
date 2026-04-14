@@ -16,7 +16,7 @@ const base = import.meta.env.BASE_URL;
 
 <p>
   Every tool promises to make things better. Here are four situations your team has already lived
-  through — and what they look like with VCR in the pipeline. No theory. Just the difference.
+  through, and what they look like with <strong>VCR</strong> in the pipeline. No theory. Just the difference.
 </p>
 
 <!-- Scenario 1 -->
@@ -24,7 +24,7 @@ const base = import.meta.env.BASE_URL;
   <Fragment slot="before">
     <p>
       A developer uses Copilot to write authentication code. Copilot also writes the tests.
-      CI runs the tests — they pass. Everything looks clean.
+      CI runs the tests. They pass. Everything looks clean.
     </p>
     <p>
       A senior reviewer picks it up 24 hours later. The diff looks reasonable, the tests are green,
@@ -44,7 +44,7 @@ const base = import.meta.env.BASE_URL;
     </p>
     <p>
       In under 60 seconds, the deterministic layer catches the SQL injection pattern. It also flags
-      the tests as circular — "these tests verify implementation, not specification."
+      the tests as <strong>circular</strong>: "these tests verify implementation, not specification."
     </p>
     <p>
       The deep review layer confirms the injection, finds a missing token expiry check, and spots a
@@ -64,7 +64,7 @@ const base = import.meta.env.BASE_URL;
   <Fragment slot="before">
     <p>
       An AI coding agent gets a task. It writes a fix, pushes, and waits for CI. Fifteen minutes later,
-      CI fails — on a flaky test that has nothing to do with the change.
+      CI fails on a flaky test that has nothing to do with the change.
     </p>
     <p>
       The agent doesn't know it's flaky. It tries to "fix" the failure. Then tries again.
@@ -80,11 +80,11 @@ const base = import.meta.env.BASE_URL;
   </Fragment>
   <Fragment slot="after">
     <p>
-      Same agent, same task. VCR's test reliability system (TORS) already knows which tests are
+      Same agent, same task. VCR's test reliability system (<strong>TORS</strong>) already knows which tests are
       flaky. It filters the flaky test from the feedback signal before the agent ever sees it.
     </p>
     <p>
-      The agent sees: "14 of 14 reliable tests pass. 1 flaky test excluded — do not fix."
+      The agent sees: "14 of 14 reliable tests pass. 1 flaky test excluded. Do not fix."
       Three iterations. Done in 90 seconds.
     </p>
     <p>
@@ -101,7 +101,7 @@ const base = import.meta.env.BASE_URL;
     <p>
       Your Poland team writes services using one pattern. Your India team uses a different one.
       Each team reviews their own PRs, so nobody notices the divergence. CI doesn't enforce
-      architectural patterns — it just checks that tests pass.
+      architectural patterns. It just checks that tests pass.
     </p>
     <p>
       Six months later, someone tries to integrate the two modules. "Why does this take three
@@ -112,8 +112,8 @@ const base = import.meta.env.BASE_URL;
   </Fragment>
   <Fragment slot="after">
     <p>
-      VCR's Proactive Scanner runs weekly across the repository. In week two, it detects the
-      divergence: "Convention drift in user-service — drift rate went from 14% to 31% in two weeks."
+      VCR's <strong>Proactive Scanner</strong> runs weekly across the repository. In week two, it detects the
+      divergence: "Convention drift in user-service, drift rate went from 14% to 31% in two weeks."
     </p>
     <p>
       It auto-creates an issue and flags the trend to the tech lead. The lead addresses it in
@@ -148,7 +148,7 @@ const base = import.meta.env.BASE_URL;
       needed. TORS filtering eliminates wasted agent loops. Pre-annotated PRs cut senior review time
       by 30-50%.
     </p>
-    <p><strong>New cost: $6,450 per month.</strong> A 63% reduction — with a full audit trail
+    <p><strong>New cost: $6,450 per month.</strong> A 63% reduction, with a full audit trail
     showing exactly where every dollar goes.</p>
   </Fragment>
 </BeforeAfter>

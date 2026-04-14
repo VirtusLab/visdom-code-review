@@ -6,7 +6,7 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <DocLayout
-  title="Layer 1 — Deterministic Gate"
+  title="Layer 1: Deterministic Gate"
   subtitle="Zero AI. Existing tooling. 100% repeatable. Cannot be prompt-injected."
   section="Architecture"
   tags={[
@@ -14,13 +14,13 @@ const base = import.meta.env.BASE_URL;
     { label: "Deterministic", variant: "outline" },
     { label: "TORS", variant: "green" },
   ]}
-  prev={{ label: "Layer 0 — Context Collection", href: `${base}reference/layers/context-collection/` }}
-  next={{ label: "Layer 2 — AI Quick Scan", href: `${base}reference/layers/ai-quick-scan/` }}
+  prev={{ label: "Layer 0: Context Collection", href: `${base}reference/layers/context-collection/` }}
+  next={{ label: "Layer 2: AI Quick Scan", href: `${base}reference/layers/ai-quick-scan/` }}
 >
 
 <p>
   Layer 1 runs zero AI. It executes existing static analysis tooling and produces 100% repeatable results.
-  Because it is fully deterministic, it <strong>cannot be prompt-injected</strong> &mdash; this is the floor of the review pipeline.
+  Because it is fully deterministic, it <strong>cannot be prompt-injected</strong>. This is the floor of the review pipeline.
 </p>
 
 <h2>Default Checks (VISDOM Standard)</h2>
@@ -109,7 +109,7 @@ Agent receives: "14/14 reliable tests: PASS. 1 flaky test excluded."</code></pre
 <Callout type="tip" title="Key Principle">
   <p>
     Layer 1 does <strong>not</strong> stop the review pipeline (unless a blocking finding is present). Results flow as
-    additional context to Layer 2 and 3 &mdash; the AI knows what linters already caught and does not repeat those findings.
+    additional context to Layer 2 and 3. The AI knows what linters already caught and does not repeat those findings.
   </p>
 </Callout>
 

@@ -7,7 +7,7 @@ const base = import.meta.env.BASE_URL;
 
 <DocLayout
   title="For Engineering Leaders"
-  subtitle="What VISDOM Code Review changes for your organization — and what it costs."
+  subtitle="What VISDOM Code Review changes for your organization, and what it costs."
   section="Guide"
   tags={[
     { label: "Guide", variant: "green" },
@@ -38,13 +38,13 @@ const base = import.meta.env.BASE_URL;
 
 <h3>Slow feedback kills velocity</h3>
 <p>
-  When a developer pushes a pull request, they typically wait 24-48 hours for a human review &mdash;
+  When a developer pushes a pull request, they typically wait 24-48 hours for a human review,
   longer across timezones. During that wait, they context-switch to other work. When review comments
   arrive, they must reload the original context to respond. This feedback loop is the single largest
   drag on developer throughput in most organizations.
 </p>
 
-<h3>Hidden AI costs (the 4x Hidden Tax)</h3>
+<h3>Hidden AI costs (the <strong>4x Hidden Tax</strong>)</h3>
 <p>
   When leadership asks "what does AI cost us?", the answer is usually the license fee. But the
   license is only about 25% of the real cost. The full picture includes four categories:
@@ -83,7 +83,7 @@ const base = import.meta.env.BASE_URL;
 <h3>Risk: AI code ships with vulnerabilities</h3>
 <p>
   AI-generated code often comes with AI-generated tests. Those tests verify what the code <em>does</em>,
-  not what it <em>should do</em> &mdash; the Circular Test Trap. Your CI pipeline confirms what the
+  not what it <em>should do</em>. This is the <strong>Circular Test Trap</strong>. Your CI pipeline confirms what the
   AI wants to hear. A human reviewer, under time pressure, sees green tests and approves. The
   vulnerability ships to production.
 </p>
@@ -93,7 +93,7 @@ const base = import.meta.env.BASE_URL;
 
 <p>
   VCR is a multi-layered review pipeline that sits between your developers and your human reviewers.
-  It provides automated, structured feedback on every pull request &mdash; fast enough that developers
+  It provides automated, structured feedback on every pull request, fast enough that developers
   get comments before they context-switch.
 </p>
 
@@ -224,7 +224,7 @@ const base = import.meta.env.BASE_URL;
 
 <Callout type="info" title="Compare against the current hidden cost">
   <p>
-    The same organization typically spends $15,000-20,000 per month in hidden costs &mdash;
+    The same organization typically spends $15,000-20,000 per month in hidden costs:
     compute waste from agent loops, token burn from retries, and senior time spent on routine review.
     VCR makes those costs visible and reduces them structurally.
   </p>
@@ -259,7 +259,7 @@ const base = import.meta.env.BASE_URL;
     </tr>
     <tr>
       <td><strong>CPI (Cost-per-Iteration)</strong></td>
-      <td>The full cost of each development iteration &mdash; tokens, compute, CI, and review. Tells you whether your process is getting cheaper or more expensive over time.</td>
+      <td>The full cost of each development iteration: tokens, compute, CI, and review. Tells you whether your process is getting cheaper or more expensive over time.</td>
       <td>Trending down</td>
     </tr>
     <tr>
@@ -269,7 +269,7 @@ const base = import.meta.env.BASE_URL;
     </tr>
     <tr>
       <td><strong>Escaped defects</strong></td>
-      <td>Bugs that reach production in areas covered by VCR. The primary outcome metric &mdash; are fewer issues reaching your customers?</td>
+      <td>Bugs that reach production in areas covered by VCR. The primary outcome metric: are fewer issues reaching your customers?</td>
       <td>Trending down</td>
     </tr>
     <tr>

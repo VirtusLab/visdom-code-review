@@ -23,12 +23,12 @@ const badgeColors = {
   red: 'bg-red-100 text-red-700',
 };
 ---
-<div class={`bg-white border border-visdom-gray-200 border-l-4 ${borderColors[color]} rounded-lg p-4 mb-4`}>
-  <div class="flex items-center gap-2 mb-2">
-    <span class="font-semibold text-visdom-gray-900 text-sm">{name}</span>
-    <span class={`text-xs px-2 py-0.5 rounded-full font-medium ${badgeColors[color]}`}>{role}</span>
+<div class={`bg-white border border-visdom-gray-200 border-l-4 ${borderColors[color]} rounded-lg p-5 mb-5`}>
+  <div class="flex items-center gap-2.5 mb-3">
+    <span class="font-bold text-visdom-gray-900 text-sm">{name}</span>
+    <span class={`text-xs px-2.5 py-0.5 rounded-full font-medium ${badgeColors[color]}`}>{role}</span>
   </div>
-  <div class="text-sm text-visdom-gray-600 [&>p]:!mb-1 [&>p:last-child]:!mb-0">
+  <div class="text-sm text-visdom-gray-500 leading-relaxed [&>p]:!mb-1.5 [&>p:last-child]:!mb-0">
     <slot />
   </div>
 </div>

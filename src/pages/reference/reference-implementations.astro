@@ -82,7 +82,7 @@ const base = import.meta.env.BASE_URL;
 
 <h3>VirtusLab Reference Implementations</h3>
 
-<Callout type="reference" title="ViDIA — Repository Knowledge Layer">
+<Callout type="reference" title="ViDIA: Repository Knowledge Layer">
   <p>
     <a href="https://github.com/virtuslab/vidia">ViDIA</a> (VirtusLab, MIT license) provides DuckDB analytics
     over git history, dependency graphs, and PR discussions, served as MCP tools or CLI. Pinned by SHA256,
@@ -99,7 +99,7 @@ const base = import.meta.env.BASE_URL;
 
 <Callout type="reference" title="VCR GitHub Action">
   <p>
-    <code>virtuslab/vcr-action@v1</code> &mdash; the reference CI integration. Handles checkout, context collection,
+    <code>virtuslab/vcr-action@v1</code>, the reference CI integration. Handles checkout, context collection,
     layer execution, and reporter output in a single GitHub Actions step. See
     <a href={`${base}reference/configuration/`}>Configuration</a> for the full workflow YAML.
   </p>
@@ -112,11 +112,11 @@ const base = import.meta.env.BASE_URL;
 </p>
 
 <ul>
-  <li><strong>Auto-fix</strong> &mdash; VCR v1 reports findings. It does not auto-fix code. Planned for v2: agent applies suggested fixes, VCR re-reviews.</li>
-  <li><strong>Fine-tuning</strong> &mdash; v1 uses off-the-shelf models with prompt engineering. Fine-tuning on client data is a v2 consideration.</li>
-  <li><strong>Multi-repo</strong> &mdash; v1 targets single-repo setup. Monorepo and multi-repo orchestration is v2.</li>
-  <li><strong>GitLab/Azure DevOps</strong> &mdash; v1 reference implementation is GitHub-only. Process is portable; adapters for other platforms follow.</li>
-  <li><strong>Self-hosted LLM</strong> &mdash; v1 uses cloud API providers. Self-hosted/air-gapped deployment is an enterprise v2 feature.</li>
+  <li><strong>Auto-fix</strong>: VCR v1 reports findings. It does not auto-fix code. Planned for v2: agent applies suggested fixes, VCR re-reviews.</li>
+  <li><strong>Fine-tuning</strong>: v1 uses off-the-shelf models with prompt engineering. Fine-tuning on client data is a v2 consideration.</li>
+  <li><strong>Multi-repo</strong>: v1 targets single-repo setup. Monorepo and multi-repo orchestration is v2.</li>
+  <li><strong>GitLab/Azure DevOps</strong>: v1 reference implementation is GitHub-only. Process is portable; adapters for other platforms follow.</li>
+  <li><strong>Self-hosted LLM</strong>: v1 uses cloud API providers. Self-hosted/air-gapped deployment is an enterprise v2 feature.</li>
 </ul>
 
 <h2>Open Questions</h2>
@@ -126,11 +126,11 @@ const base = import.meta.env.BASE_URL;
 </Callout>
 
 <ul>
-  <li><strong>AI-generated flag source</strong> &mdash; How to reliably detect AI-generated code? PR labels? Git metadata? Heuristic detection? Need to define the primary signal.</li>
-  <li><strong>Feedback loop automation</strong> &mdash; At what maturity level do developer reactions automatically adjust prompts vs manual tuning by VirtusLab?</li>
-  <li><strong>TORS bootstrap</strong> &mdash; New clients have no test reliability history. What's the cold-start strategy? Run 30 days of data collection before enabling TORS filtering?</li>
-  <li><strong>Reviewer assignment</strong> &mdash; Should VCR assign reviewers based on expertise data, or only suggest? Organizational politics may make auto-assignment problematic.</li>
-  <li><strong>PR blocking policy</strong> &mdash; Should VCR ever block a PR merge (via GitHub Check), or only advise? Who decides the policy &mdash; VCR config or org-level setting?</li>
+  <li><strong>AI-generated flag source</strong>: How to reliably detect AI-generated code? PR labels? Git metadata? Heuristic detection? Need to define the primary signal.</li>
+  <li><strong>Feedback loop automation</strong>: At what maturity level do developer reactions automatically adjust prompts vs manual tuning by VirtusLab?</li>
+  <li><strong>TORS bootstrap</strong>: New clients have no test reliability history. What's the cold-start strategy? Run 30 days of data collection before enabling TORS filtering?</li>
+  <li><strong>Reviewer assignment</strong>: Should VCR assign reviewers based on expertise data, or only suggest? Organizational politics may make auto-assignment problematic.</li>
+  <li><strong>PR blocking policy</strong>: Should VCR ever block a PR merge (via GitHub Check), or only advise? Who decides the policy, VCR config or org-level setting?</li>
 </ul>
 
 </DocLayout>

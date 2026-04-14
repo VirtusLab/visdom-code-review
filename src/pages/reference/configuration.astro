@@ -17,8 +17,8 @@ const base = import.meta.env.BASE_URL;
 >
 
 <p>
-  VCR configuration lives in the <code>.vcr/</code> directory at the repository root. All behavior &mdash;
-  AI models, risk thresholds, lenses, output channels &mdash; is controlled declaratively.
+  <strong>VCR</strong> configuration lives in the <code>.vcr/</code> directory at the repository root. All behavior,
+  including AI models, risk thresholds, lenses, and output channels, is controlled declaratively.
 </p>
 
 <h2>Repository Structure</h2>
@@ -45,7 +45,7 @@ const base = import.meta.env.BASE_URL;
 <Callout type="tip" title="Custom Lenses">
   <p>
     Add domain-specific review lenses in <code>.vcr/lenses/custom/</code>. These are markdown files
-    that instruct the AI on what to look for &mdash; e.g., banking compliance, HIPAA, or internal API standards.
+    that instruct the AI on what to look for, such as banking compliance, HIPAA, or internal API standards.
   </p>
 </Callout>
 
@@ -159,7 +159,7 @@ jobs:
 
 <Callout type="info" title="fetch-depth: 0">
   <p>
-    Full git history is required for Layer 0 context collection &mdash; ownership data, commit heatmaps,
+    Full git history is required for <strong>Layer 0</strong> context collection. Ownership data, commit heatmaps,
     and dependency analysis all depend on historical commits.
   </p>
 </Callout>

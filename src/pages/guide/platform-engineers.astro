@@ -22,7 +22,7 @@ const base = import.meta.env.BASE_URL;
 
 <p>
   Every pull request passes through layers of increasing depth and cost. A risk classifier at
-  Layer 2 gates whether the expensive Layer 3 runs. The Proactive Scanner operates independently
+  <strong>Layer 2</strong> gates whether the expensive <strong>Layer 3</strong> runs. The <strong>Proactive Scanner</strong> operates independently
   on a cron schedule.
 </p>
 
@@ -37,25 +37,25 @@ const base = import.meta.env.BASE_URL;
   </thead>
   <tbody>
     <tr>
-      <td><strong>Layer 0</strong> &mdash; Context Collection</td>
+      <td><strong>Layer 0</strong>: Context Collection</td>
       <td>Collects diff, metadata, coverage, file classifications, repo knowledge, test reliability data</td>
       <td>&lt;10s</td>
       <td>No</td>
     </tr>
     <tr>
-      <td><strong>Layer 1</strong> &mdash; Deterministic Gate</td>
+      <td><strong>Layer 1</strong>: Deterministic Gate</td>
       <td>Linters, SAST, secret scan, coverage delta, TORS filtering. Cannot be prompt-injected.</td>
       <td>&lt;60s</td>
       <td>No</td>
     </tr>
     <tr>
-      <td><strong>Layer 2</strong> &mdash; AI Quick Scan</td>
+      <td><strong>Layer 2</strong>: AI Quick Scan</td>
       <td>Fast AI pass over diff. Risk classification (LOW&rarr;CRITICAL). Max 5 quick findings. AI-code detection.</td>
       <td>&lt;2 min</td>
       <td>Yes (Haiku-class)</td>
     </tr>
     <tr>
-      <td><strong>Layer 3</strong> &mdash; AI Deep Review</td>
+      <td><strong>Layer 3</strong>: AI Deep Review</td>
       <td>Full analysis with repo context, history, conventions. Multiple review lenses in parallel. MEDIUM+ risk only.</td>
       <td>&lt;10 min</td>
       <td>Yes (Sonnet/Opus-class)</td>
@@ -148,9 +148,9 @@ const base = import.meta.env.BASE_URL;
   Add the VCR GitHub Actions workflow and configuration directory to your repository:
 </p>
 <ul>
-  <li><code>.github/workflows/vcr-review.yaml</code> &mdash; triggers on PR open/update</li>
-  <li><code>.vcr/vcr-config.yaml</code> &mdash; main configuration file</li>
-  <li><code>.vcr/conventions.md</code> &mdash; your team's coding conventions (AI reads this)</li>
+  <li><code>.github/workflows/vcr-review.yaml</code>, triggers on PR open/update</li>
+  <li><code>.vcr/vcr-config.yaml</code>, main configuration file</li>
+  <li><code>.vcr/conventions.md</code>, your team's coding conventions (AI reads this)</li>
 </ul>
 
 <h3>Step 2: Configure path classifications</h3>
@@ -159,7 +159,7 @@ const base = import.meta.env.BASE_URL;
   <code>standard</code>, or <code>low_risk</code>. This determines review depth and cost.
 </p>
 
-<h3>Step 3: Start conservative &mdash; Layer 2 only</h3>
+<h3>Step 3: Start conservative, Layer 2 only</h3>
 <p>
   For the first week, run Layer 2 (AI Quick Scan) only. Observe findings, check false positive
   rates, and calibrate risk classification against your team's expectations. Layer 3 stays disabled.
@@ -275,7 +275,7 @@ const base = import.meta.env.BASE_URL;
     </tr>
     <tr>
       <td><strong>TORS</strong></td>
-      <td>Test Oracle Reliability Score &mdash; what percentage of test failures are real. If TORS is low, your agents and developers are wasting time on flaky tests.</td>
+      <td><strong>Test Oracle Reliability Score</strong>: what percentage of test failures are real. If TORS is low, your agents and developers are wasting time on flaky tests.</td>
       <td>&gt;85%</td>
     </tr>
   </tbody>

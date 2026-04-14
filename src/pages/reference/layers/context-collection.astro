@@ -6,7 +6,7 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <DocLayout
-  title="Layer 0 — Context Collection"
+  title="Layer 0: Context Collection"
   subtitle="Deterministic context gathering from repository knowledge, git data, and test reliability history."
   section="Architecture"
   tags={[
@@ -14,7 +14,7 @@ const base = import.meta.env.BASE_URL;
     { label: "Deterministic", variant: "outline" },
   ]}
   prev={{ label: "Architecture", href: `${base}reference/architecture/` }}
-  next={{ label: "Layer 1 — Deterministic Gate", href: `${base}reference/layers/deterministic-gate/` }}
+  next={{ label: "Layer 1: Deterministic Gate", href: `${base}reference/layers/deterministic-gate/` }}
 >
 
 <p>
@@ -74,20 +74,20 @@ const base = import.meta.env.BASE_URL;
 <h2>Repository Knowledge Layer</h2>
 
 <p>
-  Layer 0 requires access to a <strong>pre-indexed repository knowledge layer</strong> &mdash; a deterministic data source
+  <strong>Layer 0</strong> requires access to a <strong>pre-indexed repository knowledge layer</strong>, a deterministic data source
   that provides code ownership, dependency graphs, commit analytics, and PR history without re-parsing the repository on every run.
 </p>
 
 <p>This layer must be:</p>
 <ul>
-  <li><strong>Deterministic</strong> &mdash; same commit = same data</li>
-  <li><strong>Pre-indexed</strong> &mdash; queries complete in seconds, not minutes</li>
-  <li><strong>Reusable</strong> &mdash; shared across agents and review runs, not rebuilt per session</li>
+  <li><strong>Deterministic</strong>: same commit = same data</li>
+  <li><strong>Pre-indexed</strong>: queries complete in seconds, not minutes</li>
+  <li><strong>Reusable</strong>: shared across agents and review runs, not rebuilt per session</li>
 </ul>
 
 <Callout type="reference" title="Reference Implementation">
   <p>
-    Reference implementation: <a href="https://github.com/virtuslab/vidia">ViDIA</a> (VirtusLab, MIT license) &mdash;
+    Reference implementation: <a href="https://github.com/virtuslab/vidia">ViDIA</a> (VirtusLab, MIT license),
     DuckDB analytics over git history, dependency graphs, and PR discussions, served as MCP tools or CLI. Pinned by SHA256,
     reusable across sessions.
   </p>
@@ -101,8 +101,8 @@ const base = import.meta.env.BASE_URL;
 <h2>Test Reliability Data (TORS Input)</h2>
 
 <p>
-  Layer 0 also collects <strong>test reliability history</strong> &mdash; per-test pass/fail data used to compute the
-  Test Oracle Reliability Score (TORS). This data feeds into Layer 1 and Layer 2 to filter flaky test signals from agent feedback.
+  Layer 0 also collects <strong>test reliability history</strong>, per-test pass/fail data used to compute the
+  <strong>Test Oracle Reliability Score</strong> (<strong>TORS</strong>). This data feeds into Layer 1 and Layer 2 to filter flaky test signals from agent feedback.
 </p>
 
 <p>Sources: CI historical data, test result databases, flaky test tracking tools.</p>
@@ -132,7 +132,7 @@ const base = import.meta.env.BASE_URL;
 <h2>Output</h2>
 
 <p>
-  Layer 0 produces <code>review-context.json</code> &mdash; a structured document consumed by all subsequent layers.
+  Layer 0 produces <code>review-context.json</code>, a structured document consumed by all subsequent layers.
   This is the single source of truth for the review.
 </p>
 

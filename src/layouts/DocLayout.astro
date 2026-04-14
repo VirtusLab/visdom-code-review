@@ -18,7 +18,7 @@ const base = import.meta.env.BASE_URL;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} — VISDOM Code Review</title>
+  <title>{title} | VISDOM Code Review</title>
   <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,18 +32,18 @@ const base = import.meta.env.BASE_URL;
         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
         VISDOM Code Review
       </a>
-      <div class="flex items-center gap-4 text-sm text-visdom-gray-500">
-        <a href={`${base}`} class="hover:text-visdom-gray-900">Home</a>
-        <a href={`${base}guide/leaders/`} class="hover:text-visdom-gray-900">For Leaders</a>
-        <a href={`${base}guide/platform-engineers/`} class="hover:text-visdom-gray-900">For Engineers</a>
-        <a href={`${base}guide/developers/`} class="hover:text-visdom-gray-900">For Developers</a>
-        <a href={`${base}before-after/`} class="hover:text-visdom-gray-900">Scenarios</a>
-        <a href={`${base}reference/`} class="hover:text-visdom-gray-900">Reference</a>
+      <div class="flex items-center gap-6 text-sm text-visdom-gray-500">
+        <a href={`${base}`} class="hover:text-visdom-gray-900 no-underline">Home</a>
+        <a href={`${base}guide/leaders/`} class="hover:text-visdom-gray-900 no-underline">For Leaders</a>
+        <a href={`${base}guide/platform-engineers/`} class="hover:text-visdom-gray-900 no-underline">For Engineers</a>
+        <a href={`${base}guide/developers/`} class="hover:text-visdom-gray-900 no-underline">For Developers</a>
+        <a href={`${base}before-after/`} class="hover:text-visdom-gray-900 no-underline">Scenarios</a>
+        <a href={`${base}reference/`} class="hover:text-visdom-gray-900 no-underline">Reference</a>
       </div>
     </div>
   </nav>
 
-  <main class="max-w-doc mx-auto px-6 py-8">
+  <main class="max-w-doc mx-auto px-6 py-10">
     <!-- Breadcrumb -->
     {section && (
       <a href={`${base}`} class="inline-flex items-center gap-1 text-sm text-visdom-gray-500 hover:text-visdom-gray-700 mb-4 no-underline">
@@ -70,9 +70,9 @@ const base = import.meta.env.BASE_URL;
 
     <!-- Title -->
     <h1 class="!mb-2">{title}</h1>
-    {subtitle && <p class="text-lg text-visdom-gray-500 mb-8 !mt-0">{subtitle}</p>}
+    {subtitle && <p class="text-lg text-visdom-gray-500 mb-10 !mt-0">{subtitle}</p>}
 
-    <div class="border-b border-visdom-gray-200 mb-8"></div>
+    <div class="border-b border-visdom-gray-200 mb-10"></div>
 
     <!-- Content -->
     <article>
@@ -81,16 +81,16 @@ const base = import.meta.env.BASE_URL;
 
     <!-- Pagination -->
     {(prev || next) && (
-      <nav class="border-t border-visdom-gray-200 mt-16 pt-6 flex justify-between">
+      <nav class="border-t border-visdom-gray-200 mt-16 pt-8 flex justify-between">
         {prev ? (
-          <a href={prev.href} class="group flex items-center gap-2 text-sm text-visdom-gray-500 hover:text-visdom-green-dark no-underline">
+          <a href={prev.href} class="group inline-flex items-center gap-2 text-sm text-visdom-gray-500 hover:text-visdom-green no-underline">
             <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-            {prev.label}
+            <span>&larr; {prev.label}</span>
           </a>
         ) : <div />}
         {next ? (
-          <a href={next.href} class="group flex items-center gap-2 text-sm text-visdom-gray-500 hover:text-visdom-green-dark no-underline">
-            {next.label}
+          <a href={next.href} class="group inline-flex items-center gap-2 text-sm text-visdom-gray-500 hover:text-visdom-green no-underline">
+            <span>{next.label} &rarr;</span>
             <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
           </a>
         ) : <div />}
@@ -99,9 +99,9 @@ const base = import.meta.env.BASE_URL;
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-visdom-gray-200 mt-8">
-    <div class="max-w-5xl mx-auto px-6 py-6 text-center text-sm text-visdom-gray-400">
-      VISDOM Code Review — VirtusLab
+  <footer class="mt-12">
+    <div class="max-w-5xl mx-auto px-6 py-8 text-center text-xs text-visdom-gray-400">
+      VISDOM Code Review
     </div>
   </footer>
 </body>
