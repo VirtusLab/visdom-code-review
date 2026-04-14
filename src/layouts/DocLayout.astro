@@ -99,9 +99,16 @@ const base = import.meta.env.BASE_URL;
   </main>
 
   <!-- Footer -->
-  <footer class="mt-12">
-    <div class="max-w-5xl mx-auto px-6 py-8 text-center text-xs text-visdom-gray-400">
-      Visdom Code Review · Powered by <a href="https://virtuslab.com" class="text-visdom-gray-400 hover:text-visdom-green no-underline">VirtusLab</a>
+  <footer class="mt-12 bg-visdom-gray-100">
+    <div class="max-w-5xl mx-auto px-6 py-10 flex flex-col items-center gap-3">
+      <span class="text-[10px] uppercase tracking-[0.2em] text-visdom-gray-400 font-medium">Powered by</span>
+      <a href="https://virtuslab.com" class="no-underline hover:opacity-70 transition-opacity">
+        <svg width="120" height="24" viewBox="0 0 120 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.5 3L12 13.5L7.5 3H4.5L10.5 16.5H13.5L19.5 3H16.5Z" fill="#9ca3af"/>
+          <path d="M22 7.5C22 6.5 22.8 5.5 24 5.5C25.2 5.5 26 6.5 26 7.5V16.5H28.5V7.5C28.5 5 26.5 3 24 3C21.5 3 19.5 5 19.5 7.5V16.5H22V7.5Z" fill="#9ca3af"/>
+          <text x="32" y="15" fill="#9ca3af" font-family="Inter, sans-serif" font-size="13" font-weight="600" letter-spacing="0.5">VIRTUSLAB</text>
+        </svg>
+      </a>
     </div>
   </footer>
 </body>
