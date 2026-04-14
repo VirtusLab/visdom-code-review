@@ -1,0 +1,35 @@
+import { ScenarioConfig } from '../../core/types.js';
+
+export const scenario: ScenarioConfig = {
+  name: 'perfect-pr',
+  title: 'The Perfect PR',
+  description: 'A seemingly flawless auth service with layered vulnerabilities',
+  branch: 'demo/perfect-pr',
+  prTitle: 'feat: add user authentication service',
+  prBody: [
+    '## Summary',
+    '',
+    'Adds complete user authentication with login/register endpoints.',
+    '',
+    '### Changes',
+    '- `POST /auth/register` — create new user with hashed password',
+    '- `POST /auth/login` — authenticate and return JWT token',
+    '- JWT middleware for protected routes',
+    '- Full test suite (12 tests, ~94% coverage)',
+    '',
+    '### Testing',
+    '- Unit tests for all auth flows',
+    '- Coverage report attached',
+    '',
+    '### Notes',
+    'Ready for review. All tests passing.',
+  ].join('\n'),
+  files: {
+    'src/auth/auth.controller.ts': 'files/src/auth/auth.controller.ts',
+    'src/auth/auth.service.ts': 'files/src/auth/auth.service.ts',
+    'src/auth/auth.model.ts': 'files/src/auth/auth.model.ts',
+    'src/middleware/auth.middleware.ts': 'files/src/middleware/auth.middleware.ts',
+    'test/auth.test.ts': 'files/test/auth.test.ts',
+    '.env.test': 'files/.env.test',
+  },
+};
