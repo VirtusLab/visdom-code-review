@@ -150,9 +150,14 @@ async function main() {
         ];
 
         for (const layer of layers) {
-          const result = await layer.analyze(context);
-          context.previousLayers.push(result);
-          if (result.gate && !result.gate.proceed) break;
+          try {
+            const result = await layer.analyze(context);
+            context.previousLayers.push(result);
+            if (result.gate && !result.gate.proceed) break;
+          } catch {
+            // AI layers fail without API key — continue with deterministic layers only
+            break;
+          }
         }
 
         const report = buildReport(context);

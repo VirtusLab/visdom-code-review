@@ -55,25 +55,11 @@ export class PRFetcher {
         diffLines.push('');
       }
 
-      // Fetch file content for analysis (best-effort)
-      let content = '';
-      try {
-        if (f.status !== 'removed' && (f.additions + f.changes) > 0) {
-          const { data } = await this.octokit.repos.getContent({
-            owner, repo, path: f.filename, ref: pr.head.sha,
-          });
-          if ('content' in data && data.encoding === 'base64') {
-            content = Buffer.from(data.content, 'base64').toString('utf-8');
-          }
-        }
-      } catch {
-        // File might not exist at head (force-pushed, rebased, etc)
-        content = f.patch ?? '';
-      }
-
+      // Use patch as content — avoids per-file API calls and deprecation warnings.
+      // Full file content fetching is available via --full-content flag if needed.
       files.push({
         path: f.filename,
-        content: content || f.patch || '',
+        content: f.patch || '',
         classification: 'standard',
         linesChanged: f.additions + f.deletions,
       });
