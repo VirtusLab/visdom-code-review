@@ -143,4 +143,5 @@ export interface CLIOptions {
   narrate: boolean;
   interactive: boolean;
   triage: boolean;
+  bench: boolean;
 }

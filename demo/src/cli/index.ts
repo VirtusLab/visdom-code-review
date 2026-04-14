@@ -14,9 +14,7 @@ import { GitHubOps } from '../core/github/operations.js';
 import { TerminalReporter, renderHeader, renderPRCreated, renderLayerStart, renderLayerComplete, renderCleanupHint } from '../core/reporter/terminal.js';
 import { Narrator, PaceMode } from '../core/narrator.js';
 import { scenario as perfectPR } from '../scenarios/perfect-pr/scenario.js';
-import { evaluateReport } from '../core/evaluator.js';
-import { renderTriageReport } from '../core/reporter/triage.js';
-import { groundTruth } from '../scenarios/perfect-pr/ground-truth.js';
+import { runBench, renderBenchResult } from '../core/bench.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SCENARIOS = { 'perfect-pr': perfectPR } as const;
@@ -25,6 +23,8 @@ function parseArgs(): CLIOptions {
   const args = process.argv.slice(2);
   const narrate = args.includes('--narrate');
   const interactive = args.includes('--interactive');
+  const bench = args.includes('--bench');
+  const triage = args.includes('--triage');
   return {
     live: args.includes('--live'),
     local: args.includes('--local') || narrate || interactive,
@@ -33,7 +33,8 @@ function parseArgs(): CLIOptions {
     scenario: args.find((a) => !a.startsWith('--')) ?? 'perfect-pr',
     narrate,
     interactive,
-    triage: args.includes('--triage'),
+    triage,
+    bench: bench || triage,
   };
 }
 
@@ -309,10 +310,20 @@ async function main() {
       renderCleanupHint();
     }
 
-    // Triage evaluation
-    if (opts.triage) {
-      const triage = evaluateReport(report, groundTruth);
-      renderTriageReport(triage);
+    // Bench evaluation
+    if (opts.bench) {
+      const benchGTPath = join(__dirname, '..', '..', 'bench', 'ground-truth', 'perfect-pr.json');
+      const benchOutputDir = join(__dirname, '..', '..', 'bench', 'results');
+      const judgeMode = opts.live && process.env.ANTHROPIC_API_KEY ? 'llm' as const : 'keyword' as const;
+
+      const benchResult = await runBench(report, judgeMode === 'llm' ? ai : null, {
+        scenario: scenarioConfig.name,
+        groundTruthPath: benchGTPath,
+        judgeMode,
+        outputDir: benchOutputDir,
+      });
+
+      renderBenchResult(benchResult);
     }
   } else {
     // Standard mode — use pipeline as before
@@ -332,10 +343,20 @@ async function main() {
       renderCleanupHint();
     }
 
-    // Triage evaluation
-    if (opts.triage) {
-      const triage = evaluateReport(report, groundTruth);
-      renderTriageReport(triage);
+    // Bench evaluation
+    if (opts.bench) {
+      const benchGTPath = join(__dirname, '..', '..', 'bench', 'ground-truth', 'perfect-pr.json');
+      const benchOutputDir = join(__dirname, '..', '..', 'bench', 'results');
+      const judgeMode = opts.live && process.env.ANTHROPIC_API_KEY ? 'llm' as const : 'keyword' as const;
+
+      const benchResult = await runBench(report, judgeMode === 'llm' ? ai : null, {
+        scenario: scenarioConfig.name,
+        groundTruthPath: benchGTPath,
+        judgeMode,
+        outputDir: benchOutputDir,
+      });
+
+      renderBenchResult(benchResult);
     }
   }
 

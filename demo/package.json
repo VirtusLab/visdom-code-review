@@ -11,6 +11,8 @@
     "demo:narrate": "tsx src/cli/index.ts --narrate",
     "demo:interactive": "tsx src/cli/index.ts --interactive",
     "demo:triage": "tsx src/cli/index.ts --local --triage",
+    "bench": "tsx src/cli/index.ts --local --bench",
+    "bench:live": "tsx src/cli/index.ts --local --bench --live",
     "build": "tsup src/cli/index.ts --format esm --dts",
     "typecheck": "tsc --noEmit"
   },

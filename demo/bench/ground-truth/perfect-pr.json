@@ -1,0 +1,144 @@
+{
+  "scenario": "perfect-pr",
+  "version": "1.0",
+  "language": "typescript",
+  "domain": "authentication",
+  "description": "Auth service with 14 planted vulnerabilities across security, architecture, and test quality",
+  "entries": [
+    {
+      "id": "GT-001",
+      "tier": 1,
+      "category": "security",
+      "file": ".env.test",
+      "line": 5,
+      "title": "Hardcoded JWT secret in version control",
+      "description": "JWT_SECRET=super-secret-key-123 committed to repo, identical to .env.example.",
+      "cwe": "CWE-798",
+      "owasp": "A07:2021"
+    },
+    {
+      "id": "GT-002",
+      "tier": 1,
+      "category": "security",
+      "file": "src/auth/auth.model.ts",
+      "line": 19,
+      "title": "SQL injection via string interpolation",
+      "description": "All queries use template literal interpolation instead of parameterized queries.",
+      "cwe": "CWE-89",
+      "owasp": "A03:2021"
+    },
+    {
+      "id": "GT-003",
+      "tier": 1,
+      "category": "security",
+      "file": "src/auth/auth.controller.ts",
+      "line": 53,
+      "title": "Timing-unsafe token comparison",
+      "description": "Uses === for token comparison instead of crypto.timingSafeEqual.",
+      "cwe": "CWE-208"
+    },
+    {
+      "id": "GT-004",
+      "tier": 1,
+      "category": "security",
+      "file": "src/auth/auth.service.ts",
+      "line": 43,
+      "title": "Weak random number generator for security tokens",
+      "description": "Math.random() used for session ID generation.",
+      "cwe": "CWE-330"
+    },
+    {
+      "id": "GT-005",
+      "tier": 1,
+      "category": "security",
+      "file": "src/auth/auth.service.ts",
+      "line": 7,
+      "title": "bcrypt cost factor too low (4 vs 12+)",
+      "description": "SALT_ROUNDS=4 makes hashes brute-forceable in seconds.",
+      "cwe": "CWE-916"
+    },
+    {
+      "id": "GT-006",
+      "tier": 1,
+      "category": "security",
+      "file": "src/middleware/auth.middleware.ts",
+      "line": 20,
+      "title": "JWT accepts algorithm none and ignores expiry",
+      "description": "ignoreExpiration: true and no algorithm restriction allows token forgery.",
+      "cwe": "CWE-347"
+    },
+    {
+      "id": "GT-007",
+      "tier": 1,
+      "category": "security",
+      "file": "src/auth/auth.controller.ts",
+      "line": 41,
+      "title": "No rate limiting on login endpoint",
+      "description": "Unlimited login attempts allow brute-force attacks.",
+      "cwe": "CWE-307",
+      "owasp": "A07:2021"
+    },
+    {
+      "id": "GT-008",
+      "tier": 1,
+      "category": "security",
+      "file": "src/auth/auth.controller.ts",
+      "line": 44,
+      "title": "User enumeration via error messages",
+      "description": "'User not found' vs 'Invalid password' leaks which emails are registered.",
+      "cwe": "CWE-203"
+    },
+    {
+      "id": "GT-009",
+      "tier": 1,
+      "category": "security",
+      "file": "src/auth/auth.controller.ts",
+      "line": 10,
+      "title": "No input validation on request body",
+      "description": "No length/format validation. Long passwords cause bcrypt DoS.",
+      "cwe": "CWE-20"
+    },
+    {
+      "id": "GT-010",
+      "tier": 2,
+      "category": "test-quality",
+      "file": "test/auth.test.ts",
+      "title": "Circular tests — mock both db and auth library",
+      "description": "8/12 tests mock everything and verify mock behavior, testing nothing real."
+    },
+    {
+      "id": "GT-011",
+      "tier": 2,
+      "category": "test-quality",
+      "file": "test/auth.test.ts",
+      "line": 34,
+      "title": "Spy-only assertions instead of value assertions",
+      "description": "Tests check 'function was called' not 'result is correct'."
+    },
+    {
+      "id": "GT-012",
+      "tier": 2,
+      "category": "test-quality",
+      "file": "test/auth.test.ts",
+      "title": "Zero negative and edge case tests",
+      "description": "No tests for empty password, SQL injection, expired token, etc."
+    },
+    {
+      "id": "GT-013",
+      "tier": 2,
+      "category": "architecture",
+      "file": "src/auth/auth.controller.ts",
+      "title": "Business logic coupled to HTTP handler",
+      "description": "Auth orchestration in controller makes logic untestable without Express."
+    },
+    {
+      "id": "GT-014",
+      "tier": 2,
+      "category": "architecture",
+      "file": "src/auth/auth.model.ts",
+      "line": 14,
+      "title": "SELECT * returns password hash to all callers",
+      "description": "Over-fetching sensitive data increases exposure risk."
+    }
+  ]
+}

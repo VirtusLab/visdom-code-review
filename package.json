@@ -12,7 +12,8 @@
     "demo:cleanup": "cd demo && npx tsx src/cli/index.ts --cleanup",
     "demo:narrate": "cd demo && npx tsx src/cli/index.ts --narrate",
     "demo:interactive": "cd demo && npx tsx src/cli/index.ts --interactive",
-    "demo:triage": "cd demo && npx tsx src/cli/index.ts --local --triage"
+    "demo:triage": "cd demo && npx tsx src/cli/index.ts --local --triage",
+    "demo:bench": "cd demo && npx tsx src/cli/index.ts --local --bench"
   },
   "dependencies": {
     "astro": "^5.7.10",
