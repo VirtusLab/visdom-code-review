@@ -62,6 +62,7 @@ const base = import.meta.env.BASE_URL;
       <div class="hero__buttons">
         <a href={`${base}guide/leaders/`} class="btn btn--primary">For Leaders</a>
         <a href={`${base}reference/`} class="btn btn--outline">Technical Reference</a>
+        <a href="https://github.com/VirtusLab/visdom-code-review/tree/master/demo" class="btn btn--outline">Try the Demo</a>
       </div>
       <p class="hero__tagline">Part of <a href="https://virtuslab.com/services/visdom" class="hero__tagline-link">Visdom</a> · VirtusLab's Agent-Ready SDLC</p>
 
@@ -412,6 +413,49 @@ const base = import.meta.env.BASE_URL;
           tagColor="green"
           source="Spotify Engineering"
         />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Try the Demo ============ -->
+  <section class="feature-row feature-row--offwhite">
+    <div class="feature-row__inner">
+      <div class="feature-row__text">
+        <span class="kicker">Try it yourself</span>
+        <h2 class="feature-row__heading">Runnable demo</h2>
+        <p class="feature-row__desc">
+          Clone the repo and run the demo locally. It creates a deliberately flawed PR
+          (auth service with 12 passing tests and 94% coverage) and runs the full
+          4-layer VCR pipeline on it. No API key needed — cached responses included.
+        </p>
+        <a href="https://github.com/VirtusLab/visdom-code-review/tree/master/demo" class="feature-row__link">Demo documentation &rarr;</a>
+      </div>
+      <div class="feature-row__visual">
+        <div class="card">
+          <p class="card__label">Quick start</p>
+          <pre class="card__code"><code>git clone https://github.com/VirtusLab/visdom-code-review
+cd visdom-code-review/demo
+npm install
+
+# Narrated walkthrough (auto-paced)
+npm run demo:narrate
+
+# Interactive (press Enter to advance)
+npm run demo:interactive
+
+# Fast run (no narration)
+npm run demo:local</code></pre>
+          <div class="demo-results">
+            <div class="demo-results__row">
+              <span class="demo-results__label">Traditional review</span>
+              <span class="demo-results__value">0 findings · 24-48h · ~1h senior eng</span>
+            </div>
+            <div class="demo-results__row demo-results__row--vcr">
+              <span class="demo-results__label">VCR review</span>
+              <span class="demo-results__value">14 findings · 2 min · $0.44</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1245,6 +1289,60 @@ const base = import.meta.env.BASE_URL;
       .visdom-grid {
         grid-template-columns: 1fr;
       }
+    }
+
+    /* ===== Demo Section ===== */
+    .card__code {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: 0 0 16px;
+    }
+    .card__code code {
+      font-family: inherit;
+    }
+    .demo-results {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .demo-results__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: var(--off-white);
+      font-size: 0.85rem;
+    }
+    .demo-results__row--vcr {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+    }
+    .demo-results__label {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-secondary);
+    }
+    .demo-results__row--vcr .demo-results__label {
+      color: var(--brand-green-dark);
+    }
+    .demo-results__value {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .demo-results__row--vcr .demo-results__value {
+      color: var(--brand-green-dark);
+      font-weight: 500;
     }
   </style>
 </body>
