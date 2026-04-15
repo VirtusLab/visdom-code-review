@@ -60,25 +60,32 @@ const rules: Rule[] = [
       const matches: Array<{ line: number }> = [];
       const lines = file.content.split('\n');
       for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        const nearby = lines.slice(Math.max(0, i - 2), i + 3).join('\n');
-        // Template literals with SQL keywords
-        if (/(?:SELECT|INSERT|UPDATE|DELETE|WHERE|VALUES)\b/i.test(line) && /\$\{/.test(nearby) && /`/.test(nearby)) {
+        const raw = lines[i];
+        // Strip diff markers for analysis
+        const line = raw.replace(/^[+-]\s?/, '');
+        // Skip diff headers
+        if (raw.startsWith('@@') || raw.startsWith('diff ') || raw.startsWith('---') || raw.startsWith('+++')) continue;
+        // Must have a SQL keyword on this line
+        if (!/(?:SELECT|INSERT|UPDATE|DELETE)\b/i.test(line)) continue;
+        const nearby = lines.slice(Math.max(0, i - 2), i + 3).map(l => l.replace(/^[+-]\s?/, '')).join('\n');
+        // Template literals with SQL keywords + interpolation
+        if (/\$\{/.test(nearby) && /`/.test(nearby)) {
           matches.push({ line: i + 1 });
           continue;
         }
-        // String concat with SQL: "SELECT * FROM " + table
-        if (/(?:SELECT|INSERT|UPDATE|DELETE|WHERE)\b/i.test(line) && /['"]\s*\+\s*\w/.test(line)) {
+        // String concat with SQL: "SELECT * FROM " + variable (not diff +)
+        if (/['"].*(?:SELECT|INSERT|UPDATE|DELETE)\b[^'"]*['"]\s*\+\s*\w/i.test(line) ||
+            /\w\s*\+\s*['"].*(?:SELECT|INSERT|UPDATE|DELETE)\b/i.test(line)) {
           matches.push({ line: i + 1 });
           continue;
         }
-        // f-strings with SQL (Python): f"SELECT * FROM {table}"
-        if (/f['"].*(?:SELECT|INSERT|UPDATE|DELETE|WHERE)\b/i.test(line) && /\{/.test(line)) {
+        // f-strings with SQL (Python)
+        if (/f['"].*(?:SELECT|INSERT|UPDATE|DELETE)\b/i.test(line) && /\{/.test(line)) {
           matches.push({ line: i + 1 });
           continue;
         }
-        // String.format with SQL (Java): String.format("SELECT ... %s", input)
-        if (/String\.format\s*\(.*(?:SELECT|INSERT|UPDATE|DELETE|WHERE)/i.test(line)) {
+        // String.format with SQL (Java)
+        if (/String\.format\s*\(.*(?:SELECT|INSERT|UPDATE|DELETE)/i.test(line)) {
           matches.push({ line: i + 1 });
         }
       }
@@ -97,12 +104,14 @@ const rules: Rule[] = [
     suggestion: 'Use constant-time comparison: crypto.timingSafeEqual (Node), hmac.compare_digest (Python), MessageDigest.isEqual (Java).',
     test: (file) => {
       if (file.classification === 'test' || file.classification === 'config') return [];
+      // Only flag in files that are clearly auth/security related
+      if (!/auth|security|token|credential|login|password/i.test(file.path)) return [];
       const matches: Array<{ line: number }> = [];
       const lines = file.content.split('\n');
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        if (/(?:===?|\.equals\()\s*.*(?:token|secret|password|api.?key|hash|digest|signature|hmac)/i.test(line) ||
-            /(?:token|secret|password|api.?key|hash|digest|signature|hmac).*(?:===?|\.equals\()/i.test(line)) {
+        if (/(?:===?|\.equals\()\s*.*(?:secret|password|api.?key|hash|digest|signature|hmac)/i.test(line) ||
+            /(?:secret|password|api.?key|hash|digest|signature|hmac).*(?:===?|\.equals\()/i.test(line)) {
           // Exclude safe comparisons
           if (/timingSafeEqual|compare_digest|MessageDigest\.isEqual|constantTimeEquals/i.test(line)) continue;
           // Exclude assignments
@@ -182,21 +191,25 @@ const rules: Rule[] = [
     description: 'A value that may be null or undefined is accessed without a null check. This can cause runtime crashes.',
     suggestion: 'Add a null check before accessing the value, or use optional chaining (?.).',
     test: (file) => {
+      if (file.classification === 'test' || file.classification === 'config') return [];
       const matches: Array<{ line: number }> = [];
       const lines = file.content.split('\n');
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        // .get() result used directly without null check (Java, Python, TypeScript)
-        if (/\.get\([^)]*\)\.\w+/.test(line) && !/\.get\([^)]*\)\s*!=\s*null/.test(line) && !/\.getOrDefault/.test(line)) {
-          // Exclude lines that are just assignments
-          if (/Optional|orElse|ifPresent/.test(line)) continue;
-          matches.push({ line: i + 1 });
-          continue;
-        }
-        // Optional.get() without isPresent check (Java)
-        if (/\.get\(\)\s*[;.]/.test(line) && /Optional/.test(lines.slice(Math.max(0, i - 3), i + 1).join(' '))) {
-          if (!/isPresent|ifPresent|orElse/.test(lines.slice(Math.max(0, i - 3), i + 1).join(' '))) {
+        // Optional.get() without isPresent (Java)
+        if (/\.get\(\)\s*[;.]/.test(line)) {
+          const nearby = lines.slice(Math.max(0, i - 5), i + 1).join(' ');
+          if (/Optional/.test(nearby) && !/isPresent|ifPresent|orElse|orElseGet|isEmpty/.test(nearby)) {
             matches.push({ line: i + 1 });
+            continue;
+          }
+        }
+        // Map/dict .get(key).method() — only on full file content (not diffs)
+        if (!file.content.startsWith('@@') && !file.content.startsWith('diff ')) {
+          if (/\.get\([^)]+\)\.\w+\(/.test(line) && !/\.getOrDefault|\.getOrElse|\.get_or/.test(line)) {
+            if (!/=\s*\S+\.get|return\s+\S+\.get/.test(line)) {
+              matches.push({ line: i + 1 });
+            }
           }
         }
       }
@@ -318,12 +331,14 @@ const rules: Rule[] = [
                            line.match(/(?:public|private|protected)\s+\w+\s+(\w+)\s*\(/);
         if (methodMatch) {
           const methodName = methodMatch[1];
-          if (methodName.length <= 2) continue;
-          // Check next 3 lines for unconditional self-call (tighter window)
-          const body = lines.slice(i + 1, i + 4).join('\n');
-          // Self-call without any branching guard
-          const callPattern = new RegExp(`(?:return\\s+)?(?:this\\.|self\\.)?${methodName}\\s*\\(`);
-          if (callPattern.test(body) && !/if|else|switch|while|for|guard|when|case|try|&&|\|\||[?]/.test(body)) {
+          if (methodName.length <= 3) continue;
+          // Skip common delegate/override patterns
+          if (/override|super|delegate|wrapper|proxy|@/.test(lines.slice(Math.max(0, i - 2), i + 1).join(' '))) continue;
+          // Check next 2 lines for self-call (very tight)
+          const body = lines.slice(i + 1, i + 3).join('\n');
+          // Require exact self-reference (this.method or self.method or bare method as first call)
+          const callPattern = new RegExp(`^\\s*(?:return\\s+)?(?:this\\.)?${methodName}\\s*\\(`, 'm');
+          if (callPattern.test(body) && !/if|else|switch|while|for|guard|when|case|try|&&|\|\||[?]|\./.test(body.replace(new RegExp(methodName), ''))) {
             matches.push({ line: i + 1 });
           }
         }
@@ -351,35 +366,6 @@ const rules: Rule[] = [
         // Statement line that calls an important method but doesn't assign result
         if (importantMethods.test(line) && !/(=|return|const|let|var|val|if|while|assert|expect|print|log|yield)/.test(line) && line.endsWith(';')) {
           matches.push({ line: i + 1 });
-        }
-      }
-      return matches;
-    },
-  },
-
-  // ── Correctness: visibility change without reason ──
-
-  {
-    id: 'L1-QUALITY-001',
-    severity: 'low',
-    category: 'quality',
-    title: 'Access modifier widened (private/protected to public)',
-    description: 'A field or method visibility was changed from restricted to public. This may unintentionally expose internal API.',
-    suggestion: 'Verify the visibility change is intentional and document the reason.',
-    test: (file) => {
-      const matches: Array<{ line: number }> = [];
-      const content = file.content;
-      // In diffs: -  private/protected ... → +  public ...
-      const lines = content.split('\n');
-      for (let i = 0; i < lines.length; i++) {
-        if (/^\-\s*(?:private|protected)\s/.test(lines[i])) {
-          // Check if next added line has public
-          for (let j = i + 1; j < Math.min(i + 3, lines.length); j++) {
-            if (/^\+\s*public\s/.test(lines[j])) {
-              matches.push({ line: j + 1 });
-              break;
-            }
-          }
         }
       }
       return matches;

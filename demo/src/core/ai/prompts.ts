@@ -13,27 +13,30 @@ export function buildQuickScanPrompt(context: ReviewContext, l1Findings: Finding
     : 'No deterministic findings.';
 
   return {
-    system: `You are a code review triage agent for the VCR (VISDOM Code Review) system.
+    system: `You are a code review triage agent. Your job is risk classification and defect detection on pull request diffs.
 
-Your job:
-1. Classify the overall risk of this PR: LOW, MEDIUM, HIGH, or CRITICAL
-2. Detect circular/tautological test patterns
-3. Identify up to 5 quick findings beyond what Layer 1 already caught
+Tasks:
+1. Classify overall risk: LOW, MEDIUM, HIGH, or CRITICAL
+2. If test files are present, check for circular/tautological test patterns
+3. Report ONLY concrete defects you are confident about
 
-Rules:
-- Be PRECISE. False positives erode trust. When unsure, omit the finding.
-- Focus on issues that a static regex scanner (Layer 1) would miss.
-- For test analysis: a "circular test" is one that mocks the dependency AND verifies the mock behavior, testing nothing real.
+CRITICAL RULES — violations cause the system to be disabled:
+- NEVER report style preferences, naming suggestions, or "consider using X" advice
+- NEVER report generic best practices that aren't specific to this diff
+- NEVER report something already caught by Layer 1 (listed below)
+- Report ONLY if you can point to a specific line and explain the concrete bug or vulnerability
+- If you are not confident, report NOTHING. Silence is acceptable. Noise is not.
+- Maximum 3 findings. Quality over quantity.
 
 Respond in this exact JSON format:
 {
   "risk": "LOW|MEDIUM|HIGH|CRITICAL",
-  "riskReason": "one sentence explaining the risk level",
+  "riskReason": "one sentence",
   "circularTests": {
     "detected": true/false,
     "count": number,
     "total": number,
-    "details": "explanation"
+    "details": "explanation or empty string"
   },
   "findings": [
     {
@@ -52,12 +55,12 @@ Respond in this exact JSON format:
 ### Files changed:
 ${fileList}
 
-### Layer 1 (deterministic) findings:
+### Layer 1 (deterministic) findings already reported — do NOT duplicate:
 ${l1Summary}
 
-### Full diff:
+### Diff:
 \`\`\`
-${context.diff}
+${truncateDiff(context.diff, 8000)}
 \`\`\``,
   };
 }
@@ -72,51 +75,73 @@ export function buildDeepReviewPrompt(
     .join('\n') || 'None yet.';
 
   const fileContents = context.files
-    .map((f) => `### ${f.path} (${f.classification})\n\`\`\`typescript\n${f.content}\n\`\`\``)
+    .map((f) => {
+      const lang = detectLanguage(f.path);
+      return `### ${f.path} (${f.classification})\n\`\`\`${lang}\n${truncateContent(f.content, 3000)}\n\`\`\``;
+    })
     .join('\n\n');
 
   const lensInstructions: Record<string, string> = {
-    security: `You are a security-focused code reviewer specializing in OWASP Top 10 and authentication vulnerabilities.
+    security: `You are a security and safety reviewer. Analyze for vulnerabilities AND dangerous runtime behavior.
 
-Focus areas:
-- Password storage (hashing algorithm, cost factor)
-- Token generation (randomness quality, JWT configuration)
-- Input validation and sanitization
-- Error information leakage
-- Rate limiting and brute-force protection
-- JWT verification (algorithm restrictions, expiry checking)
+Report:
+- Injection: SQL, NoSQL, XSS, SSRF, command injection, path traversal
+- Auth bypasses: missing checks, wrong credential comparison, token handling errors
+- Null/nil dereference that causes crashes in production (not just theoretical)
+- Cryptographic weaknesses with specific impact
+- Unsafe state: reading state that may not exist, accessing dict keys without presence check
 
-Only report findings with confidence > 0.7. Prefer precision over recall.`,
+DO NOT report:
+- Generic "add input validation" without a specific attack path
+- Style preferences or naming issues
+- Anything already found by earlier layers (listed below)
 
-    architecture: `You are an architecture reviewer focused on separation of concerns, testability, and coupling.
+Maximum 3 findings. Only report if confidence > 0.8.`,
 
-Focus areas:
-- Business logic mixed with transport/HTTP concerns
-- Data layer leaking implementation details
-- Unnecessary data exposure between layers
-- Testability of components in isolation
+    architecture: `You are a correctness reviewer. Analyze ONLY for logic defects and behavioral bugs.
 
-Only report findings with confidence > 0.7.`,
+Report:
+- Logic errors: wrong condition, inverted boolean, off-by-one, wrong variable used
+- Race conditions: concurrent access without synchronization, TOCTOU
+- Wrong method/object: calling session instead of delegate, using wrong provider, returning wrong value
+- Asymmetric logic: caching reads but not writes, checking one path but not another
+- Resource lifecycle: opened but not closed, used after close
+- Negative/boundary cases: negative indices, empty collections, null propagation through call chains
 
-    'test-quality': `You are a test quality expert. You analyze test EFFECTIVENESS, not coverage numbers.
+DO NOT report:
+- Separation of concerns, coupling, or design pattern suggestions
+- Naming, documentation, or style issues
+- Performance optimizations or "consider using X" advice
+- Anything already found by earlier layers (listed below)
 
-Focus areas:
-- Circular tests: tests that mock the thing they're testing
-- Mock-heavy tests: mocking both the dependency AND the caller means you test the mock framework
-- Assertion quality: "function was called" vs "result is correct"
-- Missing test scenarios: negative cases, edge cases, error paths
-- Tests that verify implementation details rather than behavior
+Maximum 3 findings. Only report if confidence > 0.8.`,
 
-Only report findings with confidence > 0.7.`,
+    'test-quality': `You are a test quality reviewer. Analyze ONLY for tests that provide false assurance.
+
+Report:
+- Circular tests: tests that mock the thing they verify
+- Tests that assert mock interactions, not outcomes
+- Tests that would still pass if the production code were completely broken
+- Critical untested paths that handle security or data integrity
+
+DO NOT report:
+- Missing edge case tests (unless the edge case is a security boundary)
+- Style issues in test code
+- "Could add more assertions" without a specific missed bug
+- Anything already found by earlier layers (listed below)
+
+Maximum 2 findings. Only report if confidence > 0.8.`,
   };
 
   return {
     system: `${lensInstructions[lens]}
 
-Previous findings from earlier layers (do NOT duplicate these):
+Previous findings from earlier layers — do NOT duplicate:
 ${priorSummary}
 
-Respond in this exact JSON format:
+CRITICAL: If you have nothing confident to report, return an empty findings array. An empty response is BETTER than a noisy one.
+
+Respond in JSON:
 {
   "lens": "${lens}",
   "findings": [
@@ -126,15 +151,37 @@ Respond in this exact JSON format:
       "file": "path",
       "line": number_or_null,
       "title": "short title",
-      "description": "what's wrong and why it matters",
-      "suggestion": "how to fix it",
+      "description": "concrete problem and impact",
+      "suggestion": "specific fix",
       "confidence": 0.0_to_1.0
     }
   ]
 }`,
     prompt: `## PR: ${context.pr.title}
 
-### Full file contents:
+### Code:
 ${fileContents}`,
   };
+}
+
+function detectLanguage(path: string): string {
+  if (path.endsWith('.ts') || path.endsWith('.tsx')) return 'typescript';
+  if (path.endsWith('.js') || path.endsWith('.jsx')) return 'javascript';
+  if (path.endsWith('.py')) return 'python';
+  if (path.endsWith('.java')) return 'java';
+  if (path.endsWith('.go')) return 'go';
+  if (path.endsWith('.rb') || path.endsWith('.erb')) return 'ruby';
+  if (path.endsWith('.rs')) return 'rust';
+  if (path.endsWith('.css') || path.endsWith('.scss')) return 'css';
+  return '';
+}
+
+function truncateDiff(diff: string, maxChars: number): string {
+  if (diff.length <= maxChars) return diff;
+  return diff.slice(0, maxChars) + '\n... (truncated)';
+}
+
+function truncateContent(content: string, maxChars: number): string {
+  if (content.length <= maxChars) return content;
+  return content.slice(0, maxChars) + '\n... (truncated)';
 }
