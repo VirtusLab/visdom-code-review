@@ -1,6 +1,25 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-visdom-green: #10b981;
+  --color-visdom-green-light: #d1fae5;
+  --color-visdom-green-dark: #059669;
+  --color-visdom-gray-50: #f9fafb;
+  --color-visdom-gray-100: #f3f4f6;
+  --color-visdom-gray-200: #e5e7eb;
+  --color-visdom-gray-300: #d1d5db;
+  --color-visdom-gray-400: #9ca3af;
+  --color-visdom-gray-500: #6b7280;
+  --color-visdom-gray-600: #4b5563;
+  --color-visdom-gray-700: #374151;
+  --color-visdom-gray-800: #1f2937;
+  --color-visdom-gray-900: #111827;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --max-width-doc: 48rem;
+}
 
 @layer base {
   body {

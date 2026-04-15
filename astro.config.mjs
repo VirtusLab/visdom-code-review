@@ -1,8 +1,12 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
+import react from '@astrojs/react';
 
 export default defineConfig({
-  integrations: [tailwind()],
+  integrations: [react()],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   site: 'https://virtuslab.github.io',
   base: '/visdom-code-review/',
   trailingSlash: 'always',
