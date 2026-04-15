@@ -1,7 +1,60 @@
 ---
 import DocLayout from '../layouts/DocLayout.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
 
 const base = import.meta.env.BASE_URL;
+
+const trustItems = [
+  {
+    question: "How do I know the findings are real, not hallucinations?",
+    answer: "Layer 1 uses 17 deterministic regex rules \u2014 zero hallucination risk. AI layers (L2/L3) enforce a 0.8 confidence threshold and cap at 3 findings per lens. On the Martian Code Review Benchmark (50 real-world PRs, 5 languages), VCR achieved 46% precision with an independent LLM judge. Every finding includes its layer, rule ID, and confidence score so you can verify.",
+  },
+  {
+    question: "What about false positives and alert fatigue?",
+    answer: "Our design philosophy is \u201cprecision over recall\u201d \u2014 we\u2019d rather miss a low-severity issue than erode developer trust with noise. In benchmark testing, 76% of findings were either confirmed bug matches or valid suggestions. We explicitly instruct AI layers: \u201csilence is acceptable, noise is not.\u201d When we tried expanding prompts with more patterns, noise increased and F1 dropped \u2014 shorter, focused prompts outperform encyclopedic ones.",
+  },
+  {
+    question: "Can it understand what the developer was trying to do?",
+    answer: "VCR reads the PR title and description, passing the author\u2019s stated intent to AI layers. This helps avoid flagging intentional changes. For example, if the PR says \u201cdeliberately widen API visibility for plugin support,\u201d the AI is less likely to flag visibility changes as problems. This is shallow intent understanding (title+body parsing, not semantic reasoning) \u2014 honest caveat.",
+  },
+  {
+    question: "It only sees the diff \u2014 how can it catch cross-file bugs?",
+    answer: "VCR extracts the import graph from changed files and includes related module names in the prompt. This gives the AI awareness of what other parts of the codebase are involved. That said, diff-only review has a structural ceiling of ~55\u201360% recall. 63% of missed bugs in our benchmark needed full codebase context to detect. Cross-file analysis is the next frontier.",
+  },
+];
+
+const securityItems = [
+  {
+    question: "Does our code leave the network?",
+    answer: "No. VCR runs entirely in your CI/CD pipeline using your own API key. There is no SaaS to send code to. Layer 1 (deterministic rules) works with zero network access \u2014 even air-gapped environments get value. You control the LLM provider, the data flow, and the retention policy.",
+  },
+  {
+    question: "How does this work with SOC2, HIPAA, and EU AI Act?",
+    answer: "Layer 1 produces fully auditable, rule-based findings \u2014 each tied to a specific rule ID, regex pattern, and line number. The full pipeline report is structured JSON suitable as a compliance artifact. Anthropic\u2019s API enterprise terms explicitly exclude training on inputs. The deterministic backstop satisfies EU AI Act requirements for human-oversight in high-risk AI systems.",
+  },
+  {
+    question: "What about shadow AI and ungoverned tool sprawl?",
+    answer: "Research shows 65% of AI tools in enterprises operate without IT approval. VCR replaces ad-hoc usage of Copilot, ChatGPT, and other tools for code review with a single, governed pipeline component in CI/CD. Every run produces a traceable report. IT owns the configuration.",
+  },
+];
+
+const economicsItems = [
+  {
+    question: "What does it actually cost?",
+    answer: "Transparent, per-PR pricing based on risk level. Low-risk PRs (config changes, docs): $0.00\u2013$0.02. Medium-risk: ~$0.02 (Haiku triage). High-risk (security, auth): ~$0.44 (full pipeline). Average across all PRs: ~$0.10. A 50-person team doing 500 PRs/week pays ~$2,600/year in LLM costs. Compare: SaaS tools charge $12\u201340/dev/month, or $7,200\u2013$24,000/year for the same team size.",
+  },
+  {
+    question: "What if the AI model gets more expensive or changes?",
+    answer: "You own the pipeline code. Layer 2 uses Haiku (cheapest), Layer 3 uses Sonnet (mid-tier). Swap to any Claude model, GPT-4o, or Gemini by changing one configuration. Layer 1 works with zero LLM cost \u2014 it\u2019s pure regex. No vendor lock-in.",
+  },
+];
+
+const processItems = [
+  {
+    question: "Does this replace human code reviewers?",
+    answer: "No. VCR is a first-pass filter, not a replacement. Benchmark data: 40% recall means VCR catches 4 in 10 planted bugs. The other 6 still need human eyes. The value proposition is freeing senior reviewers from routine catches (hardcoded secrets, null safety, async mistakes) so they can focus on architecture decisions, mentorship, and the logic bugs that require understanding intent.",
+  },
+];
 ---
 
 <DocLayout
@@ -10,197 +63,16 @@ const base = import.meta.env.BASE_URL;
   section="Home"
 >
 
-<h2>Trust &amp; Accuracy</h2>
+<h2 class="text-xl font-bold text-visdom-gray-900 mb-4 mt-8 first:mt-0">Trust & Accuracy</h2>
+<FaqAccordion items={trustItems} />
 
-<details class="faq-item">
-  <summary class="faq-question">How do I know the findings are real, not hallucinations?</summary>
-  <div class="faq-answer">
-    <p>
-      Layer 1 uses 17 deterministic regex rules — zero hallucination risk. AI layers (L2/L3) enforce
-      a 0.8 confidence threshold and cap at 3 findings per lens. On the Martian Code Review Benchmark
-      (50 real-world PRs, 5 languages), VCR achieved 46% precision with an independent LLM judge.
-      Every finding includes its layer, rule ID, and confidence score so you can verify.
-    </p>
-  </div>
-</details>
+<h2 class="text-xl font-bold text-visdom-gray-900 mb-4 mt-10">Enterprise Security</h2>
+<FaqAccordion items={securityItems} />
 
-<details class="faq-item">
-  <summary class="faq-question">What about false positives and alert fatigue?</summary>
-  <div class="faq-answer">
-    <p>
-      Our design philosophy is "precision over recall" — we'd rather miss a low-severity issue than
-      erode developer trust with noise. In benchmark testing, 76% of findings were either confirmed
-      bug matches or valid suggestions (usefulness rate). We explicitly instruct AI layers: "silence
-      is acceptable, noise is not." When we tried expanding prompts with more patterns, noise increased
-      and F1 dropped — shorter, focused prompts outperform encyclopedic ones.
-    </p>
-  </div>
-</details>
+<h2 class="text-xl font-bold text-visdom-gray-900 mb-4 mt-10">Economics</h2>
+<FaqAccordion items={economicsItems} />
 
-<details class="faq-item">
-  <summary class="faq-question">Can it understand what the developer was trying to do?</summary>
-  <div class="faq-answer">
-    <p>
-      VCR reads the PR title and description, passing the author's stated intent to AI layers. This
-      helps avoid flagging intentional changes. For example, if the PR says "deliberately widen API
-      visibility for plugin support," the AI is less likely to flag visibility changes as problems.
-      This is shallow intent understanding (title+body parsing, not semantic reasoning) — honest caveat.
-    </p>
-  </div>
-</details>
-
-<details class="faq-item">
-  <summary class="faq-question">It only sees the diff — how can it catch cross-file bugs?</summary>
-  <div class="faq-answer">
-    <p>
-      VCR extracts the import graph from changed files and includes related module names in the prompt.
-      This gives the AI awareness of what other parts of the codebase are involved. That said,
-      diff-only review has a structural ceiling of ~55–60% recall. 63% of missed bugs in our benchmark
-      needed full codebase context to detect. Cross-file analysis is the next frontier.
-    </p>
-  </div>
-</details>
-
-<h2>Enterprise Security</h2>
-
-<details class="faq-item">
-  <summary class="faq-question">Does our code leave the network?</summary>
-  <div class="faq-answer">
-    <p>
-      No. VCR runs entirely in your CI/CD pipeline using your own API key. There is no SaaS to send
-      code to. Layer 1 (deterministic rules) works with zero network access — even air-gapped
-      environments get value. You control the LLM provider, the data flow, and the retention policy.
-    </p>
-  </div>
-</details>
-
-<details class="faq-item">
-  <summary class="faq-question">How does this work with SOC2, HIPAA, and EU AI Act?</summary>
-  <div class="faq-answer">
-    <p>
-      Layer 1 produces fully auditable, rule-based findings — each tied to a specific rule ID, regex
-      pattern, and line number. The full pipeline report is structured JSON suitable as a compliance
-      artifact. Anthropic's API enterprise terms explicitly exclude training on inputs. The deterministic
-      backstop satisfies EU AI Act requirements for human-oversight in high-risk AI systems.
-    </p>
-  </div>
-</details>
-
-<details class="faq-item">
-  <summary class="faq-question">What about shadow AI and ungoverned tool sprawl?</summary>
-  <div class="faq-answer">
-    <p>
-      Research shows 65% of AI tools in enterprises operate without IT approval. VCR replaces
-      ad-hoc usage of Copilot, ChatGPT, and other tools for code review with a single, governed
-      pipeline component in CI/CD. Every run produces a traceable report. IT owns the configuration.
-    </p>
-  </div>
-</details>
-
-<h2>Economics</h2>
-
-<details class="faq-item">
-  <summary class="faq-question">What does it actually cost?</summary>
-  <div class="faq-answer">
-    <p>
-      Transparent, per-PR pricing based on risk level. Low-risk PRs (config changes, docs): $0.00–$0.02.
-      Medium-risk: ~$0.02 (Haiku triage). High-risk (security, auth): ~$0.44 (full pipeline).
-      Average across all PRs: ~$0.10. A 50-person team doing 500 PRs/week pays ~$2,600/year in LLM
-      costs. Compare: SaaS tools charge $12–40/dev/month, or $7,200–$24,000/year for the same team size.
-    </p>
-  </div>
-</details>
-
-<details class="faq-item">
-  <summary class="faq-question">What if the AI model gets more expensive or changes?</summary>
-  <div class="faq-answer">
-    <p>
-      You own the pipeline code. Layer 2 uses Haiku (cheapest), Layer 3 uses Sonnet (mid-tier). Swap
-      to any Claude model, GPT-4o, or Gemini by changing one configuration. Layer 1 works with zero
-      LLM cost — it's pure regex. No vendor lock-in.
-    </p>
-  </div>
-</details>
-
-<h2>Process</h2>
-
-<details class="faq-item">
-  <summary class="faq-question">Does this replace human code reviewers?</summary>
-  <div class="faq-answer">
-    <p>
-      No. VCR is a first-pass filter, not a replacement. Benchmark data: 40% recall means VCR catches
-      4 in 10 planted bugs. The other 6 still need human eyes. The value proposition is freeing senior
-      reviewers from routine catches (hardcoded secrets, null safety, async mistakes) so they can focus
-      on architecture decisions, mentorship, and the logic bugs that require understanding intent.
-    </p>
-  </div>
-</details>
+<h2 class="text-xl font-bold text-visdom-gray-900 mb-4 mt-10">Process</h2>
+<FaqAccordion items={processItems} />
 
 </DocLayout>
-
-<style>
-  .faq-item {
-    border: 1px solid var(--visdom-gray-200, #e5e7eb);
-    border-radius: 10px;
-    margin-bottom: 10px;
-    overflow: hidden;
-    background: var(--visdom-gray-50, #fafbfc);
-  }
-
-  .faq-item[open] {
-    border-color: var(--visdom-green, #10b981);
-  }
-
-  .faq-item[open] .faq-question {
-    border-bottom: 1px solid var(--visdom-gray-200, #e5e7eb);
-    color: var(--visdom-green-dark, #059669);
-  }
-
-  .faq-question {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    font-size: 0.97rem;
-    font-weight: 600;
-    color: var(--visdom-gray-900, #111827);
-    cursor: pointer;
-    list-style: none;
-    gap: 12px;
-    transition: color 0.15s;
-  }
-
-  .faq-question::-webkit-details-marker {
-    display: none;
-  }
-
-  .faq-question::after {
-    content: '+';
-    font-size: 1.3rem;
-    font-weight: 400;
-    color: var(--visdom-gray-400, #9ca3af);
-    flex-shrink: 0;
-    line-height: 1;
-    transition: transform 0.2s;
-  }
-
-  .faq-item[open] .faq-question::after {
-    content: '\2212';
-    color: var(--visdom-green, #10b981);
-  }
-
-  .faq-question:hover {
-    color: var(--visdom-green-dark, #059669);
-  }
-
-  .faq-answer {
-    padding: 16px 20px 4px;
-  }
-
-  .faq-answer p {
-    font-size: 0.92rem;
-    line-height: 1.7;
-    color: var(--visdom-gray-600, #4b5563);
-    margin-bottom: 12px;
-  }
-</style>
