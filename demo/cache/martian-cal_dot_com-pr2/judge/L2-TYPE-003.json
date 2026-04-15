@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a real logic issue with silent fallback masking credential misconfiguration in CalendarService.ts, which is a valid concern, but does not match any of the ground truth entries which focus on null reference errors, logic inversions, and interface contract violations in different contexts.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 1069,
+  "tokensOut": 109,
+  "costUsd": 0.0012912
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes code duplication and maintenance concerns, but none of the ground truth entries address architectural duplication—they focus on specific bugs (null references, state validation, KeyError), which this finding does not identify.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 641,
+  "tokensOut": 92,
+  "costUsd": 0.0008807999999999999
+}

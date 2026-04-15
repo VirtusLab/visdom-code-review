@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding critiques parameter naming semantics and authorization checking practices, but does not identify any of the concrete bugs in GT-004, GT-005, or GT-006 (negative-offset slicing or datetime floor/ceil TypeError). It is a valid code quality suggestion but does not match the substance of the planted vulnerabilities.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 743,
+  "tokensOut": 116,
+  "costUsd": 0.0010584
+}

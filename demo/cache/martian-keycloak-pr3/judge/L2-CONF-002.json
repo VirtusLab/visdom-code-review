@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a legitimate configuration consistency issue between Docker build settings and documented behavior, but does not match the ground truth entry about picocli exit code handling methods.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 557,
+  "tokensOut": 83,
+  "costUsd": 0.0007776
+}

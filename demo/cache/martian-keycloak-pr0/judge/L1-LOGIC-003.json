@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding claims infinite recursion from self-calling method, but ground truth entries focus on ConditionalPasskeysEnabled() parameter issues and null-checking logic; there is no mention of recursive calls or stack overflow in the GT entries, and the finding appears to be either a false positive or describing a different code path than what was planted.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 600,
+  "tokensOut": 118,
+  "costUsd": 0.0009519999999999999
+}

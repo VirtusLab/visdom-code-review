@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-008\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the same core vulnerability: using Python's built-in hash() for cache key generation is non-deterministic across processes due to hash randomization, causing cache key mismatches. Both specifically mention the project_ids hashing issue and recommend deterministic serialization as the fix.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 817,
+  "tokensOut": 113,
+  "costUsd": 0.0011056
+}

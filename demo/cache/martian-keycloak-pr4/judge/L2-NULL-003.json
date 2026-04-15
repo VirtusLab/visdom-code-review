@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a generic defensive programming suggestion about IndexOutOfBoundsException when calling .get(0) on a list, which is unrelated to the planted bugs about feature flag inconsistency (GT-008), resource lookup mismatches (GT-009), or resource type iteration issues (GT-010).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 968,
+  "tokensOut": 115,
+  "costUsd": 0.0012343999999999999
+}

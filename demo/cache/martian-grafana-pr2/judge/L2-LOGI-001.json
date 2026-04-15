@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real logic issue in context handling within logger initialization, but it does not match either ground truth entry which focus on nil request panics (GT-008) and missing traceID logging (GT-009).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 713,
+  "tokensOut": 97,
+  "costUsd": 0.0009584
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This is a pure style preference about naming consistency (camelCase pattern) that has no functional impact, whereas GT-007 addresses a substantive bug involving incorrect exit code handling via picocli.exit().\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 552,
+  "tokensOut": 92,
+  "costUsd": 0.0008096
+}

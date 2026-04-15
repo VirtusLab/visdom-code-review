@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a legitimate missing error handler for an unhandled promise rejection in topic-unsubscribe.js, which is a real issue but does not match either ground truth entry (GT-004 is about nil pointer exceptions, GT-005 is about a typo).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 640,
+  "tokensOut": 110,
+  "costUsd": 0.0009519999999999999
+}

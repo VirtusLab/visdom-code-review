@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes infinite recursion between get_result() and build_cursor(), but none of the ground truth entries mention recursion, call chains, or stack overflow issues—they all concern negative-offset slicing and datetime key handling, which are fundamentally different problems.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 710,
+  "tokensOut": 103,
+  "costUsd": 0.00098
+}

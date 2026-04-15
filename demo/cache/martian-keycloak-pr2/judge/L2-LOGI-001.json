@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes an incomplete code snippet in a diff (missing closing brace/return statement), which is a presentation artifact rather than an actual logic bug; it doesn't match either ground truth entry about provider selection or dead code, and the reported issue appears to stem from truncated diff display rather than genuine implementation error.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 622,
+  "tokensOut": 112,
+  "costUsd": 0.0009456
+}

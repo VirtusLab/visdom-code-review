@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-003\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the same inconsistent naming issue where the exported function is named 'TwoFactor' in BackupCode.tsx instead of 'BackupCode', matching GT-003's description of the exported function TwoFactor being in BackupCode.tsx with inconsistent naming.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 816,
+  "tokensOut": 115,
+  "costUsd": 0.0011128
+}

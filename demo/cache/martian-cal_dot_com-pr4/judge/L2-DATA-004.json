@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real data consistency issue in the migration (missing DEFAULT value causing NULL values to break cancellation logic), which is distinct from GT-014 (missing await calls) and GT-015 (inconsistent deletion behavior), neither of which address schema design or backfill problems.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 725,
+  "tokensOut": 110,
+  "costUsd": 0.00102
+}

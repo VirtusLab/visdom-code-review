@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real authorization logic vulnerability (OR-based permission checks potentially bypassing restrictions), but this is distinct from the planted bugs which concern missing props (GT-011) and silent failures in silence drawer rendering (GT-012).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 837,
+  "tokensOut": 99,
+  "costUsd": 0.0010655999999999999
+}

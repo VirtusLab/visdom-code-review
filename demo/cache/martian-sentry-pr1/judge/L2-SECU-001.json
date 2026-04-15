@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-004\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"Finding identifies OptimizedCursorPaginator's negative-offset branch slicing QuerySet with negative start index, directly matching GT-004's substance despite different wording emphasis on authorization bypass implications.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 700,
+  "tokensOut": 95,
+  "costUsd": 0.0009399999999999999
+}

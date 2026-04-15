@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-001\",\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding identifies the exact issue described in GT-001: Django querysets do not support negative slicing, which can cause memory exhaustion when cursor.offset is negative and passed to queryset slicing operations.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 785,
+  "tokensOut": 96,
+  "costUsd": 0.0010119999999999999
+}

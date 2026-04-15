@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a specific logic error in ASN1Decoder sequence length calculation, but neither ground truth entry (GT-005 about provider selection or GT-006 about dead code in ASN1Encoder) addresses this issue; the finding appears to be a false positive based on misunderstanding of how ASN.1 sequence parsing works.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 658,
+  "tokensOut": 121,
+  "costUsd": 0.0010104
+}

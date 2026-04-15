@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding speculates about potentially missing error code definitions without evidence that they're actually missing or that this causes a real bug; it's a preventive code review suggestion rather than identification of an actual defect in the provided codebase.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 834,
+  "tokensOut": 96,
+  "costUsd": 0.0010512
+}

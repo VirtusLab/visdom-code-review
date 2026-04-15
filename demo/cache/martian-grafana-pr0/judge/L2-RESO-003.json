@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a real performance inefficiency (repeated database queries without caching) that is technically valid and actionable, but does not match any of the ground truth entries which focus on race conditions, compilation errors, error semantics, and time calculations.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 886,
+  "tokensOut": 101,
+  "costUsd": 0.0011128
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding speculates about potential concurrent modification issues without evidence of actual unsynchronized access or a concrete bug; neither ground truth entry addresses concurrency concerns in cache queries, and the suggested issue doesn't match the planted bugs.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 693,
+  "tokensOut": 93,
+  "costUsd": 0.0009264
+}

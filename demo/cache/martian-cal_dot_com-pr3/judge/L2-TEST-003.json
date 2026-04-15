@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding critiques test brittleness due to whitespace sensitivity in SQL string comparisons, which is a valid test maintenance observation but does not match either ground truth issue (GT-012 about unreachable code branches in getBaseConditions or GT-013 about incomplete userIdsFromOrg filtering logic).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 719,
+  "tokensOut": 115,
+  "costUsd": 0.0010352
+}

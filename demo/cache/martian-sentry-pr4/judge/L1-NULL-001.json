@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a generic null/undefined dereference pattern without identifying a specific substantive issue matching any ground truth entry; the ground truths concern specific detector validator logic, response format changes, and dict ordering issues, none of which align with this vague null-check complaint.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 570,
+  "tokensOut": 105,
+  "costUsd": 0.0008759999999999999
+}

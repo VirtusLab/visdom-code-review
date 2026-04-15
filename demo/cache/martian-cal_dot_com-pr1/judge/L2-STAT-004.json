@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding identifies a real state management bug (incomplete cleanup of `twoFactorLostAccess` during form reset) that could cause UI inconsistency, but this specific issue does not match any of the ground truth entries, which focus on backup code validation, naming inconsistencies, error messages, and concurrent access vulnerabilities.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 820,
+  "tokensOut": 119,
+  "costUsd": 0.001132
+}

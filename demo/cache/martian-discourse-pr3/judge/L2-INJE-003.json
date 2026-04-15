@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-008\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"Finding identifies SSRF vulnerability using open(url) without validation, directly matching GT-008's core issue of unvalidated URL handling in open() calls enabling server-side request forgery.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 962,
+  "tokensOut": 93,
+  "costUsd": 0.0011416
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-014\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies async callback functions (deleteScheduledEmailReminder/deleteScheduledSMSReminder) called without await inside a forEach loop, causing reminders to not reliably complete—matching GT-014's core issue of async deletions without await in forEach loops during workflow updates.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 733,
+  "tokensOut": 113,
+  "costUsd": 0.0010383999999999999
+}

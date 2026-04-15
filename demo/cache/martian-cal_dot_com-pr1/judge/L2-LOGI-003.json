@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding discusses refactoring from independent if statements to if/else-if chains and requests verification of an error code, which is a code quality/maintainability concern unrelated to any of the substantive ground truth issues (backup code naming, error messaging, case-sensitivity, or concurrency bugs).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 818,
+  "tokensOut": 112,
+  "costUsd": 0.0011024
+}

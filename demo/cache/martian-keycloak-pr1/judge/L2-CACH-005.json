@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a potential future maintenance issue with cache invalidation logic assumptions, but neither ground truth entry matches this concern—GT-003 addresses recursive caching calls and GT-004 addresses alias naming; the finding is a valid-but-unplanted code quality suggestion rather than an identified bug.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 666,
+  "tokensOut": 110,
+  "costUsd": 0.0009727999999999999
+}

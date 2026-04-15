@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding reports a timing-safe comparison vulnerability in useAbilities.ts, but neither GT-011 nor GT-012 address cryptographic security issues; they concern React rendering and rule silencing functionality, making this a valid security finding that doesn't match the provided ground truth entries.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 682,
+  "tokensOut": 107,
+  "costUsd": 0.0009735999999999999
+}

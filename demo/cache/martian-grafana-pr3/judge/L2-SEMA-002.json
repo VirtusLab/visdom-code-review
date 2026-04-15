@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real order-of-operations bug (filtering before interpolation), but GT-010 only concerns unused parameters in test setup, making them distinct issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 552,
+  "tokensOut": 85,
+  "costUsd": 0.0007815999999999999
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a logic change in filter ordering relative to interpolation that could cause template variables to be skipped, but GT-010 refers to an unused parameter in test setup—these are fundamentally different issues with no substantive overlap.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 567,
+  "tokensOut": 97,
+  "costUsd": 0.0008416
+}

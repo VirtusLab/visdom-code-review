@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a missing feature flag validation in operator code, but GT-007 concerns incorrect picocli exit code handling—completely different issues with no substantive overlap.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 540,
+  "tokensOut": 83,
+  "costUsd": 0.0007639999999999999
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a legitimate authorization bypass vulnerability (unauthenticated user accessing installations they don't own) that is distinct from the planted bugs about null references, OAuth state validation, and metadata KeyErrors.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 668,
+  "tokensOut": 92,
+  "costUsd": 0.0009024
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a real security issue (client-controlled feature gate bypass via query parameter) that is distinct from the three ground truth entries which focus on technical bugs (negative slicing, NoneType crashes, and TypeError on datetime math operations) rather than privilege/access control logic flaws.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 812,
+  "tokensOut": 109,
+  "costUsd": 0.0010856
+}

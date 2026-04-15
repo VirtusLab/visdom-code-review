@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding complains about incomplete diff/truncated method definition rather than identifying an actual logic error in the code; it's a meta-comment about documentation clarity rather than a substantive bug in the authentication logic itself.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 709,
+  "tokensOut": 92,
+  "costUsd": 0.0009352
+}

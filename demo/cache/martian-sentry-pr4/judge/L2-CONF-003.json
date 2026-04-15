@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding discusses service group configuration and dependency management architecture in a dev services file, which does not match any of the provided ground truth entries that focus on error response format changes, detector validator bugs, and data structure ordering issues in code logic.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 661,
+  "tokensOut": 96,
+  "costUsd": 0.0009128
+}

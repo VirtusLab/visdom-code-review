@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a legitimate test quality issue (circular mocking without real authentication validation) that is not covered by any ground truth entry, which focus on backup code implementation bugs rather than test design flaws.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 740,
+  "tokensOut": 91,
+  "costUsd": 0.0009559999999999999
+}

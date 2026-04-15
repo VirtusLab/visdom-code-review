@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a duplicate/redundant null check (formatting artifact), which is a code quality issue, but none of the ground truth entries address duplicate conditional checks—they focus on null reference dangers, logic inversions, interface mismatches, and search logic errors in different contexts.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 899,
+  "tokensOut": 105,
+  "costUsd": 0.0011392
+}

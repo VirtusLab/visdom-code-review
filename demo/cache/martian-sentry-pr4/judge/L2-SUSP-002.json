@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding is a vague complaint about lack of visible diff context rather than identifying a specific, substantive bug—it's requesting more information rather than pointing to an actual vulnerability or functional issue present in the code.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 617,
+  "tokensOut": 91,
+  "costUsd": 0.0008575999999999999
+}

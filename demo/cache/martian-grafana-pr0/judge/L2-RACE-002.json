@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-005\",\n  \"confidence\": 0.92,\n  \"reasoning\": \"Both findings identify the same underlying issue: inconsistent time window calculations where different reference points are used (device.UpdatedAt vs time.Now().UTC()) in related queries, leading to logic errors in the device expiration/count logic.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 928,
+  "tokensOut": 102,
+  "costUsd": 0.0011504
+}

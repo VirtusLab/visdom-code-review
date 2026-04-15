@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding is a valid test coverage suggestion but does not correspond to any planted bug in the ground truth—it identifies missing test cases rather than an actual defect in the production code (GT-005 and GT-006 are unrelated issues about provider selection and dead code).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 654,
+  "tokensOut": 106,
+  "costUsd": 0.0009471999999999999
+}

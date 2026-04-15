@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding criticizes using `null` instead of `splice()` for code cleanliness, but GT-006 identifies the actual security issue: concurrent mutations cause race conditions that allow backup codes to be reused, which is a fundamentally different (and more severe) problem than array storage efficiency.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 779,
+  "tokensOut": 110,
+  "costUsd": 0.0010631999999999998
+}

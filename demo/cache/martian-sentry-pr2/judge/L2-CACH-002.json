@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-008\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"Both findings identify the same root issue: using Python's built-in hash() function for cache keys is problematic because hash randomization makes keys non-deterministic across processes, causing cache misses and inconsistencies. The finding describes the symptom (stale results with different project subsets) that directly results from hash collisions/non-determinism across worker processes.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 830,
+  "tokensOut": 130,
+  "costUsd": 0.001184
+}

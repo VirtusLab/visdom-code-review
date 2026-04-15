@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTrust\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a legitimate gap in test coverage for email domain whitelist/blacklist validation logic, but this doesn't match either ground truth entry—GT-006 concerns BlockedEmail side effects and GT-007 concerns a specific regex matching bug; neither addresses missing test coverage.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 618,
+  "tokensOut": 107,
+  "costUsd": 0.0009224
+}

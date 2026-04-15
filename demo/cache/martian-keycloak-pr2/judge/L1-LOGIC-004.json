@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-006\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a return value being discarded (creating instances but not using them), which matches GT-006's description of ASN1Encoder instances being created/written but their results discarded, making the operations dead code.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 571,
+  "tokensOut": 100,
+  "costUsd": 0.0008568
+}

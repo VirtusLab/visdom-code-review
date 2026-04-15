@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-011\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the same OAuth state validation vulnerability: using pipeline.signature (static/predictable) instead of a per-request random value, which matches GT-011's substance exactly despite different phrasing.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 667,
+  "tokensOut": 96,
+  "costUsd": 0.0009176
+}

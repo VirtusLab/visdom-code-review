@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a test coverage gap and inconsistent feature enablement across test methods, which is completely unrelated to GT-007's issue about incorrect picocli.exit() method calls for exit codes—different files, different domains (test infrastructure vs. system exit handling), no substantive overlap.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 562,
+  "tokensOut": 109,
+  "costUsd": 0.0008856
+}

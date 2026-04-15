@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real cache poisoning vulnerability where transient errors are cached as permission denials, but this is distinct from GT-006 (asymmetric cache trust logic) and GT-007 (test comment mismatch)—it addresses caching the wrong type of negative result rather than asymmetric handling or test issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 715,
+  "tokensOut": 120,
+  "costUsd": 0.001052
+}

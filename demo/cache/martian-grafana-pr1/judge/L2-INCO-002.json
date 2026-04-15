@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a real cache invalidation vulnerability, but GT-006 focuses on asymmetric cache trust logic (grants trusted, denials ignored) rather than missing invalidation hooks when permissions change; while related, they are distinct security issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 663,
+  "tokensOut": 100,
+  "costUsd": 0.0009304
+}

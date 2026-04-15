@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a refactoring risk about removed validation logic and incomplete integration into all code paths, which is a valid architectural concern but does not match either GT entry—GT-006 concerns side effects in BlockedEmail reads, and GT-007 concerns regex pattern matching scope, neither of which are addressed by this finding.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 637,
+  "tokensOut": 115,
+  "costUsd": 0.0009695999999999999
+}

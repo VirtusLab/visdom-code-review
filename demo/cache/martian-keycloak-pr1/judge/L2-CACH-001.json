@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a legitimate race condition and cache coherency issue involving stale cache results and inconsistent invalidation timing, but this specific vulnerability does not match either ground truth entry (GT-003 concerns recursive caching calls, GT-004 concerns alias naming conventions).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 756,
+  "tokensOut": 106,
+  "costUsd": 0.0010287999999999999
+}

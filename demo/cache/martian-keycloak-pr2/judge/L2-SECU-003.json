@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a design pattern issue (repeated initialization calls) unrelated to the planted bugs about cryptographic provider selection (GT-005) or dead code in ASN1Encoder (GT-006), and appears to be a valid-but-unplanted observation about initialization caching.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 656,
+  "tokensOut": 108,
+  "costUsd": 0.0009568
+}

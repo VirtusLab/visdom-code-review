@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding correctly identifies a missing await on an async function call in CalendarManager.ts, but this specific issue of `getCalendar()` not being awaited in `getCalendarCredentials()` does not match any of the provided ground truth entries—GT-001 is about try-catch wrapping and GT-002 is about forEach with async callbacks, neither of which describe this particular missing-await scenario.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 693,
+  "tokensOut": 139,
+  "costUsd": 0.0011103999999999999
+}

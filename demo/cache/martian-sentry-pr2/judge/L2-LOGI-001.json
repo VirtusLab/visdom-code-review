@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-008\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the same underlying issue as GT-008: using Python's built-in hash() for cache keys is problematic (the finding mentions collision risk; GT-008 specifies hash randomization across processes), and both recommend using deterministic string serialization of project_ids instead of hash().\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 771,
+  "tokensOut": 116,
+  "costUsd": 0.0010807999999999998
+}

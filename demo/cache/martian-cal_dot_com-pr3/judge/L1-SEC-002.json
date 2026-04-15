@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding claims SQL injection via string interpolation in a test file, but neither ground truth entry addresses SQL injection vulnerabilities—GT-012 concerns unreachable code logic and GT-013 concerns query filtering scope; additionally, test files are typically not subject to SQL injection security reviews in the same way as production code.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 628,
+  "tokensOut": 114,
+  "costUsd": 0.0009583999999999999
+}

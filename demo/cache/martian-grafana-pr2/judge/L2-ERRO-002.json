@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real issue with context loss in the logger fallback path, but does not match the ground truth entries which focus on nil request panics (GT-008) and missing traceID logging (GT-009) in middleware, not on type assertion failures in FromContext.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 728,
+  "tokensOut": 109,
+  "costUsd": 0.0010184
+}

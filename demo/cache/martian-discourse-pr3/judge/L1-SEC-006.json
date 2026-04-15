@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-011\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies X-Frame-Options: ALLOWALL disabling clickjacking protection, which is the core security issue in GT-011, despite the different file location and additional context about referer validation in the ground truth.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 885,
+  "tokensOut": 100,
+  "costUsd": 0.001108
+}

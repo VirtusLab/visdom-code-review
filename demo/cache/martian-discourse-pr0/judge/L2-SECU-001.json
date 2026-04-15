@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-002\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the exact same issue as GT-002: hardcoded maxSizeKB = 10 * 1024 ignoring Discourse.SiteSettings, causing client-side limits to diverge from server-side and per-type settings.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 808,
+  "tokensOut": 109,
+  "costUsd": 0.0010823999999999999
+}

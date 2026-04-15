@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding speculates about null-safety and return value handling without evidence of an actual bug in the codebase; it does not match the concrete issues in GT-005 (wrong crypto provider) or GT-006 (dead encoding code), and appears to be a generic defensive programming suggestion rather than a planted vulnerability.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 680,
+  "tokensOut": 114,
+  "costUsd": 0.001
+}

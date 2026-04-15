@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding addresses cache performance and latency optimization, which is unrelated to the security vulnerabilities in GT-006 (asymmetric cache trust logic allowing stale grants) and GT-007 (test data inconsistency); the performance concern about cache miss rates is valid but does not match any ground truth entries.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 691,
+  "tokensOut": 114,
+  "costUsd": 0.0010088
+}

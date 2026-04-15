@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a legitimate test design issue with excessive mocking that prevents proper verification of the interpolation flow, but this is distinct from GT-010 which focuses on a specific unused parameter (request.filters) in the applyTemplateVariables call.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 589,
+  "tokensOut": 103,
+  "costUsd": 0.0008832
+}

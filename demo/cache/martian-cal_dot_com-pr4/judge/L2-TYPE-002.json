@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real type safety issue in the Prisma promise handling that could cause runtime errors, but it does not match either GT-014 (missing await in async calls) or GT-015 (missing database deletion logic) — these are distinct issues about promise/async handling vs. the type declaration mismatch itself.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 759,
+  "tokensOut": 119,
+  "costUsd": 0.0010831999999999999
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding alleges infinite recursion in a test file, but none of the ground truth entries concern recursion issues—they all address fine-grained authorization logic bugs (feature flags, resource lookups, permission queries), making this a false positive or misidentification of the actual code issue.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 906,
+  "tokensOut": 108,
+  "costUsd": 0.0011568
+}

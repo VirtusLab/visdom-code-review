@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding discusses documentation clarity and feature requirement validation, but GT-007 specifically concerns picocli.exit() method calls and System.exit() behavior—different issues entirely with no substantive overlap.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 557,
+  "tokensOut": 89,
+  "costUsd": 0.0008016
+}

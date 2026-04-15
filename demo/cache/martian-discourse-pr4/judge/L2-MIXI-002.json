@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding reports a CSS formatting/linting issue (missing space before colon), which is a pure style preference unrelated to the ground truth entries about flexbox layout compatibility and IE vendor prefixes.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 645,
+  "tokensOut": 89,
+  "costUsd": 0.0008719999999999999
+}

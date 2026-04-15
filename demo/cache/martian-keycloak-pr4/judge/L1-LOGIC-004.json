@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding reports a generic 'return value ignored' code smell in a test file, but ground truth entries are all high-tier bugs in authorization logic unrelated to this test class's return value handling.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 903,
+  "tokensOut": 90,
+  "costUsd": 0.0010823999999999999
+}

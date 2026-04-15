@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real authorization vulnerability (missing user ownership check in unsubscribe), which is a valid security issue, but does not match either ground truth entry—GT-004 concerns nil pointer exceptions and GT-005 is a typo, neither addressing the authorization flaw described.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 659,
+  "tokensOut": 110,
+  "costUsd": 0.0009672
+}

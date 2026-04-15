@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding reports a false positive from L1 scanner (no actual recursion exists), which is a meta-comment about test quality rather than identifying a substantive bug in the production code; it does not match any GT entry which all describe real permission/resource lookup logic bugs.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 992,
+  "tokensOut": 105,
+  "costUsd": 0.0012136
+}

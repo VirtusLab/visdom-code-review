@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding identifies a legitimate state assumption vulnerability (missing authNote handling without null-safety) in a different authenticator utility method, which is a real issue but does not match any of the planted ground truth bugs about ConditionalPasskeysEnabled or passkey authentication flows.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 705,
+  "tokensOut": 106,
+  "costUsd": 0.000988
+}

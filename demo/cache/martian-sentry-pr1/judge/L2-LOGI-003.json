@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding addresses a Lua script truncation issue in add-buffer.lua, while all ground truth entries concern paginator logic in Python code—completely different files, languages, and vulnerability types with no substantive overlap.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 703,
+  "tokensOut": 93,
+  "costUsd": 0.0009343999999999999
+}

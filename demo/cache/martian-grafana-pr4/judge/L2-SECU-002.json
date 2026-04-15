@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding claims a timing-unsafe comparison vulnerability in useAbilities.ts, but neither ground truth entry concerns timing attacks or secret comparisons—GT-011 is about missing React keys and GT-012 is about silence drawer logic, making this a false positive or hallucinated issue not present in the actual bugs.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 705,
+  "tokensOut": 114,
+  "costUsd": 0.0010199999999999999
+}

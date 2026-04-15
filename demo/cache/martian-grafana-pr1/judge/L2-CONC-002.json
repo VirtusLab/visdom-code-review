@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a real race condition with stale denial cache entries not being invalidated on permission updates, which is a distinct concurrency vulnerability from GT-006's asymmetric cache trust logic (grants trusted, denials ignored).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 727,
+  "tokensOut": 98,
+  "costUsd": 0.0009735999999999999
+}

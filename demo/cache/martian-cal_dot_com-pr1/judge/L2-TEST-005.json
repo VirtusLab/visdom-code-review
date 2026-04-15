@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding identifies missing test coverage (a test gap), not an actual bug or vulnerability in the implementation code; it does not match any ground truth entry which all describe real implementation issues (naming inconsistency, error message mismatch, case-sensitivity bug, and concurrency race condition).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 791,
+  "tokensOut": 108,
+  "costUsd": 0.0010647999999999999
+}

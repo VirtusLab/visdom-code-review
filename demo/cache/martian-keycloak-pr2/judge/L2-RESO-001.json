@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"ByteArrayInputStream doesn't hold external resources and doesn't require explicit closure; this is a theoretical resource management style concern that doesn't match any of the planted bugs (wrong provider or dead code issues).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 640,
+  "tokensOut": 90,
+  "costUsd": 0.0008719999999999999
+}

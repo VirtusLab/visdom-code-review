@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding critiques the test design pattern (mocking hooks then testing mock behavior) as a quality issue, but this is a valid testing approach that doesn't match any of the planted bugs, which concern actual runtime issues (missing key prop and SilenceGrafanaRuleDrawer dependency).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 779,
+  "tokensOut": 110,
+  "costUsd": 0.0010631999999999998
+}

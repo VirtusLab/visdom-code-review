@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-002\",\n  \"confidence\": 0.75,\n  \"reasoning\": \"Both findings identify the core issue of promises not being properly awaited in the codebase, causing runtime errors and incomplete async operations. The finding describes how appStore contains unawaited Promises that break type expectations, which is fundamentally the same category of async-handling bug as GT-002's forEach with unawaited callbacks—both stem from promises not being properly awaited before their results are used.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 753,
+  "tokensOut": 138,
+  "costUsd": 0.0011543999999999999
+}

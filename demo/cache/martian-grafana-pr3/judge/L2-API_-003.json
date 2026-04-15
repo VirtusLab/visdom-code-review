@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-010\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"Both findings identify the same issue: applyTemplateVariables being called with request.filters as a third parameter in querySplitting.ts, though GT-010 frames it as an unused parameter while L2-API_-003 frames it as a potential signature mismatch.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 574,
+  "tokensOut": 114,
+  "costUsd": 0.0009151999999999999
+}

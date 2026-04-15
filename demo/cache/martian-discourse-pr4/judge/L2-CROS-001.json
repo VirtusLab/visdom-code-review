@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real cross-browser compatibility bug in the SCSS mixin (webkit ordinal-group indexing mismatch), but this specific issue does not match either ground truth entry, which concern float/flexbox mixing and -ms-align-items instead.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 709,
+  "tokensOut": 106,
+  "costUsd": 0.0009912
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-006\",\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding identifies the same race condition vulnerability where backup codes can be used multiple times due to in-memory mutation without proper synchronization, though the finding frames it as sparse array entries (nulls) rather than concurrent requests—both are manifestations of the same underlying one-time-use semantics weakness.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 866,
+  "tokensOut": 115,
+  "costUsd": 0.0011527999999999998
+}

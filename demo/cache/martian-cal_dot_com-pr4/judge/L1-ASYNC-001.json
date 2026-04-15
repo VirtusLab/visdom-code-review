@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-014\",\n  \"confidence\": 0.92,\n  \"reasoning\": \"Finding identifies async functions called without await in forEach loops causing silent failures and race conditions, which matches GT-014's issue of deleteScheduledEmailReminder/deleteScheduledSMSReminder being called without await in forEach loops during workflow operations.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 666,
+  "tokensOut": 104,
+  "costUsd": 0.0009487999999999999
+}

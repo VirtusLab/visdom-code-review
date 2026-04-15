@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding reports a generic null/undefined dereference issue in a test file, but all ground truth entries (GT-008, GT-009, GT-010) describe specific logic bugs in permission handling and resource lookup mechanisms unrelated to null pointer checks in test code.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 914,
+  "tokensOut": 104,
+  "costUsd": 0.0011472
+}

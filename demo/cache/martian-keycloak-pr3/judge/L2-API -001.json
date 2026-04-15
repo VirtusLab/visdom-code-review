@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding addresses API backward compatibility in a test file, while GT-007 concerns incorrect exit code handling in picocli - completely different issues with no substantive overlap.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 576,
+  "tokensOut": 83,
+  "costUsd": 0.0007928
+}

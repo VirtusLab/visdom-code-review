@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-002\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"Both findings identify hardcoded size limits that ignore dynamic site settings (GT-002 addresses maxSizeKB hardcoding ignoring SiteSettings; L2-CONF-003 identifies the same issue in Ruby context with 10.megabytes replacing SiteSetting.max_image_size_kb), though GT-002 appears client-side focused while L2-CONF-003 is server-side.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 793,
+  "tokensOut": 146,
+  "costUsd": 0.0012184000000000001
+}

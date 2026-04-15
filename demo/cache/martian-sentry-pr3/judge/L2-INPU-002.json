@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a general input validation concern about `authenticated_user_info` potentially not being a dict, but none of the ground truth entries specifically address this particular validation gap—GT-010 concerns a missing state field, GT-011 addresses OAuth state generation, and GT-012 describes an unvalidated key access on a different object (integration.metadata). The finding does not match the substance of any planted bug.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 679,
+  "tokensOut": 136,
+  "costUsd": 0.0010872
+}

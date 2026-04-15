@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding reports unclosed resources/resource leaks, but the ground truth entries in this file concern wrong cryptographic providers (GT-005) and dead code patterns (GT-006), not resource management issues; this appears to be a false positive or unrelated finding.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 591,
+  "tokensOut": 103,
+  "costUsd": 0.0008848
+}

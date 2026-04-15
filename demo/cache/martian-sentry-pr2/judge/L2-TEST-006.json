@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding identifies a genuine test coverage gap—lack of SQL generation validation and integration testing for upsampling logic—but does not match any of the ground truth entries, which focus on specific bugs (sample_rate=0, hash() non-determinism, dataset mismatch) rather than test coverage deficiencies.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 773,
+  "tokensOut": 116,
+  "costUsd": 0.0010823999999999999
+}

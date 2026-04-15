@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-002\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the exact same vulnerability as GT-002: forEach with async callbacks creating unawaited promises that lead to silent failures and incomplete cleanup. Both describe the fire-and-forget problem and suggest replacing forEach with for...of loops or Promise.all/map, matching on substance despite different wording.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 719,
+  "tokensOut": 117,
+  "costUsd": 0.0010432
+}

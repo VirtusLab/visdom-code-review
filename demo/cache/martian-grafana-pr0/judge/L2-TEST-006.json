@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding critiques test coverage and circular verification logic, which is a valid code review observation but does not match any of the ground truth entries, which all identify specific bugs in production code (race conditions, compilation errors, misleading error returns, time logic issues, and behavioral changes).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 985,
+  "tokensOut": 106,
+  "costUsd": 0.001212
+}

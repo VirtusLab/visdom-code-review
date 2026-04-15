@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding correctly identifies incomplete CryptoProvider implementation with UnsupportedOperationException throws, but this does not match GT-005 (wrong provider) or GT-006 (dead code with ASN1Encoder), making it a legitimate design issue not covered by the ground truth.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 694,
+  "tokensOut": 111,
+  "costUsd": 0.0009992
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a reordering of filter and interpolation operations with potential side-effect concerns, but GT-010 is about an unused parameter in test setup—a completely different issue with no substantive overlap.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 575,
+  "tokensOut": 92,
+  "costUsd": 0.000828
+}

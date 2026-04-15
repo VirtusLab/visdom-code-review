@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a legitimate validation gap at the API boundary (removal of Zod schema validation in constructor), which is a real security/robustness issue, but it does not match either GT-012 (unreachable code branches) or GT-013 (team filtering logic).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 736,
+  "tokensOut": 111,
+  "costUsd": 0.0010328
+}

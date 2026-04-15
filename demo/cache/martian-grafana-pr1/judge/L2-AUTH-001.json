@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"L2-AUTH-001 identifies a cache precedence bug where denial cache blocks grant cache checks, which is the OPPOSITE problem from GT-006 (grants trusted more than denials) — this is a distinct authorization logic defect not covered by ground truth entries.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 725,
+  "tokensOut": 106,
+  "costUsd": 0.0010040000000000001
+}

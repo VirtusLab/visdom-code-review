@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a legitimate hardcoded datasource name issue in useAbilities.ts that doesn't match either ground truth entry (which concern missing React keys and silencing drawer rendering), representing a real but previously unidentified code quality concern.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 760,
+  "tokensOut": 100,
+  "costUsd": 0.0010079999999999998
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a generic null/undefined dereference issue with no specific details about what value is being accessed or why it's problematic, and does not match either ground truth entry which involve specific recursive caching logic and alias naming issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 562,
+  "tokensOut": 97,
+  "costUsd": 0.0008376
+}

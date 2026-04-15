@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This is a pure style/formatting preference about spacing around a colon in SCSS, which is not a substantive bug or functional issue; the ground truth entries concern actual layout problems (float/flexbox mixing) and incorrect vendor prefixes, not cosmetic formatting.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 645,
+  "tokensOut": 103,
+  "costUsd": 0.000928
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.15,\n  \"reasoning\": \"The finding identifies a legitimate API contract concern about batch vs. per-query semantics, but GT-010 specifically concerns unused parameters in test setup rather than the batch operation refactoring issue raised here.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 646,
+  "tokensOut": 92,
+  "costUsd": 0.0008848
+}

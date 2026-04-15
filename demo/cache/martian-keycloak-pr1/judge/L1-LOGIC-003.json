@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-003\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a recursive caching call issue in an Infinispan identity provider storage provider, which matches GT-003's description of recursive caching using session instead of delegate, causing potential stack overflow.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 541,
+  "tokensOut": 95,
+  "costUsd": 0.0008128
+}

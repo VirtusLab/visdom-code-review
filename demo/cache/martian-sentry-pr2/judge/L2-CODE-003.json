@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding describes a code quality/control flow issue about unnecessary variable assignment and dead code, which is a valid general code review observation but does not match any of the planted ground truth bugs, which focus on specific runtime logic errors (sample_rate=0.0, hash() non-determinism, upsampling dataset mismatch).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 751,
+  "tokensOut": 118,
+  "costUsd": 0.0010728
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding claims unconditional recursion causing stack overflow, but none of the ground truth entries describe a recursion issue—they describe Django querysets negative slicing, AttributeError on None member access, and TypeError on datetime operations. The infinite recursion claim appears to be a false positive or hallucination.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 660,
+  "tokensOut": 112,
+  "costUsd": 0.0009759999999999999
+}

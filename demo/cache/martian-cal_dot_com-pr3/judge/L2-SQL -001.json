@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding discusses test coverage and SQL parameterization validation practices, but neither GT-012 nor GT-013 address SQL injection risks, test structure changes, or SQL parameterization—they focus on logic reachability and query filtering conditions respectively.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 790,
+  "tokensOut": 100,
+  "costUsd": 0.001032
+}

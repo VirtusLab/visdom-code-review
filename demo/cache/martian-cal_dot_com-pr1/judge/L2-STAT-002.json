@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a genuine security issue (sensitive data in component state without clearing) that is distinct from the ground truth entries, which focus on validation logic, naming conventions, error messages, and concurrency issues rather than state management security.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 803,
+  "tokensOut": 97,
+  "costUsd": 0.0010304
+}

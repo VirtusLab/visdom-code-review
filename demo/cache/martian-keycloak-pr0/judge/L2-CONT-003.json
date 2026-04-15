@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding complains about truncated diff output (a presentation issue) rather than identifying an actual code bug; the ground truth entries concern missing UserModel parameters and conditional passkey logic, which are substantively different issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 690,
+  "tokensOut": 92,
+  "costUsd": 0.00092
+}

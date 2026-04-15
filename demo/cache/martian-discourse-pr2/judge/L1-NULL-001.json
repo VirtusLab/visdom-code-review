@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTrust\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding references a JavaScript file (create_account_controller.js) while both ground truth entries address Ruby backend issues (BlockedEmail method and regex pattern); they are unrelated codebases with no substantive overlap.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 570,
+  "tokensOut": 93,
+  "costUsd": 0.000828
+}

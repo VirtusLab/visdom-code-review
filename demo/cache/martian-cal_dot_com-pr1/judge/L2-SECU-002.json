@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real timing attack vulnerability via indexOf() comparison, which is a legitimate security issue distinct from the ground truth entries (GT-003 through GT-006) that focus on naming inconsistency, error messaging, case-sensitivity, and concurrency race conditions respectively.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 760,
+  "tokensOut": 107,
+  "costUsd": 0.001036
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding claims an XSS vulnerability from unescaped HTML in triple braces, but the ground truth entries contain a nil pointer exception (GT-004) and a typo (GT-005)—neither of which is an XSS issue. The XSS claim itself appears to be a false positive: Discourse's I18n.t() helper automatically escapes interpolated values, and the triple-brace concern doesn't match any planted bug.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 658,
+  "tokensOut": 146,
+  "costUsd": 0.0011104
+}

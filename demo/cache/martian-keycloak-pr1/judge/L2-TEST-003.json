@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a legitimate test coverage gap for null IDP handling, but does not match either ground truth entry (GT-003 addresses recursive caching logic, GT-004 addresses alias naming in cleanup); this is a valid but distinct observation about missing test scenarios.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 615,
+  "tokensOut": 105,
+  "costUsd": 0.0009119999999999998
+}

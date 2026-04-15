@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a hypothetical null dereference vulnerability that doesn't match any ground truth entry; it appears to be a false positive since an isEmpty() check guards against null access, and neither GT-005 nor GT-006 relate to null dereference issues in provider detection logic.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 621,
+  "tokensOut": 108,
+  "costUsd": 0.0009287999999999999
+}

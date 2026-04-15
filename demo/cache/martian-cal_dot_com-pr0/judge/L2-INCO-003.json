@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a null-checking issue with Calendar instances after Promise.all(), but none of the ground truth entries address null-value handling in calendar retrieval—GT-001 is about try-catch for import failures and GT-002 is about forEach with async callbacks, neither of which match the substance of this finding.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 702,
+  "tokensOut": 115,
+  "costUsd": 0.0010216
+}

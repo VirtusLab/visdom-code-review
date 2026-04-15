@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding criticizes test design (circular mocking) rather than identifying a functional bug or vulnerability in the actual production code; none of the ground truth entries address test quality issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 778,
+  "tokensOut": 84,
+  "costUsd": 0.0009583999999999999
+}

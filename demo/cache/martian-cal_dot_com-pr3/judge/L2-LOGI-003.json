@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes nested parentheses in SQL condition construction as a style/consistency issue, but this is not a functional bug—it's a minor code cleanliness suggestion unrelated to the ground truth entries which focus on unreachable code paths and logic errors in filtering conditions.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 736,
+  "tokensOut": 105,
+  "costUsd": 0.0010088
+}

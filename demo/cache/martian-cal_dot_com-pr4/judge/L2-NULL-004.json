@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-015\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies an inconsistent code path in deleteScheduledEmailReminder when immediateDelete is true, specifically that the SendGrid API is called with a nullable referenceId without proper handling, which aligns with GT-015's core issue of missing database cleanup and API call inconsistencies in the immediateDelete path.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 756,
+  "tokensOut": 120,
+  "costUsd": 0.0010848
+}

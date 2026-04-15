@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-002\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies the same core vulnerability as GT-002: accessing organization_context.member.has_global_access without null-checking when member is None (for API key/token authenticated requests), leading to AttributeError when optimized_pagination=true is supplied.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 828,
+  "tokensOut": 109,
+  "costUsd": 0.0010983999999999998
+}

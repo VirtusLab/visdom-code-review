@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a generic 'ignored return value' pattern detection without identifying the specific bug; it doesn't match either ground truth entry which describe concrete, specific issues (recursive caching and incorrect alias construction).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 557,
+  "tokensOut": 91,
+  "costUsd": 0.0008096
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a generic best practice about catching specific exceptions rather than broad types, which doesn't match either ground truth entry—GT-001 is about adding try-catch for import failures, and GT-002 is about async/await patterns with forEach, neither addressing overly broad exception catches.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 601,
+  "tokensOut": 109,
+  "costUsd": 0.0009168
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.15,\n  \"reasoning\": \"The finding identifies a real semantic change in variable interpolation behavior (batch vs per-query), but GT-010 addresses a different issue about unused request.filters parameters in test setup, making them distinct problems.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 655,
+  "tokensOut": 93,
+  "costUsd": 0.0008959999999999999
+}

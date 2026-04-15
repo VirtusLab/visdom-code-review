@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a logic error about unchecked save failures in blocked_email.rb, but neither GT-006 (side effects during reads) nor GT-007 (regex domain matching) address this issue; the finding appears to be a valid concern not covered by the ground truth.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 649,
+  "tokensOut": 108,
+  "costUsd": 0.0009511999999999999
+}

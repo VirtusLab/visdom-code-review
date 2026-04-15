@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real timing-safe comparison vulnerability in token/secret handling, which is a legitimate security issue not covered by any of the ground truth entries (which focus on naming, error messages, case-sensitivity, and concurrency issues).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 747,
+  "tokensOut": 100,
+  "costUsd": 0.0009976
+}

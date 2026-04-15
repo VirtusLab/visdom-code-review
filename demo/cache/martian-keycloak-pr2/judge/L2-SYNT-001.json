@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding describes a truncated diff artifact rather than an actual code defect; the incomplete method definition is a presentation issue in the review context, not a real bug in the codebase that matches any ground truth entry about provider selection or dead code.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 602,
+  "tokensOut": 99,
+  "costUsd": 0.0008776
+}

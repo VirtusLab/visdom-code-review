@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a TypeScript return type change (Visualize to Visualize[]) in a frontend file, which does not match any of the ground truth entries that concern backend error response formats, detector validators, or Python dict ordering issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 640,
+  "tokensOut": 98,
+  "costUsd": 0.000904
+}

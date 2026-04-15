@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding claims infinite recursion in a test file, but none of the ground truth entries address recursion issues—they concern sample_rate falsy values, non-deterministic hashing, and dataset parameter mismatches. The finding appears to be a false positive or hallucination unrelated to the planted bugs.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 665,
+  "tokensOut": 113,
+  "costUsd": 0.000984
+}

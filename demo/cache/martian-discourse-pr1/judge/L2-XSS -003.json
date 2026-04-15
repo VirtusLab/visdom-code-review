@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real XSS vulnerability via triple-braces HTML output with user-controlled content (fancyTitle), which is a legitimate security issue not covered by the ground truth entries (which address nil pointer exceptions and typos).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 668,
+  "tokensOut": 101,
+  "costUsd": 0.0009384
+}

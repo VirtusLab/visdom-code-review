@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a generic null/undefined dereference issue in a test utilities file with no specific context, while all ground truth entries address concrete logic bugs (sample_rate handling, hash determinism, dataset parameter passing) in different files/modules—no substantive match exists.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 668,
+  "tokensOut": 105,
+  "costUsd": 0.0009544
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-010\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"Both findings identify that postMessage is being sent to request.referer (the full referrer URL) instead of the proper origin, which violates postMessage security requirements where targetOrigin should be scheme+host+port only.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 948,
+  "tokensOut": 100,
+  "costUsd": 0.0011584
+}

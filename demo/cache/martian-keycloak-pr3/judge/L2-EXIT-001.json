@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding raises a valid concern about exit code reassignment and potential conflicts, but this is a different issue than GT-007 which is about incorrect method calls for exiting; the finding is a legitimate code review observation but doesn't match any planted ground truth bug about method call semantics.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 616,
+  "tokensOut": 107,
+  "costUsd": 0.0009207999999999999
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding identifies a real test maintainability issue (magic number without explanation and lack of dynamic assertion), but GT-010 is about incorrect parameter passing in applyTemplateVariables calls, not about test assertion counts or documentation gaps.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 600,
+  "tokensOut": 99,
+  "costUsd": 0.0008759999999999999
+}

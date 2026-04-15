@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a type annotation issue in a type declaration, but the ground truth entries focus on missing await statements and missing database deletions—actual runtime logic bugs, not type safety issues that would be caught by TypeScript.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 760,
+  "tokensOut": 93,
+  "costUsd": 0.00098
+}

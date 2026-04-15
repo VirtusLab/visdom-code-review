@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding references an incomplete variable 'cur' that doesn't match either ground truth issue (nil pointer exception or property name typo); this appears to be a false positive or misidentification of actual code structure.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 610,
+  "tokensOut": 92,
+  "costUsd": 0.000856
+}

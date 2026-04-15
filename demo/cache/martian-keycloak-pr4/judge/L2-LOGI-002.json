@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-008\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding correctly identifies that permission cleanup logic is guarded by a feature flag (ADMIN_FINE_GRAINED_AUTHZ) and may not execute when it should, causing orphaned permissions when roles/clients/groups are deleted—matching GT-008's core issue of feature flag inconsistency preventing necessary cleanup operations.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 984,
+  "tokensOut": 122,
+  "costUsd": 0.0012752
+}

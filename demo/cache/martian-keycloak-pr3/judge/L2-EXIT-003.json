@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding speculates about undocumented exit codes and potential automation issues without identifying an actual bug—GT-007 concerns incorrect picocli method calls for exit handling, which is a different and more concrete issue.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 574,
+  "tokensOut": 93,
+  "costUsd": 0.0008312
+}

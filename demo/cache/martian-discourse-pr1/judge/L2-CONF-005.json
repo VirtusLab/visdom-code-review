@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding is a pure code organization/style preference about route grouping with no functional impact, whereas both ground truth entries identify actual bugs (nil pointer exception and typo).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 657,
+  "tokensOut": 84,
+  "costUsd": 0.0008615999999999999
+}

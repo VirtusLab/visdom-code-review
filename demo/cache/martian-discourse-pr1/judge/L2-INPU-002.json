@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-005\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the exact same typo issue ('stopNotificiationsText' vs 'stopNotificationsText') in the same file, matching GT-005's substance perfectly despite different severity levels assigned.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 694,
+  "tokensOut": 97,
+  "costUsd": 0.0009431999999999999
+}

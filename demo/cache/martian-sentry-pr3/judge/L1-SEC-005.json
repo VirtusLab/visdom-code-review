@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding claims a SSRF vulnerability at line 119 of github/integration.py, but none of the ground truth entries relate to SSRF, URL validation, or that specific vulnerability pattern—the GTs cover null references, OAuth state handling, and KeyError issues instead.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 574,
+  "tokensOut": 107,
+  "costUsd": 0.0008872
+}

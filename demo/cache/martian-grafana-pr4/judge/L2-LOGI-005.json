@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real undefined variable issue in useAbilities.ts that is NOT covered by the ground truth entries (GT-011 focuses on missing key props, GT-012 focuses on SilenceGrafanaRuleDrawer dependencies), making this a valid but unmapped discovery.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 733,
+  "tokensOut": 111,
+  "costUsd": 0.0010304
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding correctly identifies a type safety regression from typed Prisma objects to Prisma.Sql, but this is a legitimate architectural concern not covered by the ground truth entries, which focus on unreachable code (GT-012) and filtering logic issues (GT-013).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 729,
+  "tokensOut": 109,
+  "costUsd": 0.0010192
+}

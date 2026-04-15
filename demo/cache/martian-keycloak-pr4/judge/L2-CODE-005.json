@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding is a code quality/refactoring suggestion about static method signatures in test files, which is unrelated to the three ground truth entries that all concern permission cleanup, resource lookup, and client permission logic bugs in the authorization system itself.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 977,
+  "tokensOut": 97,
+  "costUsd": 0.0011695999999999998
+}

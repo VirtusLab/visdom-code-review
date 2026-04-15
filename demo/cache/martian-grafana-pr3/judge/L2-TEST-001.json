@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding criticizes test design philosophy (mocking strategy and test coverage), while GT-010 identifies a specific technical issue (unused parameter in method calls); these address fundamentally different problems.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 555,
+  "tokensOut": 87,
+  "costUsd": 0.000792
+}

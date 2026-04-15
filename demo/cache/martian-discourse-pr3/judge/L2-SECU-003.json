@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.15,\n  \"reasoning\": \"While GT-012 mentions an XSS vulnerability in TopicEmbed.import due to unescaped URL interpolation, the finding L2-SECU-003 addresses a different XSS vector (unsanitized feed content HTML) not explicitly covered by any ground truth entry.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 973,
+  "tokensOut": 114,
+  "costUsd": 0.0012343999999999999
+}

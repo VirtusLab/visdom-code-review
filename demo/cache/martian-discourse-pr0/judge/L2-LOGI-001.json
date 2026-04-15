@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-001\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the same underlying issue: duplicate downsize method definitions with incompatible signatures where the second definition overrides the first, breaking existing code that calls it with the original signature.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 838,
+  "tokensOut": 91,
+  "costUsd": 0.0010344
+}

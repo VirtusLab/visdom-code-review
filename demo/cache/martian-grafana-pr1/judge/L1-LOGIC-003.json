@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes infinite recursion in a test file, which does not match either ground truth entry about cache trust logic asymmetry (GT-006) or test comment/map value mismatches (GT-007); this appears to be a distinct issue unrelated to the planted bugs.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 603,
+  "tokensOut": 107,
+  "costUsd": 0.0009104
+}

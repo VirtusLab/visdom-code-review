@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding addresses test coverage removal (a meta-level concern about test quality), while both ground truth entries describe concrete logic bugs in the service implementation itself; test coverage concerns do not match the substance of either bug.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 702,
+  "tokensOut": 91,
+  "costUsd": 0.0009256
+}

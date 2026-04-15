@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding critiques the semantic choice of storing `bool` versus `struct{}` in a cache, but this is a code style/design preference rather than a functional bug; it doesn't match any ground truth issue about asymmetric cache logic or test mismatches.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 709,
+  "tokensOut": 104,
+  "costUsd": 0.0009832
+}

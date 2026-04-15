@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-005\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"Both identify the same time window calculation inconsistency in the updateDevice function — using device.UpdatedAt instead of time.Now() for the time window check, which is logically incorrect and may cause updates to fail silently.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 999,
+  "tokensOut": 101,
+  "costUsd": 0.0012032
+}

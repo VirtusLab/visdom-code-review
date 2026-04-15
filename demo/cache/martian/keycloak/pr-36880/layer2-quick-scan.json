@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"risk\": \"LOW\",\n  \"riskReason\": \"Changes add new Client resource type and authorization scopes with proper schema integration and feature flagging; no concrete defects detected.\",\n  \"circularTests\": {\n    \"detected\": false,\n    \"count\": 0,\n    \"total\": 10,\n    \"details\": \"\"\n  },\n  \"findings\": []\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 3299,
+  "tokensOut": 99,
+  "costUsd": 0.0030352
+}

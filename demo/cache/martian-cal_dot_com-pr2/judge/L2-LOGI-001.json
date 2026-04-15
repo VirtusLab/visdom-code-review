@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-009\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the same logic error: searching for a calendar where externalId === externalCalendarId is circular/redundant logic, and suggests the need for alternative matching criteria (credentialId), which aligns with GT-009's description of the same issue.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 1057,
+  "tokensOut": 109,
+  "costUsd": 0.0012816
+}

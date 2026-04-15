@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding speculates about potential compilation errors from a truncated diff, but this is not an actual bug—it's a hypothetical concern about incomplete updates that would be caught immediately by compilation; neither ground truth entry involves signature changes or compilation failures, they involve runtime behavior (nil panics) and missing logging features.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 769,
+  "tokensOut": 112,
+  "costUsd": 0.0010632
+}

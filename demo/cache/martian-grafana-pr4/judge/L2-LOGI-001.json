@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"This finding identifies a legitimate logic error in permission checks using OR instead of AND, which could grant unintended access—a real security/logic issue not covered by the GT entries about missing key props or silence drawer rendering.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 855,
+  "tokensOut": 95,
+  "costUsd": 0.0010639999999999998
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding raises a test-implementation synchronization concern about test expectations changing without visible service code changes, which is a valid code review observation but does not match either ground truth entry (GT-012 concerns unreachable code branches, GT-013 concerns incomplete org member filtering logic).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 747,
+  "tokensOut": 107,
+  "costUsd": 0.0010256
+}

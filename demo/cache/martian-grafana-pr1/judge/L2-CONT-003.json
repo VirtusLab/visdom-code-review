@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-006\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"Both findings identify the same core vulnerability: cached permission grants are trusted and returned immediately without proper validation, creating a security risk where stale cached grants could provide access to revoked resources. The finding describes the asymmetric cache trust logic where positive cache hits bypass full permission checks.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 721,
+  "tokensOut": 109,
+  "costUsd": 0.0010128
+}

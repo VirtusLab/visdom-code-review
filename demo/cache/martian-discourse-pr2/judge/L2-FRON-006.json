@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding correctly identifies a client-side validation bypass vulnerability, but this is a distinct issue from the planted GT entries (which focus on BlockedEmail side effects and regex domain matching logic), making it a real but unplanted finding.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 626,
+  "tokensOut": 98,
+  "costUsd": 0.0008928
+}

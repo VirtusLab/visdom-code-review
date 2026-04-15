@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-004\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies the negative-offset vulnerability in OptimizedCursorPaginator that allows slicing QuerySet with negative indices, which matches GT-004's core issue despite different framing (client-controlled parameter vs. the underlying negative-offset bug).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 709,
+  "tokensOut": 108,
+  "costUsd": 0.0009992
+}

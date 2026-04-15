@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies removal of legitimate test coverage for caching functionality that exists in the codebase, which is a valid quality concern, but does not match either GT-012 (unreachable code logic) or GT-013 (conditional filtering logic)—these are distinct issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 708,
+  "tokensOut": 109,
+  "costUsd": 0.0010024
+}

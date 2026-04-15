@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a missing constant definition that would cause a compilation error, which is a real and actionable issue, but does not match GT-007 which concerns the problematic nature of picocli.exit() calling System.exit() directly—a different problem entirely.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 555,
+  "tokensOut": 106,
+  "costUsd": 0.0008680000000000001
+}

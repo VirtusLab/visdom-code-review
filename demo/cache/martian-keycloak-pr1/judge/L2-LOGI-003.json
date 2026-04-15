@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real cache key collision vulnerability where organizationId variations are not factored into cache lookups, causing potential stale/wrong-organization results. This is a genuine logic error not covered by the provided ground truth entries (GT-003 concerns recursive caching patterns, GT-004 concerns alias naming).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 732,
+  "tokensOut": 117,
+  "costUsd": 0.0010536
+}

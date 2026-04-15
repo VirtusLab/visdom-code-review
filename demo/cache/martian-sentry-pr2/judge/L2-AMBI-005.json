@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real code quality issue (redundant transformation logic across multiple branches requiring maintenance in three places), but does not match any of the ground truth entries which focus on specific upsampling bugs (sample_rate=0, hash non-determinism, dataset parameter mismatch).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 782,
+  "tokensOut": 110,
+  "costUsd": 0.0010655999999999999
+}

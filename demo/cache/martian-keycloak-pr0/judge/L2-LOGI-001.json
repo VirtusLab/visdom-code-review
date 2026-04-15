@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding claims a missing method definition and compilation error, but GT-001 and GT-002 both address incorrect method calls or missing parameters—not a missing method definition entirely. The finding appears to be either a misdiagnosis of the actual code structure or a false positive based on incomplete analysis of the inheritance hierarchy.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 696,
+  "tokensOut": 114,
+  "costUsd": 0.0010128
+}

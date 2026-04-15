@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding addresses API contract changes and hook migration patterns, which are valid code quality concerns, but neither ground truth entry concerns hook refactoring, API migrations, or naming convention changes—they focus on missing React props and runtime behavior bugs with drawers and silencing functionality.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 732,
+  "tokensOut": 103,
+  "costUsd": 0.0009976
+}

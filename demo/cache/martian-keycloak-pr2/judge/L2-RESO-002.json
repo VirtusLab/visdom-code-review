@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"ByteArrayOutputStream doesn't hold external resources and doesn't require explicit closing; this is a false positive based on misunderstanding Java resource management patterns, not a real bug like the planted issues (wrong provider or dead code).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 599,
+  "tokensOut": 95,
+  "costUsd": 0.0008592
+}

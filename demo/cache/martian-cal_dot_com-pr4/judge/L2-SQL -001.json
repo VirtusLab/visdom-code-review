@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes type annotation issues and transaction safety in Promise.all() usage, but neither GT entry involves type confusion or Promise.all() transaction patterns—they focus on missing awaits and incomplete deletion logic in different code paths.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 782,
+  "tokensOut": 94,
+  "costUsd": 0.0010015999999999998
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding correctly identifies a type safety issue with async/await handling and proposes a valid linting solution (@typescript-eslint/no-floating-promises), but does not match GT-002 (which is about forEach with async callbacks) or GT-001 (try-catch for imports); it addresses a distinct problem of ensuring consistent Promise awaiting across call sites.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 729,
+  "tokensOut": 127,
+  "costUsd": 0.0010912
+}

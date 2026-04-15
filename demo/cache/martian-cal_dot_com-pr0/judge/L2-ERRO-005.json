@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-001\",\n  \"confidence\": 0.72,\n  \"reasoning\": \"Both findings address error handling around async imports in videoClient.ts; GT-001 suggests adding try-catch for import failures, and L2-ERRO-005 identifies that the existing catch block masks import errors—they describe the same underlying issue from different angles (preventive vs. detective).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 683,
+  "tokensOut": 116,
+  "costUsd": 0.0010103999999999998
+}

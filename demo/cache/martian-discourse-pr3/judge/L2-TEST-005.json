@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"Finding is about test quality and test tautology in the test suite itself, while all ground truth entries target actual security vulnerabilities and bugs in production code (SSRF, validation bypasses, XSS, clickjacking, syntax errors) — this finding doesn't match any substantive production code issue.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 975,
+  "tokensOut": 112,
+  "costUsd": 0.001228
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a legitimate gap in test coverage (missing caching validation tests) that is unrelated to the two ground truth entries, which focus on logic bugs in getBaseConditions() and userIdsFromOrg filtering rather than removed test coverage.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 717,
+  "tokensOut": 102,
+  "costUsd": 0.0009816
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding claims infinite recursion in paginator.py:36, but all ground truth entries concern negative-offset QuerySet slicing or datetime key type errors—completely different issues with no overlap in substance or mechanism.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 584,
+  "tokensOut": 92,
+  "costUsd": 0.0008351999999999999
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a real cache-key completeness issue (missing attributes in the denial cache key), but does not match GT-006 (which concerns asymmetric cache trust between grants/denials) or GT-007 (which concerns test comment/map value mismatch).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 745,
+  "tokensOut": 110,
+  "costUsd": 0.001036
+}

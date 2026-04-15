@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-008\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies an SSRF vulnerability using open(url) without validation in poll_feed.rb, which directly matches GT-008's description of SSRF vulnerability using open(url) without validation.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 987,
+  "tokensOut": 96,
+  "costUsd": 0.0011736
+}

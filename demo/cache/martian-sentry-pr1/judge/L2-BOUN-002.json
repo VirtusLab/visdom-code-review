@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-004\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a negative-offset QuerySet slicing vulnerability in a paginator class (specifically in the negative-offset branch at line 870), which directly matches GT-004's description of OptimizedCursorPaginator slicing QuerySet with negative start index, despite the file path notation difference.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 763,
+  "tokensOut": 117,
+  "costUsd": 0.0010784
+}

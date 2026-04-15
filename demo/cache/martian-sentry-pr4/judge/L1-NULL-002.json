@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding is a generic null-check warning without specific context about what value is potentially null or what the actual bug is; none of the ground truth entries match this vague pattern, and the file/line reference doesn't correspond to the specific issues documented in GT-013, GT-014, or GT-015.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 587,
+  "tokensOut": 113,
+  "costUsd": 0.0009216
+}

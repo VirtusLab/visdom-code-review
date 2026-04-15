@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a speculative race condition in form state management that doesn't match any ground truth entries; the GT entries address backup code validation (case sensitivity, one-time-use concurrency), naming consistency, and error messaging—none of which align with this form reset sequencing concern.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 832,
+  "tokensOut": 107,
+  "costUsd": 0.0010936
+}

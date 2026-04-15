@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-009\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a self-comparison/self-assignment logic error in CalendarService.ts, which matches GT-009's description of a logic error where a calendar is searched by a property that compares itself to itself, causing the search to always fail.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 884,
+  "tokensOut": 106,
+  "costUsd": 0.0011312
+}

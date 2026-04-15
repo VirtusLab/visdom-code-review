@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real data loss risk from an undocumented algorithmic change (reducing loop limit 10x without migration), but this issue does not match any of the provided ground truth entries, which all relate to QuerySet pagination problems in Python code.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 742,
+  "tokensOut": 103,
+  "costUsd": 0.0010056
+}

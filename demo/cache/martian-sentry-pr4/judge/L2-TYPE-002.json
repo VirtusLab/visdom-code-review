@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real type-safety issue with potential data loss (orphaned segments), but does not match any of the ground truth entries which focus on error response formats, validator key usage, and zip/dict ordering issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 637,
+  "tokensOut": 96,
+  "costUsd": 0.0008936
+}

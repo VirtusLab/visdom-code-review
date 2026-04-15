@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding is about missing test coverage for an edge case scenario (feature disabled mid-operation), which is a valid test suggestion but does not match the ground truth entry about incorrect exit code method calls—these are completely different issues in different categories.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 542,
+  "tokensOut": 97,
+  "costUsd": 0.0008216
+}

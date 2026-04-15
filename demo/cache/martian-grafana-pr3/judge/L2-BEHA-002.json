@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-010\",\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies the same code location and `applyTemplateVariables` method call with `request.filters` as a parameter, matching GT-010's concern about this parameter's usage; both relate to potential issues with the new API migration approach.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 627,
+  "tokensOut": 105,
+  "costUsd": 0.0009215999999999998
+}

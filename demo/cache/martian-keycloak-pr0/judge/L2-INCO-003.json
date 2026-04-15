@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a truncated method name in a diff view, which appears to be a display/formatting artifact rather than an actual code issue; the ground truth entries concern logical bugs (missing parameters, null-checking issues) unrelated to truncation.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 651,
+  "tokensOut": 99,
+  "costUsd": 0.0009168
+}

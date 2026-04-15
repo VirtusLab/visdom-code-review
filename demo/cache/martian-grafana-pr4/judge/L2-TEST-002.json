@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding concerns mock hook return value structures in tests, but the ground truth issues are about missing React keys and missing rule parameters causing missing UI functionality—neither involves mock hook tuple structures or test setup completeness.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 751,
+  "tokensOut": 90,
+  "costUsd": 0.0009607999999999999
+}

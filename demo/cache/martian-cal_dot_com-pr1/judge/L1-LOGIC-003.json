@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding claims an infinite recursion issue in TwoFactor.tsx, but none of the ground truth entries mention recursion, stack overflow, or method self-calling; all GT entries concern backup code handling, validation, naming, or concurrency issues unrelated to recursion.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 717,
+  "tokensOut": 106,
+  "costUsd": 0.0009976
+}

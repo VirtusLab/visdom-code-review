@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a potential type-handling inconsistency in cache serialization, but this is a speculative maintainability concern unrelated to the actual ground truth issues (asymmetric cache trust logic causing security gaps, or test data mismatches); it doesn't identify the substantive permission denial/grant asymmetry vulnerability.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 731,
+  "tokensOut": 116,
+  "costUsd": 0.0010488
+}

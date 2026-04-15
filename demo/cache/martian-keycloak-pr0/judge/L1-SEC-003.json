@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding reports a timing-safe comparison vulnerability in a test file, but the ground truth entries are specific functional bugs related to ConditionalPasskeysEnabled() logic and UserModel parameter handling—completely different issues that don't involve cryptographic timing vulnerabilities.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 645,
+  "tokensOut": 101,
+  "costUsd": 0.00092
+}

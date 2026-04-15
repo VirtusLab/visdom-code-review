@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a generic code smell (ignored return value) without identifying the specific underlying bug; none of the ground truth entries concern ignored return values or general correctness issues of this type.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 728,
+  "tokensOut": 86,
+  "costUsd": 0.0009264
+}

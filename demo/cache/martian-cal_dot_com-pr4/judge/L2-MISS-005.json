@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a legitimate type safety issue with Prisma promise handling that could affect async operation correctness, but this is distinct from the ground truth entries which focus on missing awaits and incomplete deletion logic rather than type declaration errors.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 747,
+  "tokensOut": 97,
+  "costUsd": 0.0009856
+}

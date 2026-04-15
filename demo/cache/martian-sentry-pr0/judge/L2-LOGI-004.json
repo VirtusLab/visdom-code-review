@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-001\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies that negative offsets can bypass the safety guardrail in paginator.py when advanced features are enabled, which directly relates to GT-001's issue that Django querysets do not support negative slicing—the core problem is allowing negative offsets to reach Django's queryset slicing logic.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 788,
+  "tokensOut": 116,
+  "costUsd": 0.0010944
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a real security issue (lack of validation on user identity before comparison), but doesn't match any ground truth entry—GT-012 concerns KeyError for missing sender key, GT-010 concerns null reference for missing state, and GT-011 concerns OAuth state randomness; this finding is about trusting unvalidated user info from an endpoint.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 687,
+  "tokensOut": 125,
+  "costUsd": 0.0010496
+}

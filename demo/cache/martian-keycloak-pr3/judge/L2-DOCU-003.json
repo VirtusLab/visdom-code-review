@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding concerns documentation clarity and future-proofing of a CAUTION box in an AsciiDoc file, while the ground truth entry (GT-007) addresses an incorrect method call for exit codes in code — these are fundamentally different issues in different domains (documentation vs. implementation bug).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 533,
+  "tokensOut": 111,
+  "costUsd": 0.0008703999999999999
+}

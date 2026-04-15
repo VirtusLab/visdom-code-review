@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-007\",\n  \"confidence\": 0.72,\n  \"reasoning\": \"Both findings identify potential null/undefined reference issues with destination calendars not being validated before use, though the specific code locations and variable names differ slightly (user.destinationCalendar vs mainHostDestinationCalendar).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 969,
+  "tokensOut": 101,
+  "costUsd": 0.0011792
+}

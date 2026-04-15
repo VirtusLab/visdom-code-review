@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a potential design fragility with wrapper state preservation, but this does not match either ground truth entry (GT-003 about recursive caching or GT-004 about alias naming), and appears to be a speculative code quality observation rather than an actual bug.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 635,
+  "tokensOut": 104,
+  "costUsd": 0.0009239999999999999
+}

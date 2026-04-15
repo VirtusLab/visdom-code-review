@@ -12,7 +12,7 @@ import { AIQuickScan } from '../core/layers/ai-quick-scan.js';
 import { AIDeepReview } from '../core/layers/ai-deep-review.js';
 import { AIClient } from '../core/ai/client.js';
 import { PRFetcher } from '../core/pr-fetcher.js';
-import { judgeFinding, judgeByKeywords } from '../core/judge.js';
+import { judgeFinding, judgeByKeywords, judgeWithAdvisor } from '../core/judge.js';
 import type { JudgeVerdict } from '../core/judge.js';
 import { writeFile, mkdir } from 'node:fs/promises';
 
@@ -85,12 +85,14 @@ function getGitHubToken(): string {
 async function main() {
   const args = process.argv.slice(2);
   const live = args.includes('--live');
+  const judgeMode = args.find(a => a.startsWith('--judge='))?.split('=')[1] ?? (live ? 'per-finding' : 'keyword');
   const repoFilter = args.find(a => !a.startsWith('--'));
   const maxPRs = parseInt(args.find(a => a.startsWith('--max='))?.split('=')[1] ?? '0', 10) || Infinity;
 
   console.log(chalk.bold('\n┌──────────────────────────────────────────────────────┐'));
   console.log(chalk.bold('│  VCR BENCH — Martian Code Review Benchmark           │'));
-  console.log(chalk.bold('└──────────────────────────────────────────────────────┘\n'));
+  console.log(chalk.bold('└──────────────────────────────────────────────────────┘'));
+  console.log(chalk.dim(`  Judge: ${judgeMode} | Live AI: ${live}\n`));
 
   // Setup
   const token = getGitHubToken();
@@ -164,7 +166,7 @@ async function main() {
 
         // Judge findings against this PR's golden comments
         const allFindings = report.layers.flatMap(l => l.findings);
-        const verdicts: JudgeVerdict[] = [];
+        let verdicts: JudgeVerdict[] = [];
 
         // Adapt GT entries to match judge interface (add file/category fields)
         const gtEntries = prGT.entries.map(e => ({
@@ -173,14 +175,28 @@ async function main() {
           category: e.severity.toLowerCase(),
         }));
 
-        for (const finding of allFindings) {
-          let verdict: JudgeVerdict;
-          if (live && process.env.ANTHROPIC_API_KEY) {
-            verdict = await judgeFinding(ai, finding, gtEntries, `martian-${repoName}-pr${i}`);
-          } else {
-            verdict = judgeByKeywords(finding, gtEntries);
+        if (judgeMode === 'advisor' && process.env.ANTHROPIC_API_KEY) {
+          // Advisor Strategy: Haiku batch + Opus for uncertain cases
+          const judgeCacheDir = join(__dirname, '..', '..', 'bench', 'cache', 'judge');
+          const result = await judgeWithAdvisor(
+            process.env.ANTHROPIC_API_KEY,
+            allFindings,
+            gtEntries,
+            judgeCacheDir,
+            `${repoName}/pr-${fetched.meta.number}`,
+          );
+          verdicts = result.verdicts;
+        } else if (judgeMode === 'per-finding' && process.env.ANTHROPIC_API_KEY) {
+          // Per-finding LLM judge (legacy)
+          for (const finding of allFindings) {
+            const verdict = await judgeFinding(ai, finding, gtEntries, `martian-${repoName}-pr${i}`);
+            verdicts.push(verdict);
           }
-          verdicts.push(verdict);
+        } else {
+          // Keyword fallback (offline)
+          for (const finding of allFindings) {
+            verdicts.push(judgeByKeywords(finding, gtEntries));
+          }
         }
 
         const bugHits = verdicts.filter(v => v.classification === 'bug-hit').length;

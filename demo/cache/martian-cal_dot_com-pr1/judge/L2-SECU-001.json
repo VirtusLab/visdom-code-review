@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a missing input validation for backup code format (XXXXX-XXXXX pattern), which is a real and distinct issue from the ground truth entries about case-sensitivity (GT-005), naming inconsistency (GT-003), error messages (GT-004), or concurrency race conditions (GT-006).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 804,
+  "tokensOut": 119,
+  "costUsd": 0.0011191999999999999
+}

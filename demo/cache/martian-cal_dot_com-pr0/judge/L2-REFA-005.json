@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-001\",\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a missing error boundary around appStore access in a refactored loop, which matches GT-001's concern about adding try-catch around imports to handle failures gracefully, though GT-001 is more general and L2-REFA-005 is more specific to this particular refactoring context.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 660,
+  "tokensOut": 120,
+  "costUsd": 0.0010079999999999998
+}

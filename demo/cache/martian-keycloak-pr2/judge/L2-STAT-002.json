@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding appears to be a false alarm based on diff presentation artifacts—it flags 'mismatched braces' and 'truncated' code, which are likely viewing/formatting issues rather than actual bugs, and does not match any ground truth entries about provider selection or dead code in ASN1Encoder.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 635,
+  "tokensOut": 113,
+  "costUsd": 0.0009599999999999999
+}

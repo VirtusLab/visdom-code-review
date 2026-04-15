@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding reports a generic access modifier visibility change, which is unrelated to the ground truth issues about ConditionalPasskeysEnabled() method calls and UserModel parameters in passkey authentication logic.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 612,
+  "tokensOut": 88,
+  "costUsd": 0.0008416
+}

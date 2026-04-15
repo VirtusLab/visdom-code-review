@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a real data consistency issue (missing safety check before deletion), but it doesn't match GT-014 (await missing) or GT-015 (immediateDelete path bug) — it's a distinct refactoring regression where a conditional guard was removed.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 751,
+  "tokensOut": 106,
+  "costUsd": 0.0010248
+}

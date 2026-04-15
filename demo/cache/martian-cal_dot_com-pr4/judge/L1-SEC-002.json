@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding claims SQL injection via string concatenation, but the ground truth entries concern async/await handling and database record deletion logic in reminder management—no SQL injection vulnerability is mentioned, and the file's actual issues are unrelated to query parameterization.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 661,
+  "tokensOut": 99,
+  "costUsd": 0.0009247999999999999
+}

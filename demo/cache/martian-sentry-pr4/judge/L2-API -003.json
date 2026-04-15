@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a legitimate API contract change risk (prompt constraints affecting downstream consumers), but this specific issue does not match any of the three ground truth entries which focus on response format breaking changes, detector validator bugs, and dict ordering assumptions.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 655,
+  "tokensOut": 97,
+  "costUsd": 0.0009119999999999999
+}

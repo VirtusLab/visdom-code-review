@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding speculates about potential issues with middleware ordering and context availability in metrics, but doesn't identify a concrete bug; the ground truth entries document actual panics (GT-008) and missing traceID logging (GT-009), neither of which this finding addresses.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 736,
+  "tokensOut": 103,
+  "costUsd": 0.0010008
+}

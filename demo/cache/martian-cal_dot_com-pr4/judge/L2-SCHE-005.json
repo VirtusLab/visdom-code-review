@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real schema design issue with nullable fields lacking defaults, which could cause data consistency problems, but does not match either ground truth entry which focus on async execution and deletion logic issues, not schema migration patterns.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 738,
+  "tokensOut": 94,
+  "costUsd": 0.0009663999999999999
+}

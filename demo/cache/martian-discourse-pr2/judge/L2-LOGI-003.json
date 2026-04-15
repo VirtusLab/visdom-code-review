@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-006\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"Both findings identify the same core issue: BlockedEmail.should_block? has unintended side effects (updating statistics/match_count) during what should be a read-only validation check, causing inconsistent behavior and audit trail problems in concurrent environments.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 639,
+  "tokensOut": 106,
+  "costUsd": 0.0009352
+}

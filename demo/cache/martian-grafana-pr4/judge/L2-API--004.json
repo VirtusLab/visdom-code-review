@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding addresses API refactoring and potential downstream consumer migration issues, but neither ground truth entry concerns removed API calls, component migration verification, or deprecation warnings—they focus on missing React keys and incomplete silence functionality implementations.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 765,
+  "tokensOut": 93,
+  "costUsd": 0.000984
+}

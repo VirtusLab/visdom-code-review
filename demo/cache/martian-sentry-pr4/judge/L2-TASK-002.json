@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding is speculative and not actionable—it complains about missing diff visibility rather than identifying an actual code issue, whereas all ground truth entries describe concrete, substantive bugs.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 644,
+  "tokensOut": 85,
+  "costUsd": 0.0008552
+}

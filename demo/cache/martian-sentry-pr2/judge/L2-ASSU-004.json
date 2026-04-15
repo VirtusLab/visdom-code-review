@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding identifies a real schema validation vulnerability (missing runtime checks for sample_weight column existence) that is substantively different from the ground truth entries, which focus on sample_rate falsy values, hash non-determinism, and dataset mismatches rather than missing column validation.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 777,
+  "tokensOut": 107,
+  "costUsd": 0.0010496
+}

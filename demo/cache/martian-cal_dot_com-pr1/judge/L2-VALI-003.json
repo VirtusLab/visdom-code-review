@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real validation gap (missing format/character-set validation) that is technically correct and actionable, but does not match any ground truth entry—GT-005 addresses case-sensitivity, GT-006 addresses concurrency, GT-003/004 address naming/messaging issues, none of which directly correspond to the missing regex pattern validation described here.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 779,
+  "tokensOut": 126,
+  "costUsd": 0.0011272
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding discusses cache key granularity and hit rates, which is a performance/design consideration, but does not identify the security-critical asymmetric cache trust logic flaw (GT-006) or the test/comment mismatch (GT-007) that are the actual ground truth issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 686,
+  "tokensOut": 110,
+  "costUsd": 0.0009888
+}

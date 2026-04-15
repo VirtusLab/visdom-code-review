@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real error handling issue in token exchange parsing that masks exceptions and hinders debugging, but this specific vulnerability pattern does not match any of the ground truth entries which focus on null references, OAuth state randomness, and metadata key access.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 663,
+  "tokensOut": 100,
+  "costUsd": 0.0009304
+}

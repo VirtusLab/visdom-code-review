@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real OAuth state binding vulnerability where untrusted user input (installation_id) is bound before authentication completes, enabling installation ID spoofing—a distinct issue not covered by the three ground truth entries which address null references, static state signatures, and missing metadata keys.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 656,
+  "tokensOut": 109,
+  "costUsd": 0.0009607999999999999
+}

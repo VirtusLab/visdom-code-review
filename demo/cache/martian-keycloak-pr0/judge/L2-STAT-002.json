@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding misinterprets a truncated diff display as an incomplete method implementation, but the actual ground truth issues concern conditional passkey enablement logic and null UserModel handling—unrelated to method declaration completeness.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 706,
+  "tokensOut": 92,
+  "costUsd": 0.0009327999999999999
+}

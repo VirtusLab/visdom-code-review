@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-001\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the same core issue as GT-001: duplicate method definitions with incompatible signatures where the second definition overrides the first, breaking existing callers that use the original signature with separate width/height parameters.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 877,
+  "tokensOut": 98,
+  "costUsd": 0.0010936
+}

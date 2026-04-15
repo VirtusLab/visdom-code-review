@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-014\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the exact same issue as GT-014: async deleteScheduledEmailReminder and deleteScheduledSMSReminder functions called without await in forEach loops during booking operations, creating potential race conditions with scheduled reminders not being reliably cancelled.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 748,
+  "tokensOut": 106,
+  "costUsd": 0.0010224000000000001
+}

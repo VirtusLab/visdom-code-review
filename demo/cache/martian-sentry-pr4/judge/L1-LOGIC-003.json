@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding claims infinite recursion in a test file, but none of the ground truth entries relate to recursion issues, and the vague location/description lacks sufficient evidence of an actual recursive call without seeing the code.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 560,
+  "tokensOut": 92,
+  "costUsd": 0.000816
+}

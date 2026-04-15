@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a test quality issue (circular/mock-on-mock testing) that does not correspond to any of the planted bugs, which focus on actual implementation defects (wrong crypto provider and dead code with ASN1Encoder).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 548,
+  "tokensOut": 98,
+  "costUsd": 0.0008304
+}

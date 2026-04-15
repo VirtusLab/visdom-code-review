@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding addresses a test assertion count mismatch (5 vs 1 call expectation), which is a test correctness issue, whereas GT-010 concerns how applyTemplateVariables is called with specific parameters (request.filters); these are different issues with different root causes.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 608,
+  "tokensOut": 109,
+  "costUsd": 0.0009224
+}

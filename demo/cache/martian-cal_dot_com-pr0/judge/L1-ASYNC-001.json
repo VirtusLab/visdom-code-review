@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-002\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"Both identify the same core issue: forEach with async callbacks causing fire-and-forget promises without proper awaiting, leading to race conditions and error handling failures. The finding matches GT-002's substance exactly, including the specific problem (concurrent execution without await) and suggested solutions (for...of or Promise.all).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 621,
+  "tokensOut": 118,
+  "costUsd": 0.0009687999999999999
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-006\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"Both findings identify asymmetric cache trust logic where permission grants and denials are handled inconsistently, creating a security vulnerability where stale cached entries can bypass proper permission checking.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 714,
+  "tokensOut": 89,
+  "costUsd": 0.0009272
+}

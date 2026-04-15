@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a legitimate input validation gap (missing format pattern enforcement) in BackupCode.tsx that is distinct from the ground truth entries, which focus on case-sensitivity (GT-005), naming inconsistency (GT-003), error messaging (GT-004), and concurrency issues (GT-006).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 824,
+  "tokensOut": 116,
+  "costUsd": 0.0011232
+}

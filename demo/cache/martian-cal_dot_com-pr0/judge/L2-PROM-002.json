@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-002\",\n  \"confidence\": 0.75,\n  \"reasoning\": \"Both findings identify improper promise handling where async operations are not properly awaited, causing inconsistent execution patterns and potential unhandled promise rejections; the finding describes a specific manifestation of the general pattern of unawaited promises that GT-002 addresses.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 734,
+  "tokensOut": 107,
+  "costUsd": 0.0010152
+}

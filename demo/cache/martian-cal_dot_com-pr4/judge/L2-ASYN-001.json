@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-014\",\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding identifies the exact same issue as GT-014: asynchronous reminder deletion functions (deleteScheduledEmailReminder and deleteScheduledSMSReminder) called without await in handleCancelBooking.ts, resulting in unreliable cancellation of scheduled reminders. The file location and functions match perfectly.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 762,
+  "tokensOut": 120,
+  "costUsd": 0.0010896
+}

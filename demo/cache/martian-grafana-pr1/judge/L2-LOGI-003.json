@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-006\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"Both findings identify asymmetric cache handling where cached allow results are trusted and returned immediately while cached denials are not properly utilized, causing repeated backend lookups for denied permissions and creating security/efficiency issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 670,
+  "tokensOut": 94,
+  "costUsd": 0.000912
+}

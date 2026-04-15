@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding critiques test implementation quality (brittle string comparisons) but does not identify any substantive bug in the production code itself; neither GT-012 nor GT-013 concern test assertion structure.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 752,
+  "tokensOut": 91,
+  "costUsd": 0.0009655999999999999
+}

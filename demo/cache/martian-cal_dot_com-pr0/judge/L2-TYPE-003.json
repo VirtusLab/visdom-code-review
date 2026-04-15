@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"This finding describes a type mismatch between Promise exports and synchronous consumption, which is a distinct issue from the ground truth entries (GT-001 about try-catch handling and GT-002 about forEach with async callbacks); the finding is technically plausible but doesn't match any planted bug in the benchmark.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 696,
+  "tokensOut": 113,
+  "costUsd": 0.0010088
+}

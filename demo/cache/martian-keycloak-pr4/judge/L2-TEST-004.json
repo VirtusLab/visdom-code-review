@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding reports an unchecked HTTP response status in test cleanup code, which is a valid test design concern but does not match any of the ground truth entries, which all describe runtime permission management bugs in production code logic.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 976,
+  "tokensOut": 93,
+  "costUsd": 0.0011528
+}

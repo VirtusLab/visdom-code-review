@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-014\",\n  \"confidence\": 0.75,\n  \"reasoning\": \"Both findings identify the same underlying issue: mixing float-based layout with flexbox/flex-related changes causes layout breakage; the finding specifically describes orphaned margin removal due to unconverted float layout, matching GT-014's concern about float:left persisting when flex changes are applied.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 695,
+  "tokensOut": 113,
+  "costUsd": 0.001008
+}

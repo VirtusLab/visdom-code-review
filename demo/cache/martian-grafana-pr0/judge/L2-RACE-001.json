@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-001\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the same race condition where concurrent requests bypass device count limits through a non-atomic check-then-act pattern, matching GT-001's description of multiple concurrent requests passing the device count check simultaneously.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 887,
+  "tokensOut": 96,
+  "costUsd": 0.0010936000000000001
+}

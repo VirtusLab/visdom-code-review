@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding critiques test quality and mock usage patterns but does not identify an actual bug in the production code itself; the ground truth entries describe specific runtime vulnerabilities (asymmetric cache logic in GT-006, comment/data mismatch in GT-007), not test design issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 671,
+  "tokensOut": 107,
+  "costUsd": 0.0009647999999999999
+}

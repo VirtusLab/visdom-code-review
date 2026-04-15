@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-015\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies orphaned WorkflowReminder records that fail to be deleted from the database (matching GT-015's core issue), though the specific mechanism differs—GT-015 focuses on a missing delete call in the immediateDelete=true path, while L2-LOGI-001 identifies a Promise.all() execution bug that prevents deletion, but both result in the same symptom of undeleted/orphaned reminder records.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 744,
+  "tokensOut": 146,
+  "costUsd": 0.0011792
+}

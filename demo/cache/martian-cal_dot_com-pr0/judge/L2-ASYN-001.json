@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a structural issue with how appStore exports dynamic imports (Promises instead of resolved modules), which is a different class of problem from GT-001 (missing try-catch) and GT-002 (forEach with unawaited async callbacks). While both involve Promises, this finding addresses module initialization architecture rather than callback execution patterns or error handling.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 722,
+  "tokensOut": 123,
+  "costUsd": 0.0010696
+}

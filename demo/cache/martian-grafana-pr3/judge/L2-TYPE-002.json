@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding speculates about potential mutation issues without identifying actual code evidence of mutation or incorrect behavior, whereas GT-010 identifies a specific unused parameter in test setup—these are fundamentally different issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 559,
+  "tokensOut": 88,
+  "costUsd": 0.0007991999999999999
+}

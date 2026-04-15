@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding speculates about potential misuse of skipToken without identifying an actual bug; neither ground truth entry concerns skipToken usage or RTK Query skip behavior, and the finding lacks evidence of a concrete issue in the codebase.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 762,
+  "tokensOut": 95,
+  "costUsd": 0.0009896
+}

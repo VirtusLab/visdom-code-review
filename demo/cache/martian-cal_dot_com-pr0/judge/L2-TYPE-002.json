@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-002\",\n  \"confidence\": 0.75,\n  \"reasoning\": \"Both findings identify the same core issue: promises are not being awaited when they should be, causing unresolved promises to be used as if they're already resolved values, leading to incorrect data structures and potential runtime errors. While L2-TYPE-002 focuses on a specific instance in getCalendar() and GT-002 describes a broader pattern with forEach, they address the same underlying async/await handling problem.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 704,
+  "tokensOut": 140,
+  "costUsd": 0.0011232
+}

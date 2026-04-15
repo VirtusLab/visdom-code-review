@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real type safety and semantic mismatch between Go and TypeScript interfaces (int64 vs number | undefined) that could cause runtime bugs, but this issue is not covered by any of the planted ground truth bugs which focus on race conditions, authentication failures, compilation errors, and time calculations.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 954,
+  "tokensOut": 113,
+  "costUsd": 0.0012152
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-015\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the exact same issue as GT-015: that -ms-align-items is not a valid vendor prefix and -ms-flex-align is the correct legacy property for IE/Edge, with identical recommendations to remove the incorrect prefix.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 699,
+  "tokensOut": 104,
+  "costUsd": 0.0009751999999999999
+}

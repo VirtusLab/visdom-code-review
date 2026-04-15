@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding describes a test design issue (circular mocking patterns) that is a valid code quality concern but does not match either ground truth entry, which focus on missing props and component dependency issues in production code.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 736,
+  "tokensOut": 90,
+  "costUsd": 0.0009488
+}

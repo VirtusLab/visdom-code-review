@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding addresses a padding/spacing change concern in a SCSS file, but neither ground truth entry (GT-014 about float/flexbox mixing, GT-015 about IE vendor prefixes) relates to padding values or em-to-percentage conversions—this appears to be a valid but unplanted concern.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 710,
+  "tokensOut": 115,
+  "costUsd": 0.0010279999999999998
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-008\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"Both findings identify URL validation bypasses in TopicEmbed that could allow unsafe URLs (javascript:, data:, or protocol-relative URLs) to be processed by open(url), which is the core SSRF vulnerability—the finding describes the incomplete regex validation that enables GT-008's open(url) without proper validation.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 955,
+  "tokensOut": 121,
+  "costUsd": 0.001248
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding reports generic null dereference issues unrelated to the specific cryptographic provider or ASN1 encoder bugs in the ground truth; it appears to be a false positive or overly vague static analysis result that doesn't match the substance of any planted bugs.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 582,
+  "tokensOut": 103,
+  "costUsd": 0.0008776
+}

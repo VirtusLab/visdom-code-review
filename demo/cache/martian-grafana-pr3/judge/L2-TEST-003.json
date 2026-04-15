@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.15,\n  \"reasoning\": \"The finding identifies a legitimate test design flaw (mocking instead of spying/verifying behavior), but GT-010 addresses a specific parameter passing issue unrelated to the mock verification problem.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 575,
+  "tokensOut": 90,
+  "costUsd": 0.00082
+}

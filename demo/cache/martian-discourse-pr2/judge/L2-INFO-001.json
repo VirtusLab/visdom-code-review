@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies a real information disclosure vulnerability through email enumeration in the API response, but this does not match either GT-006 (side effects in read operations) or GT-007 (regex domain matching issue).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 630,
+  "tokensOut": 96,
+  "costUsd": 0.000888
+}

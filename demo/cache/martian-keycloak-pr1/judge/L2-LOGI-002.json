@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real logic error (inconsistent application of createOrganizationAwareIdentityProviderModel() between cache hit and fallback paths) that is technically correct and actionable, but does not match either ground truth entry which focus on recursive caching calls and cache key naming issues.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 656,
+  "tokensOut": 112,
+  "costUsd": 0.0009728
+}

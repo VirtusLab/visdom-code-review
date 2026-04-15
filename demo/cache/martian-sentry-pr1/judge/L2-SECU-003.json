@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-004\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the exact same issue as GT-004: OptimizedCursorPaginator's negative-offset branch using negative indices to slice a QuerySet, which exploits Django ORM's behavior of counting from the end when given negative indices.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 721,
+  "tokensOut": 106,
+  "costUsd": 0.0010008
+}

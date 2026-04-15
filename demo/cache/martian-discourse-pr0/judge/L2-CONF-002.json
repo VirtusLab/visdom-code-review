@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-002\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies the exact same issue: hardcoding maxSizeKB = 10 * 1024 instead of using the dynamic Discourse.SiteSettings lookup, which allows site configuration to be ignored and creates a divergence between client-side and server-side limits.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 797,
+  "tokensOut": 113,
+  "costUsd": 0.0010896
+}

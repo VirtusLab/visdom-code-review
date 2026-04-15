@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding addresses stylesheet documentation clarity for flexbox order properties, which is a style/maintainability concern unrelated to the ground truth bugs about float/flexbox mixing or incorrect IE vendor prefixes.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 670,
+  "tokensOut": 89,
+  "costUsd": 0.000892
+}

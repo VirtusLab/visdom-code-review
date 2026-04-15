@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a real security vulnerability regarding negative offset handling in Django querysets, but this specific issue about misleading documentation and boundary-bypass attacks does not match any of the three ground truth entries, which focus on different pagination bugs (negative slicing support, None dereference, and datetime type errors).\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 774,
+  "tokensOut": 113,
+  "costUsd": 0.0010712
+}

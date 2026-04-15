@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real technical issue (data structure migration risk and missing validation), but none of the ground truth entries relate to Redis data structure changes, migration strategies, or span buffer management—they all concern pagination and QuerySet slicing.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 754,
+  "tokensOut": 98,
+  "costUsd": 0.0009952
+}

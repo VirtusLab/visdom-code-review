@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-014\",\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding identifies the same core issue as GT-014: mixing float-based layout (float:left on .title, float:right on .panel) with flexbox conversion causes layout problems. Both discuss the removal of float-right alignment and potential stacking issues during the migration, though the finding provides more specific detail about the .valign-helper interaction.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 740,
+  "tokensOut": 127,
+  "costUsd": 0.0010999999999999998
+}

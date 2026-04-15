@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding raises a valid concern about test expectations changing from 1 to 5 calls, but this is a test maintenance/clarity issue rather than matching the GT-010 bug which specifically concerns unused request.filters parameter in applyTemplateVariables calls.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 604,
+  "tokensOut": 103,
+  "costUsd": 0.0008952
+}

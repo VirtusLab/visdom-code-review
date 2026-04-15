@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.85,\n  \"reasoning\": \"The finding describes a type narrowing issue in a parameterization module that doesn't match any of the three ground truth entries, which focus on error response formats, detector validator keys, and dict ordering issues—completely different domains and code paths.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 724,
+  "tokensOut": 97,
+  "costUsd": 0.0009672
+}

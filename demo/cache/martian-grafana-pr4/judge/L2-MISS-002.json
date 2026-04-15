@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.92,\n  \"reasoning\": \"The finding speculates about potential undefined reference issues with skipToken handling, but this is a generic defensive coding suggestion rather than identifying an actual bug; the ground truth entries document concrete functional issues (missing key prop and silence drawer not rendering), neither of which this finding addresses.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 771,
+  "tokensOut": 102,
+  "costUsd": 0.0010248
+}

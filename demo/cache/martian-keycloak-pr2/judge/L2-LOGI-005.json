@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding identifies a real logic change from strict exception-throwing to permissive silent selection in crypto provider initialization, which is a valid architectural concern, but this does not match either GT-005 (wrong provider selection outcome) or GT-006 (dead code), as it describes a deliberate behavior change rather than a bug in the new logic itself.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 642,
+  "tokensOut": 123,
+  "costUsd": 0.0010056
+}

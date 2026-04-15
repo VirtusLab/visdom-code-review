@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"bug-hit\",\n  \"matchedGroundTruth\": \"GT-002\",\n  \"confidence\": 0.95,\n  \"reasoning\": \"The finding correctly identifies that organization_context.member can be None (when authenticated with API keys or org auth tokens), and accessing has_global_access without a null check causes an AttributeError—this matches GT-002's core issue of missing None validation on organization_context.member before attribute access.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 793,
+  "tokensOut": 116,
+  "costUsd": 0.0010984
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"valid-suggestion\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.75,\n  \"reasoning\": \"The finding identifies a real observability regression where contextual logging information (pluginCtx, endpoint) was lost during refactoring, but this is distinct from GT-008 (nil panics) and GT-009 (missing traceID) — it's a separate loss of logging context parameters.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 769,
+  "tokensOut": 114,
+  "costUsd": 0.0010712
+}

@@ -1,0 +1,7 @@
+{
+  "content": "```json\n{\n  \"classification\": \"noise\",\n  \"matchedGroundTruth\": null,\n  \"confidence\": 0.95,\n  \"reasoning\": \"This finding identifies a test setup issue (missing user creation) unrelated to the planted ground truth bugs about ConditionalPasskeysEnabled() method behavior and conditional passkey authentication logic.\"\n}\n```",
+  "model": "claude-haiku-4-5-20251001",
+  "tokensIn": 724,
+  "tokensOut": 86,
+  "costUsd": 0.0009231999999999999
+}
