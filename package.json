@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.2.1",
+    "@virtuslab/visdom-ui": "^0.1.0",
     "@tailwindcss/vite": "^4.1.4",
     "astro": "^5.7.10",
     "react": "^19.1.0",
