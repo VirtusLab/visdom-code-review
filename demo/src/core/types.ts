@@ -15,6 +15,7 @@ export interface PRMetadata {
   url: string;
   branch: string;
   title: string;
+  body: string;
   filesChanged: number;
   linesAdded: number;
   linesRemoved: number;

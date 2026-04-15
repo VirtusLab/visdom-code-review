@@ -196,6 +196,7 @@ async function main() {
     url: '(local mode — no PR created)',
     branch: scenarioConfig.branch,
     title: scenarioConfig.prTitle,
+    body: scenarioConfig.prBody ?? '',
     filesChanged: files.length,
     linesAdded: files.reduce((sum, f) => sum + f.linesChanged, 0),
     linesRemoved: 0,

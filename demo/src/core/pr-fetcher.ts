@@ -71,6 +71,7 @@ export class PRFetcher {
         url: pr.html_url,
         branch: pr.head.ref,
         title: pr.title,
+        body: pr.body ?? '',
         filesChanged: prFiles.length,
         linesAdded: prFiles.reduce((s, f) => s + f.additions, 0),
         linesRemoved: prFiles.reduce((s, f) => s + f.deletions, 0),

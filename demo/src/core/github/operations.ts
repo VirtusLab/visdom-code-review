@@ -125,6 +125,7 @@ export class GitHubOps {
       url: pr.html_url,
       branch: scenario.branch,
       title: scenario.prTitle,
+      body: scenario.prBody ?? '',
       filesChanged: Object.keys(fileContents).length,
       linesAdded,
       linesRemoved: 0,
