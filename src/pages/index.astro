@@ -417,6 +417,156 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
+  <!-- ============ Market Landscape ============ -->
+  <section class="stats-section">
+    <div class="stats-section__inner">
+      <h2 class="section-heading">AI code review: state of the market</h2>
+      <p class="section-subtitle">
+        Independent benchmarks now measure what tools actually catch.
+        Data from <a href="https://codereview.withmartian.com/">Martian Code Review Bench</a> (50 PRs, 200k+ online)
+        and <a href="https://www.propelcode.ai/benchmarks">Propel Benchmark</a> (2026).
+      </p>
+
+      <div class="market-table-wrap">
+        <table class="market-table">
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>F1</th>
+              <th>Strategy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cubic</strong></td>
+              <td>56%</td>
+              <td>69%</td>
+              <td class="market-table__f1">62%</td>
+              <td class="market-table__strategy">Model routing, full codebase context</td>
+            </tr>
+            <tr>
+              <td><strong>Qodo</strong></td>
+              <td>~55%</td>
+              <td>57%</td>
+              <td class="market-table__f1">60%</td>
+              <td class="market-table__strategy">Recall-first. 86% recall on hardest bugs</td>
+            </tr>
+            <tr>
+              <td><strong>Propel</strong></td>
+              <td>68%</td>
+              <td>61%</td>
+              <td class="market-table__f1">64%</td>
+              <td class="market-table__strategy">Highest precision on external benchmark</td>
+            </tr>
+            <tr>
+              <td><strong>Augment</strong></td>
+              <td>65%</td>
+              <td>55%</td>
+              <td class="market-table__f1">59%</td>
+              <td class="market-table__strategy">Deep context retrieval, cross-file analysis</td>
+            </tr>
+            <tr>
+              <td><strong>CodeRabbit</strong></td>
+              <td>36&ndash;48%</td>
+              <td>43&ndash;55%</td>
+              <td class="market-table__f1">39&ndash;51%</td>
+              <td class="market-table__strategy">Multi-platform (GH/GL/Azure/BB), low noise</td>
+            </tr>
+            <tr>
+              <td><strong>Baz</strong></td>
+              <td><em>#1 precision</em></td>
+              <td>lower</td>
+              <td class="market-table__f1">~50%</td>
+              <td class="market-table__strategy">Precision-first. Highest developer trust</td>
+            </tr>
+            <tr>
+              <td><strong>Claude Code</strong></td>
+              <td>23%</td>
+              <td>51%</td>
+              <td class="market-table__f1">31%</td>
+              <td class="market-table__strategy">High recall, high noise</td>
+            </tr>
+            <tr>
+              <td><strong>GitHub Copilot</strong></td>
+              <td>20%</td>
+              <td>34%</td>
+              <td class="market-table__f1">25%</td>
+              <td class="market-table__strategy">Zero setup, bundled with Copilot</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="section-footnote">
+        F1 50&ndash;65% is current state of the art. No tool exceeds 70% F1 on real-world PRs.<br />
+        Sources: <a href="https://codereview.withmartian.com/">Martian</a>,
+        <a href="https://www.propelcode.ai/benchmarks">Propel</a>,
+        <a href="https://www.augmentcode.com/blog/we-benchmarked-7-ai-code-review-tools-on-real-world-prs-here-are-the-results">Augment</a>,
+        <a href="https://www.cubic.dev/blog/cubic-is-the-best-ai-code-reviewer-on-martian-s-benchmark">Cubic</a>,
+        <a href="https://www.qodo.ai/blog/qodo-1-on-toughest-bugs-in-martians-code-review-bench/">Qodo</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ VCR Difference ============ -->
+  <section class="feature-row feature-row--white">
+    <div class="feature-row__inner">
+      <div class="feature-row__text">
+        <span class="kicker">What VCR does differently</span>
+        <h2 class="feature-row__heading">Process, not just another tool</h2>
+        <p class="feature-row__desc">
+          Every tool above runs one model in one pass. VCR is a layered process:
+          deterministic checks first ($0), AI triage second ($0.02), deep analysis
+          only when risk justifies it ($0.40). Cost scales with risk, not PR count.
+        </p>
+        <a href={`${base}reference/evaluation/`} class="feature-row__link">Evaluation methodology &rarr;</a>
+      </div>
+      <div class="feature-row__visual">
+        <div class="card">
+          <div class="diff-table">
+            <div class="diff-table__header">
+              <span></span>
+              <span class="diff-table__col-head">Market tools</span>
+              <span class="diff-table__col-head diff-table__col-head--vcr">VCR</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Architecture</span>
+              <span>One model, one pass</span>
+              <span class="diff-table__vcr">4 layers, risk-gated</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Cost model</span>
+              <span>$12&ndash;40/dev/month</span>
+              <span class="diff-table__vcr">$0.44/risky PR</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Static analysis</span>
+              <span>Separate tool</span>
+              <span class="diff-table__vcr">Built-in Layer 1</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Self-evaluation</span>
+              <span>External benchmark</span>
+              <span class="diff-table__vcr">Built-in VCR Bench</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Circular tests</span>
+              <span>Not detected</span>
+              <span class="diff-table__vcr">Dedicated lens</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Transparency</span>
+              <span>Black box score</span>
+              <span class="diff-table__vcr">Per-layer, per-lens</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ Try the Demo ============ -->
   <section class="feature-row feature-row--offwhite">
     <div class="feature-row__inner">
@@ -1289,6 +1439,97 @@ npm run demo:local</code></pre>
       .visdom-grid {
         grid-template-columns: 1fr;
       }
+    }
+
+    /* ===== Market Table ===== */
+    .market-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+    }
+    .market-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .market-table th {
+      text-align: left;
+      padding: 10px 14px;
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 2px solid var(--light-gray);
+    }
+    .market-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--light-gray);
+      color: var(--text-secondary);
+    }
+    .market-table tbody tr:hover {
+      background: var(--off-white);
+    }
+    .market-table__f1 {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text);
+    }
+    .market-table__strategy {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== Diff Table (VCR vs Market) ===== */
+    .diff-table {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .diff-table__header {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--light-gray);
+    }
+    .diff-table__col-head {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .diff-table__col-head--vcr {
+      color: var(--brand-green-dark);
+    }
+    .diff-table__row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--light-gray);
+      font-size: 0.85rem;
+      align-items: center;
+    }
+    .diff-table__row:last-child {
+      border-bottom: none;
+    }
+    .diff-table__label {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.82rem;
+    }
+    .diff-table__row span:nth-child(2) {
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .diff-table__vcr {
+      text-align: center;
+      color: var(--brand-green-dark);
+      font-weight: 500;
     }
 
     /* ===== Demo Section ===== */
