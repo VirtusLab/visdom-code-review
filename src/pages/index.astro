@@ -42,6 +42,7 @@ const base = import.meta.env.BASE_URL;
         <a href={`${base}guide/platform-engineers/`} class="nav__link">For Engineers</a>
         <a href={`${base}guide/developers/`} class="nav__link">For Developers</a>
         <a href={`${base}before-after/`} class="nav__link">Scenarios</a>
+        <a href={`${base}faq/`} class="nav__link">FAQ</a>
         <a href={`${base}reference/`} class="nav__link">Reference</a>
         <a href="https://github.com/VirtusLab/visdom-code-review" class="nav__github" target="_blank" rel="noopener">GitHub</a>
       </div>
@@ -417,6 +418,34 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
+  <!-- ============ FAQ Tease ============ -->
+  <section class="stats-section">
+    <div class="stats-section__inner">
+      <h2 class="section-heading">Common questions</h2>
+
+      <div class="faq-tease">
+        <details class="faq-tease__item">
+          <summary class="faq-tease__q">How do I know the findings are real, not hallucinations?</summary>
+          <p class="faq-tease__a">Layer 1 uses deterministic regex rules that cannot hallucinate. AI layers (L2/L3) require &ge;80% confidence and cap at 3 findings per lens. Verified on 50 real-world PRs across 5 languages with an independent LLM judge.</p>
+        </details>
+
+        <details class="faq-tease__item">
+          <summary class="faq-tease__q">Does our code leave the network?</summary>
+          <p class="faq-tease__a">No. VCR runs in your CI/CD pipeline with your own API key. No SaaS dependency. Air-gap compatible &mdash; Layer 1 works with zero network access.</p>
+        </details>
+
+        <details class="faq-tease__item">
+          <summary class="faq-tease__q">What does it actually cost?</summary>
+          <p class="faq-tease__a">~$0.10 per PR average. Low-risk PRs cost $0.02 (Haiku triage only). A 50-person team doing 500 PRs/week pays ~$2,600/year in LLM costs vs $7,200&ndash;$24,000 for SaaS tools.</p>
+        </details>
+      </div>
+
+      <div style="text-align: center; margin-top: 1.5rem;">
+        <a href={`${base}faq/`} class="btn btn--outline">See all 10 questions &rarr;</a>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ Market Landscape ============ -->
   <section class="stats-section">
     <div class="stats-section__inner">
@@ -650,6 +679,7 @@ npm run demo:local</code></pre>
       <div class="footer__links">
         <a href={`${base}guide/leaders/`}>For Leaders</a>
         <a href={`${base}reference/`}>Reference</a>
+        <a href={`${base}faq/`}>FAQ</a>
         <a href={`${base}before-after/`}>Scenarios</a>
         <a href="https://virtuslab.com" target="_blank" rel="noopener">VirtusLab</a>
       </div>
@@ -1665,6 +1695,44 @@ npm run demo:local</code></pre>
     .demo-results__row--vcr .demo-results__value {
       color: var(--brand-green-dark);
       font-weight: 500;
+    }
+
+    /* ===== FAQ Tease ===== */
+    .faq-tease {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .faq-tease__item {
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      padding: 0;
+      background: var(--white);
+    }
+    .faq-tease__q {
+      padding: 1rem 1.25rem;
+      font-weight: 600;
+      font-size: 1.05rem;
+      cursor: pointer;
+      color: var(--text);
+      list-style: none;
+    }
+    .faq-tease__q::-webkit-details-marker { display: none; }
+    .faq-tease__q::before {
+      content: '+';
+      display: inline-block;
+      width: 1.5rem;
+      font-weight: 700;
+      color: var(--brand-green);
+    }
+    details[open] .faq-tease__q::before { content: '\2212'; }
+    .faq-tease__a {
+      padding: 0 1.25rem 1rem 2.75rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
     }
   </style>
 </body>
