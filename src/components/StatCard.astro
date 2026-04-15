@@ -1,4 +1,6 @@
 ---
+import { StatCard as StatCardReact } from '@visdom/ui';
+
 interface Props {
   value: string;
   label: string;
@@ -6,41 +8,6 @@ interface Props {
   color: 'green' | 'blue' | 'amber' | 'red' | 'purple';
 }
 
-const { value, label, source, color } = Astro.props;
-
-const colorMap = {
-  green: {
-    bg: 'bg-emerald-50',
-    border: 'border-emerald-500',
-    text: 'text-emerald-600',
-  },
-  blue: {
-    bg: 'bg-blue-50',
-    border: 'border-blue-500',
-    text: 'text-blue-600',
-  },
-  amber: {
-    bg: 'bg-amber-50',
-    border: 'border-amber-500',
-    text: 'text-amber-600',
-  },
-  red: {
-    bg: 'bg-red-50',
-    border: 'border-red-500',
-    text: 'text-red-600',
-  },
-  purple: {
-    bg: 'bg-purple-50',
-    border: 'border-purple-500',
-    text: 'text-purple-600',
-  },
-};
-
-const c = colorMap[color];
+const props = Astro.props;
 ---
-
-<div class={`rounded-lg p-5 ${c.bg} border-l-4 ${c.border}`}>
-  <div class={`text-3xl font-bold ${c.text} mb-1`}>{value}</div>
-  <div class="text-sm text-gray-600 line-clamp-3">{label}</div>
-  <div class="text-xs text-gray-400 italic mt-2">{source}</div>
-</div>
+<StatCardReact {...props} />

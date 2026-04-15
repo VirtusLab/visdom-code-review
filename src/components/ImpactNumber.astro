@@ -1,18 +1,12 @@
 ---
+import { ImpactNumber as ImpactNumberReact } from '@visdom/ui';
+
 interface Props {
   before: string;
   after: string;
   label: string;
 }
 
-const { before, after, label } = Astro.props;
+const props = Astro.props;
 ---
-
-<div class="inline-flex flex-col items-center">
-  <div class="inline-flex items-center gap-2">
-    <span class="text-lg line-through text-red-400">{before}</span>
-    <span class="text-gray-400">&rarr;</span>
-    <span class="text-2xl font-bold text-emerald-600">{after}</span>
-  </div>
-  <span class="text-xs text-gray-500 mt-1">{label}</span>
-</div>
+<ImpactNumberReact {...props} />

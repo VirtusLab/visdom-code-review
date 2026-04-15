@@ -1,4 +1,6 @@
 ---
+import { Timeline as TimelineReact } from '@visdom/ui';
+
 const steps = [
   {
     number: 1,
@@ -21,54 +23,8 @@ const steps = [
   {
     number: 4,
     title: 'Handover',
-    duration: '',
     description: 'Your team owns it. Knowledge transfer complete.',
   },
 ];
 ---
-
-<div class="relative">
-  {/* Desktop: horizontal layout */}
-  <div class="hidden md:flex items-start justify-between relative">
-    {/* Connecting line behind circles */}
-    <div class="absolute top-5 left-[calc(12.5%)] right-[calc(12.5%)] h-px bg-gray-300 z-0"></div>
-
-    {steps.map((step) => (
-      <div class="relative z-10 flex flex-col items-center text-center w-1/4 px-3">
-        {/* Numbered circle */}
-        <div class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm mb-3">
-          {step.number}
-        </div>
-        <div class="font-bold text-gray-900 text-sm mb-1">{step.title}</div>
-        {step.duration && (
-          <div class="text-xs text-emerald-600 font-medium mb-1">{step.duration}</div>
-        )}
-        <div class="text-sm text-gray-500">{step.description}</div>
-      </div>
-    ))}
-  </div>
-
-  {/* Mobile: vertical layout */}
-  <div class="flex md:hidden relative">
-    {/* Vertical connecting line */}
-    <div class="absolute left-5 top-5 bottom-5 w-px bg-gray-300 z-0"></div>
-
-    <div class="flex flex-col gap-8">
-      {steps.map((step) => (
-        <div class="relative z-10 flex items-start gap-4">
-          {/* Numbered circle */}
-          <div class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
-            {step.number}
-          </div>
-          <div>
-            <div class="font-bold text-gray-900 text-sm">{step.title}</div>
-            {step.duration && (
-              <div class="text-xs text-emerald-600 font-medium">{step.duration}</div>
-            )}
-            <div class="text-sm text-gray-500 mt-0.5">{step.description}</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</div>
+<TimelineReact steps={steps} />
