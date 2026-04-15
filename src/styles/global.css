@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@source "../../node_modules/@visdom/ui/dist";
+
 @theme {
   --color-visdom-green: #10b981;
   --color-visdom-green-light: #d1fae5;

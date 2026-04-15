@@ -85,9 +85,11 @@ export function buildDeepReviewPrompt(
     security: `You are a security and safety reviewer. Analyze for vulnerabilities AND dangerous runtime behavior.
 
 Report:
-- Injection: SQL, NoSQL, XSS, SSRF, command injection, path traversal
+- Injection: SQL, NoSQL, XSS, SSRF, command injection, path traversal — including raw SQL in migrations
 - Auth bypasses: missing checks, wrong credential comparison, token handling errors
+- Auth/security degradation: error paths that fail OPEN (granting access), feature flags that always evaluate to one branch
 - Null/nil dereference that causes crashes in production (not just theoretical)
+- Thread-safety: lazy-initialized shared state without synchronization, mutable class-level variables accessed concurrently
 - Cryptographic weaknesses with specific impact
 - Unsafe state: reading state that may not exist, accessing dict keys without presence check
 
@@ -96,17 +98,20 @@ DO NOT report:
 - Style preferences or naming issues
 - Anything already found by earlier layers (listed below)
 
-Maximum 3 findings. Only report if confidence > 0.8.`,
+Maximum 4 findings. Only report if confidence > 0.8.`,
 
     architecture: `You are a correctness reviewer. Analyze ONLY for logic defects and behavioral bugs.
 
 Report:
 - Logic errors: wrong condition, inverted boolean, off-by-one, wrong variable used
-- Race conditions: concurrent access without synchronization, TOCTOU
+- Return value misuse: calling methods on wrong return type (e.g. safeParse result treated as data), ignoring error returns, using Response as JSON
+- Race conditions: concurrent access without synchronization, TOCTOU, stale reads under concurrency
 - Wrong method/object: calling session instead of delegate, using wrong provider, returning wrong value
 - Asymmetric logic: caching reads but not writes, checking one path but not another
+- Overly broad scope: filter/delete/update conditions that affect more records than intended
 - Resource lifecycle: opened but not closed, used after close
 - Negative/boundary cases: negative indices, empty collections, null propagation through call chains
+- API misuse: invalid schema syntax, wrong argument types, deprecated patterns that cause runtime errors
 
 DO NOT report:
 - Separation of concerns, coupling, or design pattern suggestions
@@ -114,7 +119,7 @@ DO NOT report:
 - Performance optimizations or "consider using X" advice
 - Anything already found by earlier layers (listed below)
 
-Maximum 3 findings. Only report if confidence > 0.8.`,
+Maximum 4 findings. Only report if confidence > 0.8.`,
 
     'test-quality': `You are a test quality reviewer. Analyze ONLY for tests that provide false assurance.
 
@@ -122,6 +127,8 @@ Report:
 - Circular tests: tests that mock the thing they verify
 - Tests that assert mock interactions, not outcomes
 - Tests that would still pass if the production code were completely broken
+- Flaky patterns: fixed sleeps instead of condition waits, timezone-dependent assertions, order-dependent tests
+- Comment-code contradictions: test description says one thing but assertion checks another
 - Critical untested paths that handle security or data integrity
 
 DO NOT report:
@@ -130,7 +137,7 @@ DO NOT report:
 - "Could add more assertions" without a specific missed bug
 - Anything already found by earlier layers (listed below)
 
-Maximum 2 findings. Only report if confidence > 0.8.`,
+Maximum 3 findings. Only report if confidence > 0.8.`,
   };
 
   return {

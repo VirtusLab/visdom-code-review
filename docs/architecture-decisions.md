@@ -253,7 +253,7 @@ Haiku (executor): Gets ALL findings + ALL golden comments per PR
 - Latency: 3-5s vs 10-15s per PR
 - Diminishing returns: 80%+ of classifications are obvious semantic matches
 
-**Benchmark with Advisor Judge (Discourse, 3 PRs):**
+**Initial test — Advisor Judge (Discourse, 3 PRs):**
 
 | Metric | Keyword Judge | Advisor Judge |
 |--------|--------------|---------------|
@@ -262,7 +262,41 @@ Haiku (executor): Gets ALL findings + ALL golden comments per PR
 | F1 | 55% | **80%** |
 | Cost | $0 | $0.02 |
 
-80% F1 exceeds every tool on Martian Bench (Cubic 62%, Qodo 60%, CodeRabbit 51%). Small sample caveat applies, but the pattern is clear: **the judge was the bottleneck, not the pipeline.**
+The 3-PR result (80% F1) looked too good. We ran the full benchmark.
+
+### Full benchmark: 50 PRs, 5 repos, both judges
+
+Same pipeline, same findings, two judges. The comparison reveals what keyword matching hides.
+
+| Repo | Lang | PRs | GT | Keyword F1 | Advisor F1 | Keyword Noise | Advisor Noise |
+|------|------|-----|----|-----------|-----------|--------------|--------------|
+| cal_dot_com | TS | 10 | 31 | 58% | 35% | 0 | 7 |
+| discourse | Ruby | 10 | 28 | 54% | 45% | 0 | 10 |
+| grafana | Go | 10 | 22 | 53% | 47% | 0 | 3 |
+| keycloak | Java | 10 | 24 | 58% | 49% | 0 | 8 |
+| sentry | Python | 10 | 31 | 57% | 41% | 0 | 9 |
+| **Total** | | **50** | **136** | **56%** | **43%** | **0** | **37** |
+
+**Why the numbers diverge:**
+
+The keyword judge reports 0 noise across 164 findings — 100% usefulness. That's not precision, that's blindness. The keyword classifier has two failure modes:
+
+1. **Over-matching hits.** It matched 106 findings to GT entries vs. the advisor's 71. The difference (~35 findings) are false matches — keyword overlap between unrelated issues ("error handling" matching "error message mismatch").
+
+2. **Under-reporting noise.** Any unmatched finding with confidence ≥0.7 becomes "valid-suggestion." The advisor found 37 findings that are actually noise — vague, generic, or hallucinated. The keyword judge can't distinguish "technically correct but not actionable" from "real suggestion."
+
+**The honest metrics (advisor judge):** P=46%, R=40%, F1=43%. Cost: $0.25 total ($0.005/PR).
+
+### What the advisor judge taught us
+
+The advisor judge is harsher but more informative. It revealed:
+
+1. **Grafana has the best precision (55%)** — Go's explicit error handling makes findings more concrete
+2. **Keycloak has the best recall (50%)** — Java's verbose patterns are easier to match to GT entries
+3. **Cal.com has the worst recall (32%)** — TypeScript PRs involve subtle logic bugs that need full codebase context
+4. **51 of 81 missed GT entries are logic/correctness bugs** — "logic inversion," "wrong variable," "asymmetric null check." These require understanding intent, not just pattern matching
+
+The 3-PR Discourse result (80% F1) was real but non-representative. Small samples on favorable PRs inflate metrics. The full 50-PR run is the honest number.
 
 ---
 
@@ -307,6 +341,29 @@ VCR with Haiku+Sonnet: ~$0.10/PR average. Same team with 500 PRs/week pays ~$2,6
 ---
 
 ## 9. What We Didn't Build (And Why)
+
+### What we miss and why (miss analysis, 50-PR advisor judge)
+
+Of 136 golden comments, 55 were matched (40% recall). The 81 misses break down:
+
+| Category | Missed | Example |
+|----------|--------|---------|
+| Logic/correctness | 51 | "Logic inversion in organization creation," "wrong variable in conditional" |
+| Error handling | 8 | "Using retryCount field but never incrementing it," "nil pointer exception" |
+| Security | 6 | "safeParse result not checked for success," "raw SQL in migration" |
+| Testing | 6 | "Sleep in test can be flaky," "test comment contradicts assertion" |
+| Concurrency | 4 | "Thread-safety issue with lazy loaded locales" |
+| Null safety | 4 | "Optional chaining inconsistently applied" |
+| Performance | 2 | "Negative offset in paginator," "middleware copies logger on every request" |
+
+**Key insight:** 63% of misses are logic/correctness bugs that require understanding developer *intent* — what the code *should* do, not just what it *does*. These need full codebase context (what does the function contract promise?) or domain knowledge (what's the business rule?). Diff-only review, even with AI, has a structural ceiling here.
+
+The achievable improvements without full codebase context:
+- **Better error handling detection** (+8 potential hits): Patterns like "increments count but never resets" are detectable in diffs
+- **Stricter security rules** (+6): Zod `.safeParse` result checking, SQL in migration files
+- **Test quality analysis** (+6): Comment-code contradictions, sleep-based assertions
+
+Estimated ceiling with diff-only + AI: ~55-60% recall. Reaching 70%+ requires cross-file context.
 
 ### Full AST parsing for Layer 1
 Would improve L1 recall from 11% to est. 40-50%. Requires language-specific parsers (tree-sitter). **Decision:** Keep L1 as regex for demo. Production deployments should use Semgrep (57% recall on CVE benchmarks) or CodeQL.
@@ -353,9 +410,11 @@ Only GitHub supported. GitLab, Azure DevOps, Bitbucket would need adapters. **De
 
 3. **The deterministic backstop is non-negotiable.** L1 catches 11% of bugs at $0 cost. More importantly: it cannot be prompt-injected, cannot hallucinate, and provides a floor of truth that auditors can verify. In regulated environments, this matters more than F1 score.
 
-4. **External benchmarks are humbling and essential.** Self-test: 93% F1. Real-world: 25% F1 (v1). Publishing both numbers builds trust. Cherry-picking the good results is what vendors do.
+4. **External benchmarks are humbling and essential.** Self-test: 93% F1. Real-world: 43% F1 (full 50-PR, advisor judge). Publishing both numbers builds trust. Cherry-picking the good results is what vendors do.
 
-5. **The Advisor Strategy is the right architecture for evaluation.** 80%+ of classification decisions are obvious. Paying Opus rates for all of them wastes budget. Haiku+Opus advisor costs 7x less than Opus alone with comparable accuracy.
+5. **The Advisor Strategy is the right architecture for evaluation.** 80%+ of classification decisions are obvious. Paying Opus rates for all of them wastes budget. Haiku+Opus advisor costs 7x less than Opus alone with comparable accuracy. On the full 50-PR benchmark, advisor cost $0.25 total ($0.005/PR) and found 37 noise findings that keyword matching missed entirely.
+
+7. **Your evaluation tool shapes what you optimize.** Keyword matching reported 56% F1 with 0 noise. The advisor judge reported 43% F1 with 37 noise. We were optimizing against the wrong signal. This is the evaluation equivalent of Goodhart's Law: when the metric becomes the target, it ceases to be a good metric. The fix: use the most honest judge you can afford.
 
 6. **Cached responses make demos reliable.** Shipping pre-cached AI responses means the demo works without API keys, offline, and always produces the same output. `--live` flag for real calls that update the cache.
 
@@ -365,7 +424,7 @@ Only GitHub supported. GitLab, Azure DevOps, Bitbucket would need adapters. **De
 
 2. **Overfitting L1 rules to the demo scenario.** Initial 4 rules were hardcoded for auth code (JWT secrets, SQL injection, timing attacks, Math.random). 100% precision on the demo, 0% on real-world PRs. Expanding to 17 cross-language rules fixed this.
 
-3. **Trusting the keyword judge.** Keyword matching gave 55% F1 on Discourse. We spent weeks tuning prompts thinking the pipeline was the bottleneck. The bottleneck was the judge — switching to Advisor Strategy jumped to 80% F1 on the same data.
+3. **Trusting the keyword judge.** Keyword matching gave 56% F1 on the full benchmark. We spent iterations tuning prompts thinking the pipeline was the bottleneck. The advisor judge revealed a more honest picture (43% F1) — keyword matching inflated scores by over-matching hits and hiding noise. The lesson: **your evaluation tool shapes what you optimize for.** A generous judge makes you think the pipeline is better than it is.
 
 4. **Hardcoding `typescript` in code fences.** Small mistake, silent impact. When Claude sees Java code in TypeScript fences, it applies TypeScript reasoning. Took three benchmark iterations to notice.
 
@@ -410,3 +469,9 @@ npm run demo:bench:martian -- discourse --max=5 --live --judge=advisor
 | Apr 15 | Correctness lens v4 | 37% | 33% | 35% | 29 | Naming change = biggest gain |
 | Apr 15 | Final tuning v5 | 34% | 34% | 34% | 36 | LLM non-determinism |
 | Apr 15 | Advisor judge (Discourse 3 PRs) | 75% | 86% | 80% | 1 | Judge was the bottleneck |
+| Apr 15 | Full 50-PR keyword judge | 65% | 50% | 56% | 0 | 0 noise = over-generous judge |
+| Apr 15 | **Full 50-PR advisor judge** | **46%** | **40%** | **43%** | **37** | **Honest metrics, $0.005/PR** |
+
+Note: The keyword and advisor judges evaluate the same pipeline output differently. The keyword judge reports
+higher F1 (56%) by over-matching and hiding noise. The advisor judge (43%) is the more accurate measurement.
+Both ran with live AI on all 50 Martian PRs across 5 repos and 5 languages.
