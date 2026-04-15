@@ -422,9 +422,8 @@ const base = import.meta.env.BASE_URL;
     <div class="stats-section__inner">
       <h2 class="section-heading">AI code review: state of the market</h2>
       <p class="section-subtitle">
-        Independent benchmarks now measure what tools actually catch.
-        Data from <a href="https://codereview.withmartian.com/">Martian Code Review Bench</a> (50 PRs, 200k+ online)
-        and <a href="https://www.propelcode.ai/benchmarks">Propel Benchmark</a> (2026).
+        Two independent benchmarks now measure what AI review tools actually catch on real pull requests.
+        The data below is drawn from published, reproducible evaluations &mdash; not vendor self-reports.
       </p>
 
       <div class="market-table-wrap">
@@ -435,78 +434,90 @@ const base = import.meta.env.BASE_URL;
               <th>Precision</th>
               <th>Recall</th>
               <th>F1</th>
-              <th>Strategy</th>
+              <th>Source</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><strong>Cubic</strong></td>
-              <td>56%</td>
-              <td>69%</td>
-              <td class="market-table__f1">62%</td>
-              <td class="market-table__strategy">Model routing, full codebase context</td>
-            </tr>
-            <tr>
-              <td><strong>Qodo</strong></td>
-              <td>~55%</td>
-              <td>57%</td>
-              <td class="market-table__f1">60%</td>
-              <td class="market-table__strategy">Recall-first. 86% recall on hardest bugs</td>
-            </tr>
             <tr>
               <td><strong>Propel</strong></td>
               <td>68%</td>
               <td>61%</td>
               <td class="market-table__f1">64%</td>
-              <td class="market-table__strategy">Highest precision on external benchmark</td>
+              <td class="market-table__source"><a href="https://www.propelcode.ai/benchmarks">Propel Benchmark</a></td>
+            </tr>
+            <tr>
+              <td><strong>Cubic</strong></td>
+              <td>56%</td>
+              <td>69%</td>
+              <td class="market-table__f1">62%</td>
+              <td class="market-table__source"><a href="https://www.cubic.dev/blog/cubic-is-the-best-ai-code-reviewer-on-martian-s-benchmark">Martian Bench</a></td>
+            </tr>
+            <tr>
+              <td><strong>Qodo</strong></td>
+              <td>&mdash;</td>
+              <td>57%</td>
+              <td class="market-table__f1">60%</td>
+              <td class="market-table__source"><a href="https://www.qodo.ai/blog/qodo-1-on-toughest-bugs-in-martians-code-review-bench/">Martian Bench</a></td>
             </tr>
             <tr>
               <td><strong>Augment</strong></td>
               <td>65%</td>
               <td>55%</td>
               <td class="market-table__f1">59%</td>
-              <td class="market-table__strategy">Deep context retrieval, cross-file analysis</td>
+              <td class="market-table__source"><a href="https://www.augmentcode.com/blog/we-benchmarked-7-ai-code-review-tools-on-real-world-prs-here-are-the-results">Propel Benchmark</a></td>
             </tr>
             <tr>
               <td><strong>CodeRabbit</strong></td>
               <td>36&ndash;48%</td>
               <td>43&ndash;55%</td>
               <td class="market-table__f1">39&ndash;51%</td>
-              <td class="market-table__strategy">Multi-platform (GH/GL/Azure/BB), low noise</td>
+              <td class="market-table__source"><a href="https://www.coderabbit.ai/blog/coderabbit-tops-martian-code-review-benchmark">Martian + Propel</a></td>
             </tr>
             <tr>
               <td><strong>Baz</strong></td>
-              <td><em>#1 precision</em></td>
-              <td>lower</td>
+              <td><em>#1 on Martian</em></td>
+              <td>&mdash;</td>
               <td class="market-table__f1">~50%</td>
-              <td class="market-table__strategy">Precision-first. Highest developer trust</td>
+              <td class="market-table__source"><a href="https://baz.co/resources/baz-1-in-precision-in-independent-code-review-bench">Martian Bench</a></td>
             </tr>
             <tr>
               <td><strong>Claude Code</strong></td>
               <td>23%</td>
               <td>51%</td>
               <td class="market-table__f1">31%</td>
-              <td class="market-table__strategy">High recall, high noise</td>
+              <td class="market-table__source"><a href="https://www.propelcode.ai/benchmarks">Propel Benchmark</a></td>
             </tr>
             <tr>
               <td><strong>GitHub Copilot</strong></td>
               <td>20%</td>
               <td>34%</td>
               <td class="market-table__f1">25%</td>
-              <td class="market-table__strategy">Zero setup, bundled with Copilot</td>
+              <td class="market-table__source"><a href="https://www.propelcode.ai/benchmarks">Propel Benchmark</a></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <p class="section-footnote">
-        F1 50&ndash;65% is current state of the art. No tool exceeds 70% F1 on real-world PRs.<br />
-        Sources: <a href="https://codereview.withmartian.com/">Martian</a>,
-        <a href="https://www.propelcode.ai/benchmarks">Propel</a>,
-        <a href="https://www.augmentcode.com/blog/we-benchmarked-7-ai-code-review-tools-on-real-world-prs-here-are-the-results">Augment</a>,
-        <a href="https://www.cubic.dev/blog/cubic-is-the-best-ai-code-reviewer-on-martian-s-benchmark">Cubic</a>,
-        <a href="https://www.qodo.ai/blog/qodo-1-on-toughest-bugs-in-martians-code-review-bench/">Qodo</a>
-      </p>
+      <div class="market-meta">
+        <p class="market-meta__heading">About these benchmarks</p>
+        <div class="market-meta__grid">
+          <div class="market-meta__item">
+            <strong><a href="https://codereview.withmartian.com/">Martian Code Review Bench</a></strong>
+            <span>50 curated PRs + 200k online PRs across Sentry, Grafana, Cal.com, Discourse, Keycloak.
+            Human-verified golden comments. LLM-as-judge (Claude/GPT). MIT licensed, open source.
+            Created by researchers from DeepMind, Anthropic, and Meta.</span>
+          </div>
+          <div class="market-meta__item">
+            <strong><a href="https://www.propelcode.ai/benchmarks">Propel Benchmark</a></strong>
+            <span>50 PRs from production open-source repos. Externally authored &mdash; Propel did not influence
+            repo selection, PR selection, or labeling. Tools tested with default settings, no customization.</span>
+          </div>
+        </div>
+        <p class="market-meta__note">
+          F1 50&ndash;65% is current state of the art. No tool exceeds 70% F1 on real-world PRs.
+          Precision measures how often a tool's comments lead to a code change. Recall measures how many real issues the tool catches.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -514,52 +525,58 @@ const base = import.meta.env.BASE_URL;
   <section class="feature-row feature-row--white">
     <div class="feature-row__inner">
       <div class="feature-row__text">
-        <span class="kicker">What VCR does differently</span>
-        <h2 class="feature-row__heading">Process, not just another tool</h2>
+        <span class="kicker">Why a process, not another tool</span>
+        <h2 class="feature-row__heading">The enterprise problem</h2>
         <p class="feature-row__desc">
-          Every tool above runs one model in one pass. VCR is a layered process:
-          deterministic checks first ($0), AI triage second ($0.02), deep analysis
-          only when risk justifies it ($0.40). Cost scales with risk, not PR count.
+          Every tool above runs one model in one pass on every PR. For an enterprise team with 500 PRs/week,
+          that means paying per-seat ($12&ndash;40/dev/month) regardless of risk &mdash; and getting the same depth
+          on a config change as on an auth refactor.
+        </p>
+        <p class="feature-row__desc">
+          VCR separates the <em>process</em> from the <em>tool</em>. Deterministic checks run first at zero cost.
+          AI triage decides whether deep analysis is worth the investment. Only the ~30&ndash;50% of PRs that carry
+          real risk get the full review. The result: predictable cost, auditable decisions, and depth where it matters.
         </p>
         <a href={`${base}reference/evaluation/`} class="feature-row__link">Evaluation methodology &rarr;</a>
       </div>
       <div class="feature-row__visual">
         <div class="card">
+          <p class="card__label">Enterprise comparison</p>
           <div class="diff-table">
             <div class="diff-table__header">
               <span></span>
-              <span class="diff-table__col-head">Market tools</span>
-              <span class="diff-table__col-head diff-table__col-head--vcr">VCR</span>
+              <span class="diff-table__col-head">SaaS tools</span>
+              <span class="diff-table__col-head diff-table__col-head--vcr">VCR process</span>
             </div>
             <div class="diff-table__row">
               <span class="diff-table__label">Architecture</span>
-              <span>One model, one pass</span>
+              <span>Single model, single pass</span>
               <span class="diff-table__vcr">4 layers, risk-gated</span>
             </div>
             <div class="diff-table__row">
-              <span class="diff-table__label">Cost model</span>
-              <span>$12&ndash;40/dev/month</span>
-              <span class="diff-table__vcr">$0.44/risky PR</span>
+              <span class="diff-table__label">Cost structure</span>
+              <span>Per-seat: $12&ndash;40/dev/mo</span>
+              <span class="diff-table__vcr">Per-risk: $0&ndash;0.44/PR</span>
             </div>
             <div class="diff-table__row">
-              <span class="diff-table__label">Static analysis</span>
-              <span>Separate tool</span>
-              <span class="diff-table__vcr">Built-in Layer 1</span>
+              <span class="diff-table__label">Deterministic backstop</span>
+              <span>No (AI-only)</span>
+              <span class="diff-table__vcr">Layer 1: immune to prompt injection</span>
             </div>
             <div class="diff-table__row">
-              <span class="diff-table__label">Self-evaluation</span>
-              <span>External benchmark</span>
-              <span class="diff-table__vcr">Built-in VCR Bench</span>
+              <span class="diff-table__label">Audit trail</span>
+              <span>Vendor-dependent</span>
+              <span class="diff-table__vcr">Per-layer, per-lens, per-finding</span>
             </div>
             <div class="diff-table__row">
-              <span class="diff-table__label">Circular tests</span>
-              <span>Not detected</span>
-              <span class="diff-table__vcr">Dedicated lens</span>
+              <span class="diff-table__label">AI code detection</span>
+              <span>Not addressed</span>
+              <span class="diff-table__vcr">Circular test + AI-code lenses</span>
             </div>
             <div class="diff-table__row">
-              <span class="diff-table__label">Transparency</span>
-              <span>Black box score</span>
-              <span class="diff-table__vcr">Per-layer, per-lens</span>
+              <span class="diff-table__label">Vendor lock-in</span>
+              <span>SaaS dependency</span>
+              <span class="diff-table__vcr">Process-first, tool-agnostic</span>
             </div>
           </div>
         </div>
@@ -1478,6 +1495,70 @@ npm run demo:local</code></pre>
     .market-table__strategy {
       font-size: 0.82rem;
       color: var(--text-muted);
+    }
+    .market-table__source {
+      font-size: 0.78rem;
+    }
+    .market-table__source a {
+      color: var(--brand-green-dark);
+      text-decoration: none;
+    }
+    .market-table__source a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== Benchmark Metadata ===== */
+    .market-meta {
+      margin-top: 1.5rem;
+      padding: 20px 24px;
+      background: var(--off-white);
+      border-radius: 12px;
+      border: 1px solid var(--light-gray);
+    }
+    .market-meta__heading {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 0 0 12px;
+    }
+    .market-meta__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    @media (min-width: 640px) {
+      .market-meta__grid { grid-template-columns: 1fr 1fr; }
+    }
+    .market-meta__item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.85rem;
+    }
+    .market-meta__item strong {
+      font-size: 0.88rem;
+    }
+    .market-meta__item strong a {
+      color: var(--text);
+      text-decoration: none;
+    }
+    .market-meta__item strong a:hover {
+      color: var(--brand-green-dark);
+    }
+    .market-meta__item span {
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+    .market-meta__note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.5;
     }
 
     /* ===== Diff Table (VCR vs Market) ===== */
