@@ -52,6 +52,12 @@ Respond in this exact JSON format:
 }`,
     prompt: `## PR: ${context.pr.title}
 
+### PR intent (from author):
+${context.pr.body ? truncateContent(context.pr.body, 200) : 'No description provided.'}
+
+### Related modules (imported by changed files):
+${extractImports(context.files).join(', ') || 'None detected.'}
+
 ### Files changed:
 ${fileList}
 
@@ -159,6 +165,12 @@ Respond in JSON:
 }`,
     prompt: `## PR: ${context.pr.title}
 
+### PR intent (from author):
+${context.pr.body ? truncateContent(context.pr.body, 200) : 'No description provided.'}
+
+### Related modules (imported by changed files):
+${extractImports(context.files).join(', ') || 'None detected.'}
+
 ### Code:
 ${fileContents}`,
   };
@@ -184,4 +196,38 @@ function truncateDiff(diff: string, maxChars: number): string {
 function truncateContent(content: string, maxChars: number): string {
   if (content.length <= maxChars) return content;
   return content.slice(0, maxChars) + '\n... (truncated)';
+}
+
+export function extractImports(files: { path: string; content: string }[]): string[] {
+  const modules = new Set<string>();
+
+  for (const file of files) {
+    const lines = file.content.split('\n');
+    for (const line of lines) {
+      // JS/TS: import ... from '...' or require('...')
+      const jsImport = line.match(/(?:from|require\()\s*['"]([^'"]+)['"]/);
+      if (jsImport) { modules.add(jsImport[1].split('/').pop()!); continue; }
+
+      // Python: from X import ... or import X
+      const pyImport = line.match(/^(?:from\s+(\S+)\s+import|import\s+(\S+))/);
+      if (pyImport) { modules.add((pyImport[1] ?? pyImport[2]).split('.').pop()!); continue; }
+
+      // Go: "package/path" inside import block
+      const goImport = line.match(/^\s*"([^"]+)"/);
+      if (goImport && !line.includes('func') && !line.includes('var')) {
+        modules.add(goImport[1].split('/').pop()!);
+        continue;
+      }
+
+      // Java: import com.example.Class;
+      const javaImport = line.match(/^import\s+([\w.]+);/);
+      if (javaImport) { modules.add(javaImport[1].split('.').pop()!); continue; }
+
+      // Ruby: require 'something'
+      const rbImport = line.match(/require\s+['"]([^'"]+)['"]/);
+      if (rbImport) { modules.add(rbImport[1].split('/').pop()!); continue; }
+    }
+  }
+
+  return [...modules].slice(0, 20);
 }
