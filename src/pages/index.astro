@@ -525,58 +525,58 @@ const base = import.meta.env.BASE_URL;
   <section class="feature-row feature-row--white">
     <div class="feature-row__inner">
       <div class="feature-row__text">
-        <span class="kicker">Why a process, not another tool</span>
-        <h2 class="feature-row__heading">The enterprise problem</h2>
+        <span class="kicker">A different approach</span>
+        <h2 class="feature-row__heading">A review process you deploy into your platform</h2>
         <p class="feature-row__desc">
-          Every tool above runs one model in one pass on every PR. For an enterprise team with 500 PRs/week,
-          that means paying per-seat ($12&ndash;40/dev/month) regardless of risk &mdash; and getting the same depth
-          on a config change as on an auth refactor.
+          The tools above are SaaS products you subscribe to. VCR is a review <em>process</em> with a reference
+          implementation &mdash; designed to be deployed into your existing CI/CD, your infrastructure, your LLM provider.
+          It runs in your environment, reports to your systems, and follows your rules.
         </p>
         <p class="feature-row__desc">
-          VCR separates the <em>process</em> from the <em>tool</em>. Deterministic checks run first at zero cost.
-          AI triage decides whether deep analysis is worth the investment. Only the ~30&ndash;50% of PRs that carry
-          real risk get the full review. The result: predictable cost, auditable decisions, and depth where it matters.
+          VirtusLab deploys VCR as part of Visdom engagements: we configure the pipeline for your stack,
+          tune the lenses to your conventions, and transfer ownership to your platform team.
+          You keep the process. No ongoing SaaS dependency.
         </p>
         <a href={`${base}reference/evaluation/`} class="feature-row__link">Evaluation methodology &rarr;</a>
       </div>
       <div class="feature-row__visual">
         <div class="card">
-          <p class="card__label">Enterprise comparison</p>
+          <p class="card__label">Deployment model</p>
           <div class="diff-table">
             <div class="diff-table__header">
               <span></span>
-              <span class="diff-table__col-head">SaaS tools</span>
-              <span class="diff-table__col-head diff-table__col-head--vcr">VCR process</span>
+              <span class="diff-table__col-head">SaaS review tools</span>
+              <span class="diff-table__col-head diff-table__col-head--vcr">VCR (deployed)</span>
             </div>
             <div class="diff-table__row">
-              <span class="diff-table__label">Architecture</span>
-              <span>Single model, single pass</span>
-              <span class="diff-table__vcr">4 layers, risk-gated</span>
+              <span class="diff-table__label">Where it runs</span>
+              <span>Vendor cloud</span>
+              <span class="diff-table__vcr">Your CI/CD pipeline</span>
             </div>
             <div class="diff-table__row">
-              <span class="diff-table__label">Cost structure</span>
+              <span class="diff-table__label">LLM provider</span>
+              <span>Vendor-chosen</span>
+              <span class="diff-table__vcr">Your choice (Claude, GPT, self-hosted)</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Code leaves your network</span>
+              <span>Yes</span>
+              <span class="diff-table__vcr">No &mdash; runs on your infra</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Custom review rules</span>
+              <span>Limited config</span>
+              <span class="diff-table__vcr">Full lens customization (compliance, domain)</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Cost model</span>
               <span>Per-seat: $12&ndash;40/dev/mo</span>
-              <span class="diff-table__vcr">Per-risk: $0&ndash;0.44/PR</span>
+              <span class="diff-table__vcr">Your LLM costs only ($0&ndash;0.44/PR)</span>
             </div>
             <div class="diff-table__row">
-              <span class="diff-table__label">Deterministic backstop</span>
-              <span>No (AI-only)</span>
-              <span class="diff-table__vcr">Layer 1: immune to prompt injection</span>
-            </div>
-            <div class="diff-table__row">
-              <span class="diff-table__label">Audit trail</span>
-              <span>Vendor-dependent</span>
-              <span class="diff-table__vcr">Per-layer, per-lens, per-finding</span>
-            </div>
-            <div class="diff-table__row">
-              <span class="diff-table__label">AI code detection</span>
-              <span>Not addressed</span>
-              <span class="diff-table__vcr">Circular test + AI-code lenses</span>
-            </div>
-            <div class="diff-table__row">
-              <span class="diff-table__label">Vendor lock-in</span>
-              <span>SaaS dependency</span>
-              <span class="diff-table__vcr">Process-first, tool-agnostic</span>
+              <span class="diff-table__label">Ownership</span>
+              <span>Vendor dependency</span>
+              <span class="diff-table__vcr">Your team owns and operates</span>
             </div>
           </div>
         </div>
