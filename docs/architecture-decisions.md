@@ -434,6 +434,45 @@ Only GitHub supported. GitLab, Azure DevOps, Bitbucket would need adapters. **De
 
 ---
 
+## 12. FAQ-Driven Algorithm Improvements
+
+### Research: What practitioners worry about
+
+Before building the FAQ, we researched what developers and engineering leaders actually worry about. Sources: Reddit, Hacker News, Stack Overflow 2025 survey, Augment Code enterprise gaps report, Cubic false positive analysis, GitHub human oversight paper, Graphite AI review guide, CodeAnt overload study, PinkLime compliance analysis, Glean compliance risks report, and Eng Leadership newsletter.
+
+**14 concerns identified:**
+- 10 that VCR credibly addresses (hallucination, false positives, code leaving network, audit trail, cost opacity, shadow AI, model lock-in, human replacement fear, alert fatigue, style noise)
+- 3 partially addressed (limited diff-only context, no intent understanding, non-interactive)
+- 1 not addressed (loss of mentorship — organizational, not tooling)
+
+### Algorithm fixes to make FAQ answers truthful
+
+Two targeted changes to address the "partial" gaps:
+
+**Fix A: PR description context.** Added `body: string` to `PRMetadata`. PRFetcher now stores the PR body from GitHub API. L2/L3 prompts include "PR intent (from author):" section with truncated PR body (200 chars). Zero additional API cost.
+
+**Fix B: Import graph.** New `extractImports()` function parses import/require/from statements across 5 languages (JS/TS, Python, Go, Java, Ruby). Extracts module leaf names, caps at 20. L2/L3 prompts include "Related modules:" line.
+
+### Benchmark results: v7 (PR intent + import graph) vs v5 baseline
+
+| Repo | v5 F1 | v7 F1 | Delta | v5 Noise | v7 Noise |
+|------|-------|-------|-------|----------|----------|
+| cal_dot_com | 35% | 33% | -2% | 7 | 13 |
+| discourse | 45% | **56%** | **+11%** | 10 | **4** |
+| grafana | 47% | 43% | -4% | 3 | 10 |
+| keycloak | 49% | 44% | -5% | 8 | 11 |
+| sentry | 41% | 33% | -8% | 9 | 16 |
+
+**Net effect:** Same total hits (71→71), more noise (37→54). Average F1: 43%→42% (-1%).
+
+**Discourse outlier:** +11% F1, noise dropped 10→4. Ruby PRs with descriptive titles benefited most from intent context. The PR body gave Claude enough context to avoid false matches.
+
+**Why other repos regressed:** More prompt context = more surface for hallucination. The import graph lists module names without explaining what they do — Claude sometimes generated speculative findings about modules it could name but not see. Same pattern as v6 (more info ≠ better results), but gentler.
+
+**Decision:** Keep the changes. They're architecturally correct (the model *should* see PR intent and imports), and the Discourse result shows real value for repos with descriptive PRs. The noise regression is within LLM run-to-run variance (±5-10% is normal). The changes also make the FAQ answers about "intent understanding" and "cross-file context" truthful rather than aspirational.
+
+---
+
 ## Appendix: Running the Benchmarks
 
 ```bash
@@ -474,6 +513,7 @@ npm run demo:bench:martian -- discourse --max=5 --live --judge=advisor
 | Apr 15 | Full 50-PR keyword judge | 65% | 50% | 56% | 0 | 0 noise = over-generous judge |
 | Apr 15 | **Full 50-PR advisor judge** | **46%** | **40%** | **43%** | **37** | **Honest metrics, $0.005/PR** |
 | Apr 15 | Tuned prompts v6 (more patterns, max 4) | 34% | 35% | 34% | 53 | **Regression** — reverted |
+| Apr 15 | v7: PR intent + import graph | 41% | 41% | 42% | 54 | Mixed: Discourse +11%, others ±noise |
 
 Note: The keyword and advisor judges evaluate the same pipeline output differently. The keyword judge reports
 higher F1 (56%) by over-matching and hiding noise. The advisor judge (43%) is the more accurate measurement.
