@@ -430,6 +430,8 @@ Only GitHub supported. GitLab, Azure DevOps, Bitbucket would need adapters. **De
 
 5. **Not truncating large diffs.** A 2000-line diff with 3 real bugs and 1997 lines of boilerplate. Claude gets overwhelmed and generates generic findings. Truncation to 8000 chars improved precision without hurting recall.
 
+6. **Longer prompts ≠ better results.** We expanded prompt patterns from 6 to 9 categories and raised max findings from 3 to 4. Result: -15 hits, +16 noise, F1 dropped from 43% to 34%. The LLM treated more categories as permission to hallucinate more creatively. Shorter, focused prompts with hard caps outperform encyclopedic ones. This is the prompting equivalent of YAGNI.
+
 ---
 
 ## Appendix: Running the Benchmarks
@@ -471,7 +473,15 @@ npm run demo:bench:martian -- discourse --max=5 --live --judge=advisor
 | Apr 15 | Advisor judge (Discourse 3 PRs) | 75% | 86% | 80% | 1 | Judge was the bottleneck |
 | Apr 15 | Full 50-PR keyword judge | 65% | 50% | 56% | 0 | 0 noise = over-generous judge |
 | Apr 15 | **Full 50-PR advisor judge** | **46%** | **40%** | **43%** | **37** | **Honest metrics, $0.005/PR** |
+| Apr 15 | Tuned prompts v6 (more patterns, max 4) | 34% | 35% | 34% | 53 | **Regression** — reverted |
 
 Note: The keyword and advisor judges evaluate the same pipeline output differently. The keyword judge reports
 higher F1 (56%) by over-matching and hiding noise. The advisor judge (43%) is the more accurate measurement.
 Both ran with live AI on all 50 Martian PRs across 5 repos and 5 languages.
+
+**v6 post-mortem:** We expanded prompts with more pattern categories (return value misuse, API misuse, thread-safety,
+flaky tests) and raised max findings from 3→4. Result: -15 hits, +16 noise. The LLM interpreted the longer pattern
+list as permission to report more aggressively. More categories = more surface area for hallucination. The max findings
+increase amplified this. **Lesson: prompt precision scales inversely with prompt length.** Shorter, focused prompts
+outperform encyclopedic ones. This is counterintuitive — we expected more patterns = more recall. Instead,
+more patterns = more noise and *less* recall (LLM spreads attention across more categories).

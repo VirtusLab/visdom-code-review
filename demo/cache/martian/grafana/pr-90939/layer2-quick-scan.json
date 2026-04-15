@@ -1,7 +1,0 @@
-{
-  "content": "```json\n{\n  \"risk\": \"MEDIUM\",\n  \"riskReason\": \"Double-checked locking pattern is used but contains a race condition between the initial RLock check and the subsequent Lock acquisition.\",\n  \"circularTests\": {\n    \"detected\": false,\n    \"count\": 0,\n    \"total\": 0,\n    \"details\": \"\"\n  },\n  \"findings\": [\n    {\n      \"severity\": \"high\",\n      \"category\": \"concurrency/race-condition\",\n      \"file\": \"pkg/api/webassets/webassets.go\",\n      \"line\": 40,\n      \"title\": \"Time-of-check to time-of-use (TOCTOU) race condition in double-checked locking\",\n      \"description\": \"The code reads entryPointAssetsCache under RLock, releases it, checks if nil, then acquires a Lock. Between the RUnlock and Lock, another goroutine could write to entryPointAssetsCache, causing this goroutine to redundantly recalculate the value. More critically, after acquiring the Lock, the code does not re-check if entryPointAssetsCache was already populated by another goroutine that won the race, potentially overwriting a valid cached value or causing duplicate expensive operations.\",\n      \"suggestion\": \"After acquiring the Lock (line 42), add a second check: `if entryPointAssetsCache != nil { defer entryPointAssetsCacheMu.Unlock(); return entryPointAssetsCache, nil }` before proceeding with the cache population logic.\"\n    }\n  ]\n}\n```",
-  "model": "claude-haiku-4-5-20251001",
-  "tokensIn": 957,
-  "tokensOut": 374,
-  "costUsd": 0.0022616
-}
