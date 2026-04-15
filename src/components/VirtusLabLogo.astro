@@ -1,0 +1,10 @@
+---
+import { VirtusLabLogo as LogoReact } from '@virtuslab/visdom-ui';
+
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+---
+<LogoReact className={className} />
