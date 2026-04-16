@@ -37,7 +37,7 @@ const links = [
 <!-- Navigation -->
 <nav class="site-nav">
   <div class="site-nav__inner">
-    <a href={`${base}`} class="site-nav__brand">Visdom Code Review</a>
+    <a href={`${base}`} class="site-nav__brand"><span class="site-nav__brand-vl">VirtusLab</span> Visdom <span class="site-nav__brand-product">Code Review</span></a>
     <div class="site-nav__links">
       {links.map(link => (
         <a href={link.href} class:list={['site-nav__link', activeLink === link.label && 'site-nav__link--active']}>
@@ -88,14 +88,20 @@ const links = [
     height: 3.5rem;
   }
   .site-nav__brand {
-    font-family: 'Montserrat', system-ui, sans-serif;
-    font-weight: 700;
     font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     color: #111827;
     text-decoration: none;
+    transition: opacity 0.15s;
   }
   .site-nav__brand:hover {
-    color: #059669;
+    opacity: 0.8;
+  }
+  .site-nav__brand-vl,
+  .site-nav__brand-product {
+    font-weight: 400;
+    color: #6b7280;
   }
   .site-nav__links {
     display: flex;
