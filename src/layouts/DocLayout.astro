@@ -1,10 +1,8 @@
 ---
-import '../styles/global.css';
-import SiteNav from '../components/SiteNav.astro';
+import BaseLayout from './BaseLayout.astro';
 import { Breadcrumb } from '@virtuslab/visdom-ui';
 import { DocPageHeader } from '@virtuslab/visdom-ui';
 import { DocPagination } from '@virtuslab/visdom-ui';
-import { Footer } from '@virtuslab/visdom-ui';
 
 interface Props {
   title: string;
@@ -18,21 +16,7 @@ interface Props {
 const { title, subtitle, section, tags = [], prev, next } = Astro.props;
 const base = import.meta.env.BASE_URL;
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} | Visdom Code Review</title>
-  <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=optional" as="style" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=optional" rel="stylesheet" />
-</head>
-<body>
-  <SiteNav />
-
+<BaseLayout title={title}>
   <main class="max-w-[1200px] mx-auto px-6 py-10">
     {section && (
       <div class="mb-4">
@@ -52,10 +36,7 @@ const base = import.meta.env.BASE_URL;
       </div>
     )}
   </main>
-
-  <Footer client:load />
-</body>
-</html>
+</BaseLayout>
 
 <style>
   /* Typography matching landing page */
