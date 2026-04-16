@@ -6,6 +6,7 @@
  * that doesn't match our site — this Astro component gives us full control.
  */
 import VirtusLabLogo from './VirtusLabLogo.astro';
+import VisdomBrand from './VisdomBrand.astro';
 
 interface Props {
   activeLink?: string;
@@ -37,7 +38,7 @@ const links = [
 <!-- Navigation -->
 <nav class="site-nav">
   <div class="site-nav__inner">
-    <a href={`${base}`} class="site-nav__brand"><span class="site-nav__brand-vl">VirtusLab</span> Visdom <span class="site-nav__brand-product">Code Review</span></a>
+    <VisdomBrand product="Code Review" href={base} />
     <div class="site-nav__links">
       {links.map(link => (
         <a href={link.href} class:list={['site-nav__link', activeLink === link.label && 'site-nav__link--active']}>
@@ -86,22 +87,6 @@ const links = [
     align-items: center;
     justify-content: space-between;
     height: 3.5rem;
-  }
-  .site-nav__brand {
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: #111827;
-    text-decoration: none;
-    transition: opacity 0.15s;
-  }
-  .site-nav__brand:hover {
-    opacity: 0.8;
-  }
-  .site-nav__brand-vl,
-  .site-nav__brand-product {
-    font-weight: 400;
-    color: #6b7280;
   }
   .site-nav__links {
     display: flex;

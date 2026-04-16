@@ -1,0 +1,12 @@
+---
+import { VisdomBrand as VisdomBrandReact } from '@virtuslab/visdom-ui';
+
+interface Props {
+  product?: string;
+  href?: string;
+  className?: string;
+}
+
+const { product, href, className } = Astro.props;
+---
+<VisdomBrandReact client:load product={product} href={href} className={className} />
