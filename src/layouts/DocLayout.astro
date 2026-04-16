@@ -53,13 +53,7 @@ const base = import.meta.env.BASE_URL;
     )}
   </main>
 
-  <Footer client:load links={[
-    { label: 'For Leaders', href: `${base}guide/leaders/` },
-    { label: 'Reference', href: `${base}reference/` },
-    { label: 'FAQ', href: `${base}faq/` },
-    { label: 'Scenarios', href: `${base}before-after/` },
-    { label: 'VirtusLab', href: 'https://virtuslab.com' },
-  ]} />
+  <Footer client:load />
 </body>
 </html>
 
