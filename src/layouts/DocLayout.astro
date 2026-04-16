@@ -1,6 +1,12 @@
 ---
 import '../styles/global.css';
-import VirtusLabLogo from '../components/VirtusLabLogo.astro';
+import { TopBar } from '@virtuslab/visdom-ui';
+import { Nav } from '@virtuslab/visdom-ui';
+import { Breadcrumb } from '@virtuslab/visdom-ui';
+import { DocPageHeader } from '@virtuslab/visdom-ui';
+import { DocPagination } from '@virtuslab/visdom-ui';
+import { Footer } from '@virtuslab/visdom-ui';
+import { VirtusLabLogo } from '@virtuslab/visdom-ui';
 
 interface Props {
   title: string;
@@ -13,6 +19,21 @@ interface Props {
 
 const { title, subtitle, section, tags = [], prev, next } = Astro.props;
 const base = import.meta.env.BASE_URL;
+
+const navLinks = [
+  { label: 'Home', href: `${base}` },
+  { label: 'For Leaders', href: `${base}guide/leaders/` },
+  { label: 'For Engineers', href: `${base}guide/platform-engineers/` },
+  { label: 'For Developers', href: `${base}guide/developers/` },
+  { label: 'Scenarios', href: `${base}before-after/` },
+  { label: 'FAQ', href: `${base}faq/` },
+  { label: 'Reference', href: `${base}reference/` },
+];
+
+const footerLinks = [
+  { label: 'GitHub', href: 'https://github.com/VirtusLab/visdom-code-review' },
+  { label: 'VirtusLab', href: 'https://virtuslab.com' },
+];
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -23,104 +44,158 @@ const base = import.meta.env.BASE_URL;
   <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>
-<body class="min-h-screen">
-  <!-- Top bar -->
-  <div class="bg-visdom-gray-100 border-b border-visdom-gray-200">
-    <div class="max-w-5xl mx-auto px-6 py-1.5 flex items-center gap-2">
-      <a href="https://virtuslab.com" class="no-underline hover:opacity-70 transition-opacity flex items-center gap-1.5">
-        <VirtusLabLogo className="h-4 w-auto text-gray-400" />
-      </a>
-    </div>
-  </div>
+<body style="min-height: 100vh; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1f2937; margin: 0;">
+  <TopBar client:load />
+  <Nav
+    client:load
+    links={navLinks}
+    cta={{ label: 'GitHub', href: 'https://github.com/VirtusLab/visdom-code-review' }}
+  />
 
-  <!-- Nav -->
-  <nav class="border-b border-visdom-gray-200 bg-white sticky top-0 z-50">
-    <div class="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
-      <a href={`${base}`} class="flex items-center gap-2 text-visdom-gray-900 font-semibold no-underline hover:text-visdom-green-dark">
-        Visdom Code Review
-      </a>
-      <div class="flex items-center gap-6 text-sm text-visdom-gray-500">
-        <a href={`${base}`} class="hover:text-visdom-gray-900 no-underline">Home</a>
-        <a href={`${base}guide/leaders/`} class="hover:text-visdom-gray-900 no-underline">For Leaders</a>
-        <a href={`${base}guide/platform-engineers/`} class="hover:text-visdom-gray-900 no-underline">For Engineers</a>
-        <a href={`${base}guide/developers/`} class="hover:text-visdom-gray-900 no-underline">For Developers</a>
-        <a href={`${base}before-after/`} class="hover:text-visdom-gray-900 no-underline">Scenarios</a>
-        <a href={`${base}faq/`} class="hover:text-visdom-gray-900 no-underline">FAQ</a>
-        <a href={`${base}reference/`} class="hover:text-visdom-gray-900 no-underline">Reference</a>
-        <a href="https://github.com/VirtusLab/visdom-code-review" class="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium border border-visdom-gray-300 text-visdom-gray-700 hover:bg-visdom-gray-100 no-underline transition-colors">GitHub</a>
-      </div>
-    </div>
-  </nav>
-
-  <main class="max-w-doc mx-auto px-6 py-10">
-    <!-- Breadcrumb -->
+  <main style="max-width: 1080px; margin: 0 auto; padding: 2.5rem 1.5rem 2.5rem;">
     {section && (
-      <a href={`${base}`} class="inline-flex items-center gap-1 text-sm text-visdom-gray-500 hover:text-visdom-gray-700 mb-4 no-underline">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-        Back to {section}
-      </a>
-    )}
-
-    <!-- Tags -->
-    {tags.length > 0 && (
-      <div class="flex flex-wrap gap-2 mb-4">
-        {tags.map((tag) => (
-          <span class:list={[
-            'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-            tag.variant === 'green' && 'bg-visdom-green text-white',
-            tag.variant === 'outline' && 'border border-visdom-gray-300 text-visdom-gray-600',
-            (!tag.variant || tag.variant === 'gray') && 'bg-visdom-gray-100 text-visdom-gray-600',
-          ]}>
-            {tag.label}
-          </span>
-        ))}
+      <div style="margin-bottom: 1rem;">
+        <Breadcrumb client:load label={`Back to ${section}`} href={`${base}`} />
       </div>
     )}
 
-    <!-- Title -->
-    <h1 class="!mb-2">{title}</h1>
-    {subtitle && <p class="text-lg text-visdom-gray-500 mb-10 !mt-0">{subtitle}</p>}
+    <DocPageHeader client:load title={title} subtitle={subtitle} tags={tags} />
 
-    <div class="border-b border-visdom-gray-200 mb-10"></div>
-
-    <!-- Content -->
-    <article>
+    <article class="doc-content">
       <slot />
     </article>
 
-    <!-- Pagination -->
     {(prev || next) && (
-      <nav class="border-t border-visdom-gray-200 mt-16 pt-8 flex justify-between">
-        {prev ? (
-          <a href={prev.href} class="group inline-flex items-center gap-2 text-sm text-visdom-gray-500 hover:text-visdom-green no-underline">
-            <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-            <span>&larr; {prev.label}</span>
-          </a>
-        ) : <div />}
-        {next ? (
-          <a href={next.href} class="group inline-flex items-center gap-2 text-sm text-visdom-gray-500 hover:text-visdom-green no-underline">
-            <span>{next.label} &rarr;</span>
-            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
-          </a>
-        ) : <div />}
-      </nav>
+      <div style="margin-top: 4rem; border-top: 1px solid #e5e7eb;">
+        <DocPagination client:load prev={prev} next={next} />
+      </div>
     )}
   </main>
 
-  <!-- Footer -->
-  <footer class="mt-12 bg-visdom-gray-100">
-    <div class="max-w-5xl mx-auto px-6 py-10 flex flex-col items-center gap-3">
-      <span class="text-[10px] uppercase tracking-[0.2em] text-visdom-gray-400 font-medium">Powered by</span>
-      <a href="https://virtuslab.com" class="no-underline hover:opacity-70 transition-opacity">
-        <svg width="120" height="24" viewBox="0 0 120 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16.5 3L12 13.5L7.5 3H4.5L10.5 16.5H13.5L19.5 3H16.5Z" fill="#9ca3af"/>
-          <path d="M22 7.5C22 6.5 22.8 5.5 24 5.5C25.2 5.5 26 6.5 26 7.5V16.5H28.5V7.5C28.5 5 26.5 3 24 3C21.5 3 19.5 5 19.5 7.5V16.5H22V7.5Z" fill="#9ca3af"/>
-          <text x="32" y="15" fill="#9ca3af" font-family="Inter, sans-serif" font-size="13" font-weight="600" letter-spacing="0.5">VIRTUSLAB</text>
-        </svg>
-      </a>
-    </div>
-  </footer>
+  <Footer
+    client:load
+    links={footerLinks}
+  />
 </body>
 </html>
+
+<style>
+  /* Typography matching landing page */
+  .doc-content :global(h1),
+  .doc-content :global(h2),
+  .doc-content :global(h3),
+  .doc-content :global(h4) {
+    font-family: 'Montserrat', system-ui, sans-serif;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .doc-content :global(h1) {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .doc-content :global(h2) {
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .doc-content :global(h3) {
+    font-size: 1.15rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .doc-content :global(p) {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #374151;
+    margin-bottom: 1rem;
+  }
+
+  .doc-content :global(a) {
+    color: #059669;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .doc-content :global(a:hover) {
+    color: #047857;
+  }
+
+  .doc-content :global(code) {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875em;
+    background: #f3f4f6;
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+  }
+
+  .doc-content :global(pre) {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    background: #1f2937;
+    color: #e5e7eb;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  .doc-content :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+
+  .doc-content :global(ul),
+  .doc-content :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .doc-content :global(li) {
+    margin-bottom: 0.35rem;
+    line-height: 1.7;
+  }
+
+  .doc-content :global(strong) {
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .doc-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .doc-content :global(th) {
+    text-align: left;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #e5e7eb;
+    color: #374151;
+  }
+
+  .doc-content :global(td) {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .doc-content :global(blockquote) {
+    border-left: 3px solid #10b981;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  /* Fix Nav position - DS Nav is fixed, need padding */
+  body > main {
+    padding-top: 6rem;
+  }
+</style>
