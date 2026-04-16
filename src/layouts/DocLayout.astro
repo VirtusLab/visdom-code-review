@@ -27,15 +27,15 @@ const base = import.meta.env.BASE_URL;
   <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=optional" as="style" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=optional" rel="stylesheet" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=optional" as="style" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=optional" rel="stylesheet" />
 </head>
-<body style="min-height: 100vh; font-family: var(--font-sans, 'Inter', system-ui, sans-serif); color: var(--color-visdom-gray-800); margin: 0;">
+<body>
   <SiteNav />
 
-  <main style="max-width: 1080px; margin: 0 auto; padding: 2.5rem 1.5rem 2.5rem;">
+  <main class="max-w-[1200px] mx-auto px-6 py-10">
     {section && (
-      <div style="margin-bottom: 1rem;">
+      <div class="mb-4">
         <Breadcrumb client:load label={`Back to ${section}`} href={`${base}`} />
       </div>
     )}
@@ -47,7 +47,7 @@ const base = import.meta.env.BASE_URL;
     </article>
 
     {(prev || next) && (
-      <div style="margin-top: 4rem; border-top: 1px solid var(--color-visdom-gray-200);">
+      <div class="mt-16 border-t border-visdom-gray-200">
         <DocPagination client:load prev={prev} next={next} />
       </div>
     )}
@@ -101,7 +101,7 @@ const base = import.meta.env.BASE_URL;
     font-size: 0.875em;
     background: var(--color-visdom-gray-100);
     padding: 0.15em 0.4em;
-    border-radius: 4px;
+    border-radius: var(--radius-sm, 4px);
   }
 
   .doc-content :global(pre) {
