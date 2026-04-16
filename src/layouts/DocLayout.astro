@@ -1,12 +1,10 @@
 ---
 import '../styles/global.css';
-import { TopBar } from '@virtuslab/visdom-ui';
-import { Nav } from '@virtuslab/visdom-ui';
+import SiteNav from '../components/SiteNav.astro';
 import { Breadcrumb } from '@virtuslab/visdom-ui';
 import { DocPageHeader } from '@virtuslab/visdom-ui';
 import { DocPagination } from '@virtuslab/visdom-ui';
-import { Footer } from '@virtuslab/visdom-ui';
-import { VirtusLabLogo } from '@virtuslab/visdom-ui';
+import VirtusLabLogo from '../components/VirtusLabLogo.astro';
 
 interface Props {
   title: string;
@@ -19,21 +17,6 @@ interface Props {
 
 const { title, subtitle, section, tags = [], prev, next } = Astro.props;
 const base = import.meta.env.BASE_URL;
-
-const navLinks = [
-  { label: 'Home', href: `${base}` },
-  { label: 'For Leaders', href: `${base}guide/leaders/` },
-  { label: 'For Engineers', href: `${base}guide/platform-engineers/` },
-  { label: 'For Developers', href: `${base}guide/developers/` },
-  { label: 'Scenarios', href: `${base}before-after/` },
-  { label: 'FAQ', href: `${base}faq/` },
-  { label: 'Reference', href: `${base}reference/` },
-];
-
-const footerLinks = [
-  { label: 'GitHub', href: 'https://github.com/VirtusLab/visdom-code-review' },
-  { label: 'VirtusLab', href: 'https://virtuslab.com' },
-];
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -47,12 +30,7 @@ const footerLinks = [
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 <body style="min-height: 100vh; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1f2937; margin: 0;">
-  <TopBar client:load />
-  <Nav
-    client:load
-    links={navLinks}
-    cta={{ label: 'GitHub', href: 'https://github.com/VirtusLab/visdom-code-review' }}
-  />
+  <SiteNav />
 
   <main style="max-width: 1080px; margin: 0 auto; padding: 2.5rem 1.5rem 2.5rem;">
     {section && (
@@ -74,10 +52,15 @@ const footerLinks = [
     )}
   </main>
 
-  <Footer
-    client:load
-    links={footerLinks}
-  />
+  <!-- Footer -->
+  <footer style="margin-top: 3rem; background: #f9fafb; border-top: 1px solid #e5e7eb;">
+    <div style="max-width: 1080px; margin: 0 auto; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
+      <span style="font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.2em; color: #9ca3af; font-weight: 500;">Powered by</span>
+      <a href="https://virtuslab.com" style="text-decoration: none; transition: opacity 0.15s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+        <VirtusLabLogo className="h-5 w-auto text-gray-400" />
+      </a>
+    </div>
+  </footer>
 </body>
 </html>
 
@@ -90,11 +73,6 @@ const footerLinks = [
     font-family: 'Montserrat', system-ui, sans-serif;
     font-weight: 700;
     color: #111827;
-  }
-
-  .doc-content :global(h1) {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
   }
 
   .doc-content :global(h2) {
@@ -121,7 +99,6 @@ const footerLinks = [
     text-decoration: underline;
     text-underline-offset: 2px;
   }
-
   .doc-content :global(a:hover) {
     color: #047857;
   }
@@ -144,7 +121,6 @@ const footerLinks = [
     overflow-x: auto;
     margin: 1rem 0;
   }
-
   .doc-content :global(pre code) {
     background: none;
     padding: 0;
@@ -155,7 +131,6 @@ const footerLinks = [
     padding-left: 1.5rem;
     margin-bottom: 1rem;
   }
-
   .doc-content :global(li) {
     margin-bottom: 0.35rem;
     line-height: 1.7;
@@ -172,7 +147,6 @@ const footerLinks = [
     margin: 1rem 0;
     font-size: 0.9rem;
   }
-
   .doc-content :global(th) {
     text-align: left;
     font-weight: 600;
@@ -180,7 +154,6 @@ const footerLinks = [
     border-bottom: 2px solid #e5e7eb;
     color: #374151;
   }
-
   .doc-content :global(td) {
     padding: 0.5rem 0.75rem;
     border-bottom: 1px solid #f3f4f6;
@@ -192,10 +165,5 @@ const footerLinks = [
     margin: 1rem 0;
     color: #6b7280;
     font-style: italic;
-  }
-
-  /* Fix Nav position - DS Nav is fixed, need padding */
-  body > main {
-    padding-top: 6rem;
   }
 </style>

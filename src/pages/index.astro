@@ -5,6 +5,7 @@ import ResourceCard from '../components/ResourceCard.astro';
 import Callout from '../components/Callout.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
 import VirtusLabLogo from '../components/VirtusLabLogo.astro';
+import SiteNav from '../components/SiteNav.astro';
 import '../styles/global.css';
 
 const base = import.meta.env.BASE_URL;
@@ -36,31 +37,7 @@ const faqTeaseItems = [
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- ============ VirtusLab Top Bar ============ -->
-  <div class="vl-topbar">
-    <div class="vl-topbar__inner">
-      <a href="https://virtuslab.com" class="vl-topbar__link">
-        <VirtusLabLogo className="h-4 w-auto text-gray-400" />
-      </a>
-    </div>
-  </div>
-
-  <!-- ============ Navigation ============ -->
-  <nav class="nav">
-    <div class="nav__inner">
-      <a href={`${base}`} class="nav__brand">Visdom Code Review</a>
-      <div class="nav__links">
-        <a href={`${base}`} class="nav__link nav__link--active">Home</a>
-        <a href={`${base}guide/leaders/`} class="nav__link">For Leaders</a>
-        <a href={`${base}guide/platform-engineers/`} class="nav__link">For Engineers</a>
-        <a href={`${base}guide/developers/`} class="nav__link">For Developers</a>
-        <a href={`${base}before-after/`} class="nav__link">Scenarios</a>
-        <a href={`${base}faq/`} class="nav__link">FAQ</a>
-        <a href={`${base}reference/`} class="nav__link">Reference</a>
-        <a href="https://github.com/VirtusLab/visdom-code-review" class="nav__github" target="_blank" rel="noopener">GitHub</a>
-      </div>
-    </div>
-  </nav>
+  <SiteNav activeLink="Home" />
 
   <!-- ============ Hero Section ============ -->
   <section class="hero">
