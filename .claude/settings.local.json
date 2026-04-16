@@ -4,7 +4,15 @@
       "Bash(npx tsc *)",
       "Bash(npx tsx *)",
       "WebFetch(domain:claude.com)",
-      "Bash(ls *)"
+      "Bash(ls *)",
+      "Bash(npm run *)",
+      "Bash(grep \"\\\\.tsx$\")",
+      "Bash(npm version *)",
+      "Bash(npm install *)",
+      "Bash(node *)",
+      "Bash(cat .github/workflows/*.yml)",
+      "Bash(grep *)",
+      "Bash(npm test *)"
     ]
   }
 }
