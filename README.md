@@ -74,7 +74,7 @@ A **Proactive Scanner** runs independently on cron — catching convention drift
 
 ## VISDOM SDLC Metrics
 
-VCR integrates with the [VISDOM Agent-Ready SDLC](https://virtuslab.com/services/visdom) metrics framework:
+VCR integrates with the [VISDOM AI-Native SDLC](https://virtuslab.com/services/visdom) metrics framework:
 
 | Metric | What it measures | VCR's role |
 |--------|-----------------|------------|
@@ -107,7 +107,7 @@ Deploys automatically to GitHub Pages on push to master via `.github/workflows/d
 
 VCR sits within the **Automated Risk Assessment** pillar of [VISDOM](https://virtuslab.com/services/visdom) — alongside Context Fabric and Machine-Speed CI.
 
-Read the series: [The Agent-Ready SDLC](https://virtuslab.com/blog/ai/the-fallacy)
+Read the series: [The AI-Native SDLC](https://virtuslab.com/blog/ai/the-fallacy)
 
 ---
 

@@ -13,7 +13,7 @@
 
 VISDOM Code Review (VCR) is a **multi-layered, AI-driven code review framework** for enterprise teams. It provides structured, automated review of pull requests — from deterministic static analysis through AI-powered deep review — and proactive repository-wide quality scanning.
 
-VCR is part of the VISDOM Agent-Ready SDLC offering, sitting within the **Automated Risk Assessment** pillar alongside Context Fabric and Machine-Speed CI.
+VCR is part of the VISDOM AI-Native SDLC offering, sitting within the **Automated Risk Assessment** pillar alongside Context Fabric and Machine-Speed CI.
 
 ### Core Problem
 
@@ -22,11 +22,11 @@ Enterprise teams want to deploy AI-generated code but lack a safety net. The spe
 1. **Senior bottleneck** — seniors spend 30-50% of time reviewing junior/mid code, no time for own work
 2. **Inconsistent quality** — distributed teams (PL/UK/IN) apply different review standards
 3. **Slow feedback loop** — PRs wait 24-48h for review due to timezone gaps
-4. **AI-code trust gap** — teams are afraid to ship AI-generated code because existing CI is a "lying oracle" (see: [The Agent-Ready SDLC, Post #3](https://virtuslab.com/blog/ai/the-fallacy))
+4. **AI-code trust gap** — teams are afraid to ship AI-generated code because existing CI is a "lying oracle" (see: [The AI-Native SDLC, Post #3](https://virtuslab.com/blog/ai/the-fallacy))
 
 ### The Lying Oracle Problem
 
-As described in the VISDOM Agent-Ready SDLC series: CI pipelines treat test results as ground truth, but flaky tests lie intermittently (Google: 84% of pass-to-fail transitions are flaky) and AI-generated tests lie systematically (Circular Test Trap — tests verify what code *does*, not what it *should do*). VCR addresses both failure modes.
+As described in the VISDOM AI-Native SDLC series: CI pipelines treat test results as ground truth, but flaky tests lie intermittently (Google: 84% of pass-to-fail transitions are flaky) and AI-generated tests lie systematically (Circular Test Trap — tests verify what code *does*, not what it *should do*). VCR addresses both failure modes.
 
 ### Design Philosophy
 
@@ -701,7 +701,7 @@ jobs:
 
 ## 11. Metrics — Per Layer
 
-Each layer has its own metrics, measured at its stage. Plus end-to-end metrics aligned with the VISDOM Agent-Ready SDLC metrics framework (ITS, CPI, TORS).
+Each layer has its own metrics, measured at its stage. Plus end-to-end metrics aligned with the VISDOM AI-Native SDLC metrics framework (ITS, CPI, TORS).
 
 ### Layer 0 — Context Collection
 
@@ -763,7 +763,7 @@ Each layer has its own metrics, measured at its stage. Plus end-to-end metrics a
 
 ### End-to-End — VISDOM SDLC Metrics Integration
 
-These metrics connect VCR to the broader VISDOM Agent-Ready SDLC framework described in the blog series:
+These metrics connect VCR to the broader VISDOM AI-Native SDLC framework described in the blog series:
 
 | Metric | Definition | Target | Connection to VISDOM SDLC |
 |--------|-----------|--------|---------------------------|
