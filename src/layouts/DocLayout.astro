@@ -30,7 +30,7 @@ const base = import.meta.env.BASE_URL;
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=optional" as="style" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=optional" rel="stylesheet" />
 </head>
-<body style="min-height: 100vh; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1f2937; margin: 0;">
+<body style="min-height: 100vh; font-family: var(--font-sans, 'Inter', system-ui, sans-serif); color: var(--color-visdom-gray-800); margin: 0;">
   <SiteNav />
 
   <main style="max-width: 1080px; margin: 0 auto; padding: 2.5rem 1.5rem 2.5rem;">
@@ -47,7 +47,7 @@ const base = import.meta.env.BASE_URL;
     </article>
 
     {(prev || next) && (
-      <div style="margin-top: 4rem; border-top: 1px solid #e5e7eb;">
+      <div style="margin-top: 4rem; border-top: 1px solid var(--color-visdom-gray-200);">
         <DocPagination client:load prev={prev} next={next} />
       </div>
     )}
@@ -66,9 +66,9 @@ const base = import.meta.env.BASE_URL;
   .doc-content :global(h2),
   .doc-content :global(h3),
   .doc-content :global(h4) {
-    font-family: 'Montserrat', system-ui, sans-serif;
+    font-family: var(--font-heading, 'Montserrat', sans-serif);
     font-weight: 700;
-    color: #111827;
+    color: var(--color-visdom-gray-900);
   }
 
   .doc-content :global(h2) {
@@ -86,32 +86,32 @@ const base = import.meta.env.BASE_URL;
   .doc-content :global(p) {
     font-size: 1rem;
     line-height: 1.75;
-    color: #374151;
+    color: var(--color-visdom-gray-700);
     margin-bottom: 1rem;
   }
 
   .doc-content :global(a) {
-    color: #059669;
+    color: var(--color-visdom-green-dark);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
   .doc-content :global(a:hover) {
-    color: #047857;
+    color: var(--color-visdom-green-dark);
   }
 
   .doc-content :global(code) {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-size: 0.875em;
-    background: #f3f4f6;
+    background: var(--color-visdom-gray-100);
     padding: 0.15em 0.4em;
     border-radius: 4px;
   }
 
   .doc-content :global(pre) {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-size: 0.875rem;
-    background: #1f2937;
-    color: #e5e7eb;
+    background: var(--color-visdom-gray-800);
+    color: var(--color-visdom-gray-200);
     padding: 1rem 1.25rem;
     border-radius: 8px;
     overflow-x: auto;
@@ -134,7 +134,7 @@ const base = import.meta.env.BASE_URL;
 
   .doc-content :global(strong) {
     font-weight: 600;
-    color: #111827;
+    color: var(--color-visdom-gray-900);
   }
 
   .doc-content :global(table) {
@@ -147,19 +147,19 @@ const base = import.meta.env.BASE_URL;
     text-align: left;
     font-weight: 600;
     padding: 0.5rem 0.75rem;
-    border-bottom: 2px solid #e5e7eb;
-    color: #374151;
+    border-bottom: 2px solid var(--color-visdom-gray-200);
+    color: var(--color-visdom-gray-700);
   }
   .doc-content :global(td) {
     padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid var(--color-visdom-gray-100);
   }
 
   .doc-content :global(blockquote) {
-    border-left: 3px solid #10b981;
+    border-left: 3px solid var(--color-visdom-green);
     padding-left: 1rem;
     margin: 1rem 0;
-    color: #6b7280;
+    color: var(--color-visdom-gray-500);
     font-style: italic;
   }
 </style>
