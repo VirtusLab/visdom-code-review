@@ -14,7 +14,10 @@
       "Bash(grep *)",
       "Bash(npm test *)",
       "Bash(xargs -I {} basename {})",
-      "Bash(wc -l /Users/askowronski/Projects/virtus-lab-ai-maturity-matrix/src/app/**/*.tsx /Users/askowronski/Projects/virtus-lab-ai-maturity-matrix/src/components/*.tsx)"
+      "Bash(wc -l /Users/askowronski/Projects/virtus-lab-ai-maturity-matrix/src/app/**/*.tsx /Users/askowronski/Projects/virtus-lab-ai-maturity-matrix/src/components/*.tsx)",
+      "Bash(cat tsconfig.json)",
+      "Bash(cat vite.config.*)",
+      "Bash(cat astro.config.*)"
     ]
   }
 }
