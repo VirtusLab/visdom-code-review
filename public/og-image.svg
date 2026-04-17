@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#9b51e0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.85" cy="0.15" r="0.6">
+      <stop offset="0%" stop-color="#9b51e0" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#9b51e0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="url(#accent)"/>
+
+  <!-- VirtusLab / Visdom -->
+  <g transform="translate(80, 80)">
+    <text x="0" y="16" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="600" fill="#9ca3af" letter-spacing="0.15em">VIRTUSLAB · VISDOM</text>
+  </g>
+
+  <!-- Product name -->
+  <g transform="translate(80, 230)">
+    <text x="0" y="0" font-family="Montserrat, system-ui, sans-serif" font-size="96" font-weight="800" fill="#111827" letter-spacing="-0.02em">Visdom Code Review</text>
+  </g>
+
+  <!-- Tagline -->
+  <text x="80" y="330" font-family="Inter, system-ui, sans-serif" font-size="32" font-weight="500" fill="#111827">
+    <tspan x="80" dy="0">Your seniors spend 30–50% of their week reviewing</tspan>
+    <tspan x="80" dy="44">PRs they didn't write. VCR reviews every PR first.</tspan>
+  </text>
+
+  <!-- Stats row -->
+  <g transform="translate(80, 480)" font-family="Inter, system-ui, sans-serif">
+    <g>
+      <text x="0" y="0" font-size="48" font-weight="800" fill="#10b981">~$0.10</text>
+      <text x="0" y="30" font-size="18" font-weight="500" fill="#6b7280">per PR</text>
+    </g>
+    <g transform="translate(220, 0)">
+      <text x="0" y="0" font-size="48" font-weight="800" fill="#9b51e0">&lt;2min</text>
+      <text x="0" y="30" font-size="18" font-weight="500" fill="#6b7280">low-risk feedback</text>
+    </g>
+    <g transform="translate(500, 0)">
+      <text x="0" y="0" font-size="48" font-weight="800" fill="#0369a1">No SaaS</text>
+      <text x="0" y="30" font-size="18" font-weight="500" fill="#6b7280">runs in your CI</text>
+    </g>
+  </g>
+</svg>
