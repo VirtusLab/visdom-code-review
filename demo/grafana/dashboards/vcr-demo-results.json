@@ -1,0 +1,379 @@
+{
+  "__inputs": [],
+  "__requires": [
+    { "type": "grafana", "id": "grafana", "name": "Grafana", "version": "11.0.0" },
+    { "type": "datasource", "id": "testdata", "name": "TestData", "version": "1.0.0" },
+    { "type": "panel", "id": "stat", "name": "Stat", "version": "" },
+    { "type": "panel", "id": "barchart", "name": "Bar chart", "version": "" },
+    { "type": "panel", "id": "table", "name": "Table", "version": "" },
+    { "type": "panel", "id": "text", "name": "Text", "version": "" }
+  ],
+  "annotations": { "list": [] },
+  "description": "VCR metacircular demo — real findings from 4 demo scenarios run on this repo",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+
+    {
+      "id": 1,
+      "type": "text",
+      "title": "",
+      "gridPos": { "h": 3, "w": 24, "x": 0, "y": 0 },
+      "options": {
+        "mode": "markdown",
+        "content": "## VCR Demo Results — Metacircular\n**VCR reviewed 4 intentionally broken PRs on its own codebase.** The numbers below are from a real pipeline run — not simulated. [View PRs on GitHub →](https://github.com/VirtusLab/visdom-code-review/pulls)"
+      }
+    },
+
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Total Bugs Found",
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 3 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "fixed", "fixedColor": "green" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+          "unit": "short",
+          "mappings": [{ "type": "value", "options": { "28": { "text": "28", "index": 0 } } }]
+        }
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "value\n28"
+      }]
+    },
+
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Critical Findings",
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 3 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "fixed", "fixedColor": "red" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }] },
+          "unit": "short"
+        }
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "value\n5"
+      }]
+    },
+
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Avg Cost per PR Review",
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 3 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "fixed", "fixedColor": "blue" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
+          "unit": "currencyUSD",
+          "decimals": 3
+        }
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "value\n0.023"
+      }]
+    },
+
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Avg Review Time",
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 3 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "fixed", "fixedColor": "purple" },
+          "unit": "s",
+          "decimals": 0
+        }
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "value\n14"
+      }]
+    },
+
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "L3 Deep Review Trigger Rate",
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 3 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "fixed", "fixedColor": "orange" },
+          "unit": "percentunit",
+          "decimals": 0
+        }
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "value\n0.75"
+      }]
+    },
+
+    {
+      "id": 7,
+      "type": "stat",
+      "title": "Traditional Review Cost (comparison)",
+      "description": "2h senior engineer @ $100/h",
+      "gridPos": { "h": 4, "w": 4, "x": 20, "y": 3 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "auto",
+        "textMode": "value_and_name",
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "fixed", "fixedColor": "dark-red" },
+          "unit": "currencyUSD",
+          "decimals": 0,
+          "displayName": "vs $200 traditional"
+        }
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "value\n200"
+      }]
+    },
+
+    {
+      "id": 8,
+      "type": "barchart",
+      "title": "Findings by Severity — Per Scenario",
+      "description": "Real findings from pipeline runs on this repo",
+      "gridPos": { "h": 10, "w": 14, "x": 0, "y": 7 },
+      "options": {
+        "orientation": "auto",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 200,
+        "fillOpacity": 80,
+        "gradientMode": "none",
+        "stacking": "normal",
+        "showValue": "always",
+        "tooltip": { "mode": "multi", "sort": "none" },
+        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "stacking": { "mode": "normal", "group": "A" }
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Critical" }, "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }] },
+          { "matcher": { "id": "byName", "options": "High" },     "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } }] },
+          { "matcher": { "id": "byName", "options": "Medium" },   "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "blue" } }] },
+          { "matcher": { "id": "byName", "options": "Low" },      "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "gray" } }] }
+        ]
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "Scenario,Critical,High,Medium,Low\nInsecure AI Client,1,4,2,0\nBroken Gate,1,5,1,0\nHollow Tests,0,6,2,0\nPayment Service,3,3,0,0"
+      }]
+    },
+
+    {
+      "id": 9,
+      "type": "barchart",
+      "title": "Cost Per Layer (avg across scenarios)",
+      "description": "L0 and L1 are free. L2 costs ~$0.004. L3 only runs when HIGH/CRITICAL found.",
+      "gridPos": { "h": 10, "w": 10, "x": 14, "y": 7 },
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "fillOpacity": 80,
+        "gradientMode": "none",
+        "showValue": "always",
+        "tooltip": { "mode": "single", "sort": "none" },
+        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": false }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "decimals": 4,
+          "custom": { "fillOpacity": 80 },
+          "color": { "mode": "fixed", "fixedColor": "green" }
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "L2 AI Quick Scan" }, "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "purple" } }] },
+          { "matcher": { "id": "byName", "options": "L3 AI Deep Review" }, "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } }] }
+        ]
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "Layer,Cost\nL0 Context,0\nL1 Deterministic,0\nL2 AI Quick Scan,0.0042\nL3 AI Deep Review,0.0188"
+      }]
+    },
+
+    {
+      "id": 10,
+      "type": "table",
+      "title": "Scenario Summary — All Runs",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 17 },
+      "options": {
+        "showHeader": true,
+        "sortBy": [{ "displayName": "Findings", "desc": true }],
+        "footer": { "show": false }
+      },
+      "fieldConfig": {
+        "defaults": { "custom": { "filterable": true } },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Cost (USD)" }, "properties": [{ "id": "unit", "value": "currencyUSD" }, { "id": "decimals", "value": 3 }] },
+          { "matcher": { "id": "byName", "options": "Duration (s)" }, "properties": [{ "id": "unit", "value": "s" }, { "id": "decimals", "value": 1 }] },
+          { "matcher": { "id": "byName", "options": "Critical" }, "properties": [{ "id": "custom.displayMode", "value": "color-background" }, { "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }, { "id": "thresholds", "value": { "mode": "absolute", "steps": [{ "color": "transparent", "value": null }, { "color": "red", "value": 1 }] } }, { "id": "custom.displayMode", "value": "color-background-solid" }] },
+          { "matcher": { "id": "byName", "options": "High" }, "properties": [{ "id": "thresholds", "value": { "mode": "absolute", "steps": [{ "color": "transparent", "value": null }, { "color": "orange", "value": 1 }] } }, { "id": "custom.displayMode", "value": "color-background-solid" }] },
+          { "matcher": { "id": "byName", "options": "L3 Triggered" }, "properties": [{ "id": "custom.displayMode", "value": "color-background-solid" }, { "id": "mappings", "value": [{ "type": "value", "options": { "YES": { "color": "orange", "index": 0 }, "NO": { "color": "green", "index": 1 } } }] }] }
+        ]
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "Scenario,Type,Language,Findings,Critical,High,Medium,Cost (USD),Duration (s),L3 Triggered\nInsecure AI Client,Metacircular,TypeScript,7,1,4,2,0.027,12.5,YES\nBroken Gate,Metacircular,TypeScript,7,1,5,1,0.004,4.3,NO\nHollow Tests,Metacircular,TypeScript,8,0,6,2,0.040,25.7,YES\nPayment Service,Standalone,Python,6,3,3,0,0.021,12.7,YES"
+      }]
+    },
+
+    {
+      "id": 11,
+      "type": "barchart",
+      "title": "Review Duration Per Layer (avg, ms)",
+      "description": "L0+L1 = microseconds. L2 = seconds. L3 = most of the budget.",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 25 },
+      "options": {
+        "orientation": "horizontal",
+        "fillOpacity": 80,
+        "showValue": "always",
+        "tooltip": { "mode": "single" },
+        "legend": { "showLegend": false }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "decimals": 0,
+          "color": { "mode": "fixed", "fixedColor": "blue" }
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "L2 AI Quick Scan" }, "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "purple" } }] },
+          { "matcher": { "id": "byName", "options": "L3 AI Deep Review" }, "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } }] }
+        ]
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "Layer,Duration\nL0 Context,0.08\nL1 Deterministic,4.3\nL2 AI Quick Scan,6334\nL3 AI Deep Review,9954"
+      }]
+    },
+
+    {
+      "id": 12,
+      "type": "barchart",
+      "title": "F1 Score vs Market (Martian Bench, 50 PRs)",
+      "description": "Advisor judge (Haiku+Opus). VCR publishes honest numbers including where it falls short.",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 25 },
+      "options": {
+        "orientation": "horizontal",
+        "fillOpacity": 70,
+        "showValue": "always",
+        "tooltip": { "mode": "single" },
+        "legend": { "showLegend": false },
+        "xMin": 0,
+        "xMax": 100
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 0,
+          "color": { "mode": "fixed", "fixedColor": "dark-blue" },
+          "min": 0,
+          "max": 100
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "VCR (honest)" }, "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } }] }
+        ]
+      },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [{
+        "refId": "A",
+        "scenarioId": "csv_content",
+        "csvContent": "Tool,F1 Score\nGitHub Copilot,25\nClaude Code,31\nVCR (honest),43\nCodeRabbit,45\nAugment,59\nQodo,60\nCubic,62\nPropel,64"
+      }]
+    }
+
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": ["vcr", "demo", "metacircular"],
+  "templating": { "list": [] },
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "VCR Demo — Metacircular Results",
+  "uid": "vcr-demo-results",
+  "version": 1
+}
