@@ -1,5 +1,4 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
@@ -22,7 +21,7 @@ function getGitHubToken(): string {
 async function main() {
   const args = process.argv.slice(2);
   const live = args.includes('--live');
-  const mode = args[0]; // 'pr' or 'repo'
+  const mode = args.find(a => !a.startsWith('--'));
 
   if (!mode || (mode !== 'pr' && mode !== 'repo')) {
     console.error(chalk.red('Usage:'));
@@ -34,6 +33,7 @@ async function main() {
   const token = getGitHubToken();
   const cacheDir = join(__dirname, '..', '..', 'cache', 'external');
   await mkdir(join(cacheDir, 'prs'), { recursive: true });
+  await mkdir(join(cacheDir, 'ai'), { recursive: true });
 
   const ai = new AIClient({
     apiKey: process.env.ANTHROPIC_API_KEY,
@@ -62,9 +62,8 @@ async function main() {
   const resultsFile = join(cacheDir, `${owner}-${repo}-results.json`);
   const dashboardFile = join(cacheDir, `${owner}-${repo}-dashboard.json`);
 
-  let allResults: ExternalReviewResult[] = existsSync(resultsFile)
-    ? JSON.parse(await readFile(resultsFile, 'utf-8'))
-    : [];
+  const raw = await readFile(resultsFile, 'utf-8').catch(() => null);
+  let allResults: ExternalReviewResult[] = raw ? JSON.parse(raw) : [];
   const reviewedNums = new Set(allResults.map(r => r.pr.number));
 
   const prUrls = await reviewer.listMergedPRs(owner, repo, {
@@ -141,4 +140,8 @@ function printRepoSummary(d: DashboardOutput) {
   console.log(chalk.bold('└────────────────────────────────────────┘'));
 }
 
-main().catch(err => { console.error(chalk.red(err.message)); process.exit(1); });
+main().catch(err => {
+  console.error(chalk.red(err.message));
+  if (process.env.DEBUG) console.error(err.stack);
+  process.exit(1);
+});
