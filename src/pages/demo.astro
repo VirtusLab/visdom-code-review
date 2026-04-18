@@ -433,6 +433,28 @@ const TIMELINE_NARRATIVE: Record<string, { humanEngagedMin: number; humanReason:
   </div>
 </section>
 
+<!-- ═══ SECTION 7: GRAFANA DASHBOARD ═══ -->
+<section class="demo-grafana-section">
+  <div class="demo-container">
+    <p class="demo-section-label">LIVE METRICS DASHBOARD</p>
+    <h2 class="demo-section-heading">Team health — measured on every PR</h2>
+    <p class="demo-section-sub">Anonymous read access · updates on every PR · powered by Grafana on fly.io</p>
+    <a href="https://vcr-grafana.fly.dev" target="_blank" rel="noopener" class="demo-grafana-link">
+      <img
+        src="/screenshots/grafana-dashboard.png"
+        alt="VCR Grafana dashboard showing PR metrics and findings per week"
+        class="demo-grafana-img"
+      />
+    </a>
+    <div class="demo-grafana-footer">
+      <a href="https://vcr-grafana.fly.dev" target="_blank" rel="noopener" class="demo-btn-primary">
+        Open live dashboard ↗
+      </a>
+      <span class="demo-grafana-note">Hosted on fly.io · cold start ~5s</span>
+    </div>
+  </div>
+</section>
+
 </BaseLayout>
 
 <style>
@@ -556,4 +578,11 @@ const TIMELINE_NARRATIVE: Record<string, { humanEngagedMin: number; humanReason:
 .dsf-medium .dsf-sev { background: #3b82f620; color: #3b82f6; }
 .dsf-low .dsf-sev { background: #47556920; color: #475569; }
 .dsf-title { color: #94a3b8; }
+/* ── Section 7: Grafana ── */
+.demo-grafana-section { background: #020817; padding: 3rem 0; border-top: 1px solid #1e293b; }
+.demo-grafana-link { display: block; margin-bottom: 1.5rem; border-radius: 8px; overflow: hidden; }
+.demo-grafana-img { width: 100%; display: block; border-radius: 8px; border: 1px solid #1e293b; transition: opacity 0.2s; }
+.demo-grafana-link:hover .demo-grafana-img { opacity: 0.88; }
+.demo-grafana-footer { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+.demo-grafana-note { font-size: 0.75rem; color: #334155; }
 </style>
