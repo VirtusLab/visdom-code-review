@@ -1,0 +1,39 @@
+# .github/workflows/vcr-showcase.yml
+name: VCR Showcase Refresh
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Monday 9am UTC
+  workflow_dispatch:
+
+jobs:
+  refresh-showcase:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: demo/package-lock.json
+
+      - name: Install dependencies
+        run: cd demo && npm ci
+
+      - name: Run all scenarios
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cd demo && npm run showcase:live
+
+      - name: Commit updated showcase.json
+        run: |
+          git config user.name "VCR Bot"
+          git config user.email "vcr-bot@virtuslab.com"
+          git add demo/results/showcase.json demo/results/live-reviews.json
+          git diff --staged --quiet || git commit -m "ci: refresh showcase results [skip ci]"
+          git push
