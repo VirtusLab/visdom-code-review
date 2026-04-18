@@ -45,7 +45,9 @@ export class DashboardAggregator {
     const pct = total > 0 ? Math.round((results.length / total) * 100) : 100;
 
     const severity = { critical: 0, high: 0, medium: 0, low: 0 };
-    for (const f of allFindings) severity[f.severity]++;
+    for (const f of allFindings) {
+      if (f.severity in severity) severity[f.severity as keyof typeof severity]++;
+    }
 
     const categories = { security: 0, correctness: 0, performance: 0, maintainability: 0 };
     for (const f of allFindings) categories[mapCategory(f.category)]++;

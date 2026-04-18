@@ -61,7 +61,8 @@ export class ExternalReviewer {
         const result = await layer.analyze(context);
         context.previousLayers.push(result);
         if (result.gate && !result.gate.proceed) break;
-      } catch {
+      } catch (err) {
+        console.error(`Layer ${layer.layer} (${layer.name}) failed: ${(err as Error).message}`);
         break;
       }
     }
