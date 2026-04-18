@@ -2,6 +2,8 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { DashboardAggregator } from '../core/dashboard-aggregator.js';
 import type { ExternalReviewResult } from '../core/external-reviewer.js';
+import { ExternalReviewer } from '../core/external-reviewer.js';
+import type { Octokit } from '@octokit/rest';
 
 function makeResult(prNum: number, mergedAt: string, findings: Array<{ severity: string; category: string; title: string; file: string }>): ExternalReviewResult {
   return {
@@ -93,5 +95,51 @@ describe('DashboardAggregator', () => {
     const results = [makeResult(1, '2026-01-25T08:00:00Z', [{ severity: 'high', category: 'correctness', title: 'Y', file: 'g.ts' }])];
     const out = agg.aggregate(results, { owner: 'a', repo: 'b' });
     assert.equal(out.timeseries[0].week, '2026-01-19T00:00:00Z');
+  });
+});
+
+describe('ExternalReviewer.listMergedPRs', () => {
+  function makeMockOctokit(prs: Array<{ number: number; merged_at: string | null }>) {
+    return {
+      pulls: {
+        list: async () => ({ data: prs }),
+        get: async () => ({ data: { merged_at: '2026-01-19T00:00:00Z' } }),
+      },
+    } as unknown as Octokit;
+  }
+
+  test('filters out unmerged PRs', async () => {
+    const mockOctokit = makeMockOctokit([
+      { number: 1, merged_at: '2026-01-19T00:00:00Z' },
+      { number: 2, merged_at: null },
+      { number: 3, merged_at: '2026-01-20T00:00:00Z' },
+    ]);
+    const reviewer = new ExternalReviewer({ token: 'tok', cacheDir: '/tmp/test', ai: null as any, octokit: mockOctokit });
+    const urls = await reviewer.listMergedPRs('a', 'b', {});
+    assert.equal(urls.length, 2);
+    assert.ok(urls[0].includes('/pull/1'));
+    assert.ok(urls[1].includes('/pull/3'));
+  });
+
+  test('applies count limit', async () => {
+    const mockOctokit = makeMockOctokit([
+      { number: 1, merged_at: '2026-01-19T00:00:00Z' },
+      { number: 2, merged_at: '2026-01-20T00:00:00Z' },
+      { number: 3, merged_at: '2026-01-21T00:00:00Z' },
+    ]);
+    const reviewer = new ExternalReviewer({ token: 'tok', cacheDir: '/tmp/test', ai: null as any, octokit: mockOctokit });
+    const urls = await reviewer.listMergedPRs('a', 'b', { count: 2 });
+    assert.equal(urls.length, 2);
+  });
+
+  test('applies since filter', async () => {
+    const mockOctokit = makeMockOctokit([
+      { number: 1, merged_at: '2026-01-10T00:00:00Z' },
+      { number: 2, merged_at: '2026-02-01T00:00:00Z' },
+    ]);
+    const reviewer = new ExternalReviewer({ token: 'tok', cacheDir: '/tmp/test', ai: null as any, octokit: mockOctokit });
+    const urls = await reviewer.listMergedPRs('a', 'b', { since: '2026-01-15' });
+    assert.equal(urls.length, 1);
+    assert.ok(urls[0].includes('/pull/2'));
   });
 });
