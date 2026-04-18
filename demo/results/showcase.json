@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T02:18:25.122Z",
+  "generatedAt": "2026-04-18T03:43:43.250Z",
   "scenarios": [
     {
       "name": "meta/insecure-ai-client",
@@ -7,7 +7,7 @@
       "language": "TypeScript",
       "type": "metacircular",
       "prTitle": "feat: add retry and caching to AI client",
-      "prUrl": null,
+      "prUrl": "https://github.com/VirtusLab/visdom-code-review/pull/1",
       "bugDescription": "Hardcoded API key, PII in logs, retry without backoff",
       "findings": [
         {
@@ -39,10 +39,10 @@
           "severity": "high",
           "category": "reliability",
           "file": "src/core/ai/client.ts",
-          "line": 81,
-          "title": "Retry loop lacks backoff strategy",
-          "description": "Lines 51-84: The retry loop immediately retries on any exception with no delay between attempts. This will cause rapid-fire API calls on transient failures (rate limiting, temporary outages), potentially worsening the problem and exhausting rate limits faster. The catch block at line 80 silently increments retries with no backoff.",
-          "suggestion": "Implement exponential backoff: add `await new Promise(r => setTimeout(r, Math.pow(2, retries) * 1000))` before the next retry attempt, or use a dedicated retry library like `p-retry`.",
+          "line": 80,
+          "title": "Retry loop without backoff causes thundering herd",
+          "description": "The retry logic (lines 50-84) retries immediately without any delay or exponential backoff. This will hammer the API on transient failures, likely triggering rate-limiting or temporary bans. The comment \"no backoff needed\" is incorrect for transient API failures—backoff is essential to avoid overwhelming the service during degradation.",
+          "suggestion": "Add exponential backoff: `await new Promise(r => setTimeout(r, Math.pow(2, retries) * 100))` before retrying, or use a library like `p-retry`.",
           "layer": 2,
           "confidence": 0.8
         },
@@ -51,10 +51,22 @@
           "severity": "high",
           "category": "error-handling",
           "file": "src/core/ai/client.ts",
-          "line": 80,
-          "title": "Silent catch swallows all error context",
-          "description": "The catch block at line 80 is empty and provides no logging or error context. This makes it impossible to diagnose what transient error occurred or distinguish between retryable errors (rate limits, timeouts) and non-retryable errors (auth failures, malformed requests). You'll retry on errors that shouldn't be retried.",
-          "suggestion": "Log the error and check its type: `catch (err) { console.error('Retry', retries, ':', err); if (!isRetryable(err)) throw; }` to avoid retrying non-transient failures.",
+          "line": 81,
+          "title": "Untyped catch block prevents selective retry logic",
+          "description": "The bare `catch` block (line 80-82) swallows all errors without distinguishing between retryable (429, 500-level) and non-retryable (400, 401, 404) failures. This causes the code to waste retries on authentication errors or malformed requests, and masks the root cause of failures during debugging.",
+          "suggestion": "Catch as `catch (err)`, check error status/type, and only retry on transient errors: `if (err instanceof Anthropic.APIError && (err.status >= 500 || err.status === 429)) { retries++; } else { throw; }`",
+          "layer": 2,
+          "confidence": 0.8
+        },
+        {
+          "id": "L2-INFO-003",
+          "severity": "medium",
+          "category": "information-disclosure",
+          "file": "src/core/ai/client.ts",
+          "line": 31,
+          "title": "Debug logging exposes sensitive prompt content",
+          "description": "Line 31 logs the full prompt to console unconditionally. If this prompt contains user data, PII, or proprietary information, it will be visible in logs and potentially exposed in log aggregation systems. The comment acknowledges this is for troubleshooting but provides no conditional guard.",
+          "suggestion": "Remove the debug log or gate it behind an explicit `debug` flag: `if (opts.debug) console.log('Sending prompt...', params.prompt.slice(0, 100))`",
           "layer": 2,
           "confidence": 0.8
         },
@@ -63,49 +75,23 @@
           "severity": "high",
           "category": "path-traversal",
           "file": "src/core/ai/client.ts",
-          "line": 30,
-          "title": "Path traversal via unsanitized cacheKey",
-          "description": "The `params.cacheKey` value is joined directly into a filesystem path with no sanitization: `join(this.cacheDir, `${params.cacheKey}.json`)`. An attacker-controlled cacheKey such as `../../etc/passwd` or `../config/secrets` allows reading arbitrary files when the cache path already exists, and writing arbitrary `.json` files anywhere the process has write permission. The read path (line 34, 43) calls `JSON.parse` on whatever file is found, and the write path (line 72) overwrites the resolved location with API response data.",
-          "suggestion": "Validate that the resolved path stays within cacheDir before any read or write: `const resolved = join(this.cacheDir, `${params.cacheKey}.json`); if (!resolved.startsWith(path.resolve(this.cacheDir) + path.sep)) throw new Error('Invalid cacheKey');`. Additionally, allowlist cacheKey to alphanumeric characters, hyphens, and underscores only.",
+          "line": 29,
+          "title": "Unsanitized cacheKey used in file path construction",
+          "description": "The `params.cacheKey` value is interpolated directly into a file path via `join(this.cacheDir, \\`${params.cacheKey}.json\\`)`. If a caller passes a cacheKey like `../../etc/passwd` or `../../../home/user/.ssh/authorized_keys`, the join() call will resolve outside the intended cache directory. An attacker who controls `cacheKey` can read arbitrary files (via the readFile branch) or overwrite arbitrary files (via the writeFile branch), including writing attacker-controlled JSON content to sensitive paths.",
+          "suggestion": "Validate that the resolved path stays within cacheDir before use: `const resolved = join(this.cacheDir, \\`${params.cacheKey}.json\\`); if (!resolved.startsWith(path.resolve(this.cacheDir) + path.sep)) throw new Error('Invalid cacheKey');`. Additionally, whitelist cacheKey to alphanumeric characters and hyphens: `/^[a-zA-Z0-9_-]+$/`.",
           "layer": 3,
           "lens": "security",
           "confidence": 0.95
         },
         {
-          "id": "L3-SEC-002",
-          "severity": "medium",
-          "category": "information-disclosure",
-          "file": "src/core/ai/client.ts",
-          "line": 33,
-          "title": "Full prompt logged to console in production",
-          "description": "`console.log('Sending prompt to API:', params.prompt)` executes unconditionally on every call, including in live/production mode. Prompts frequently contain sensitive user data, PII, or internal business logic. This output will appear in any log aggregation system, is not gated on a debug flag, and the PR author's own comment says 'remove before production' — indicating it was not intended to ship.",
-          "suggestion": "Remove the log entirely or gate it on an explicit debug flag: `if (process.env.AI_DEBUG === 'true') console.log(...)`. Never log raw user prompt content in production.",
-          "layer": 3,
-          "lens": "security",
-          "confidence": 0.9
-        },
-        {
           "id": "L3-ARCH-001",
           "severity": "high",
-          "category": "Wrong condition / asymmetric logic",
+          "category": "Asymmetric logic",
           "file": "src/core/ai/client.ts",
           "line": 36,
-          "title": "Cache read bypasses `live` flag check when API key is missing",
-          "description": "When `this.live === true` but `this.anthropic === null` (no API key provided at runtime), the code falls into the second `if (!this.anthropic)` block and reads from the cache unconditionally. This means a live-mode run silently returns stale cached data whenever the API key is absent, rather than failing fast or clearly indicating that live mode cannot proceed. The intent was presumably to only serve cache in non-live mode.",
-          "suggestion": "In the `!this.anthropic` branch, throw immediately (or only serve cache when `!this.live`) rather than silently serving cached data regardless of the `live` flag. E.g.: `if (!this.anthropic) throw new Error('No API key configured for live mode.');`",
-          "layer": 3,
-          "lens": "architecture",
-          "confidence": 0.9
-        },
-        {
-          "id": "L3-ARCH-002",
-          "severity": "medium",
-          "category": "Off-by-one / retry count",
-          "file": "src/core/ai/client.ts",
-          "line": 57,
-          "title": "Retry loop executes 3 attempts, not 3 retries",
-          "description": "The loop condition is `retries < 3` and `retries` starts at 0, so the loop body runs at most 3 times total (attempts 0, 1, 2). The comment and the final error message both say '3 retries', which implies 4 total attempts (1 original + 3 retries). The off-by-one means one fewer attempt than documented/intended.",
-          "suggestion": "Change the condition to `retries <= 3` (for 3 true retries after the first attempt) or change `retries < 3` to `retries < 4` and update the error message to '3 retries' correctly, or rename the variable to `attempts` and use `attempts < 4`.",
+          "title": "Cache bypass in live mode ignores cached results unconditionally",
+          "description": "When `this.live` is true, the cache is never read before making an API call, even though a successful response is always written to cache. This means in live mode, every call hits the API regardless of whether a fresh cached result exists. The asymmetry (write always, read only when !live) makes the cache write-only in live mode, wasting API spend and making retries more expensive.",
+          "suggestion": "Separate the 'use cache instead of API' flag from the 'also write to cache' flag, or check the cache first in live mode and only call the API if the cache is stale/missing.",
           "layer": 3,
           "lens": "architecture",
           "confidence": 0.85
@@ -114,28 +100,28 @@
       "layerCosts": {
         "l0": 0,
         "l1": 0,
-        "l2": 0.0033735999999999996,
-        "l3": 0.030183
+        "l2": 0.0041376,
+        "l3": 0.022812000000000002
       },
       "layerDurations": {
-        "l0": 0.16041699999999537,
-        "l1": 7.130458000000033,
-        "l2": 4.801041999999995,
-        "l3": 13492.549916
+        "l0": 0.14295900000070105,
+        "l1": 3.247957999999926,
+        "l2": 6725.058665999999,
+        "l3": 5782.894415999999
       },
       "summary": {
-        "totalFindings": 8,
+        "totalFindings": 7,
         "bySeverity": {
           "critical": 1,
           "high": 4,
-          "medium": 3,
+          "medium": 2,
           "low": 0
         },
-        "costUsd": 0.0335566,
-        "durationMs": 13504.641833,
+        "costUsd": 0.026949600000000004,
+        "durationMs": 12511.343998999999,
         "l3Triggered": true
       },
-      "reviewedAt": "2026-04-18T02:18:01.400Z"
+      "reviewedAt": "2026-04-18T03:42:48.232Z"
     },
     {
       "name": "meta/broken-deterministic-gate",
@@ -143,7 +129,7 @@
       "language": "TypeScript",
       "type": "metacircular",
       "prTitle": "refactor: simplify deterministic gate pattern matching",
-      "prUrl": null,
+      "prUrl": "https://github.com/VirtusLab/visdom-code-review/pull/2",
       "bugDescription": "Weakened SQL check, timing-unsafe compare, SSRF rule disabled",
       "findings": [
         {
@@ -234,13 +220,13 @@
       "layerCosts": {
         "l0": 0,
         "l1": 0,
-        "l2": 0.0043847999999999995,
+        "l2": 0.0039927999999999995,
         "l3": 0
       },
       "layerDurations": {
-        "l0": 0.11900000000059663,
-        "l1": 3.212542000001122,
-        "l2": 0.7312920000003942,
+        "l0": 0.13858299999992596,
+        "l1": 12.33020899999974,
+        "l2": 4288.156833000001,
         "l3": 0
       },
       "summary": {
@@ -251,11 +237,11 @@
           "medium": 1,
           "low": 0
         },
-        "costUsd": 0.0043847999999999995,
-        "durationMs": 4.062834000002113,
+        "costUsd": 0.0039927999999999995,
+        "durationMs": 4300.625625000001,
         "l3Triggered": false
       },
-      "reviewedAt": "2026-04-18T02:18:01.406Z"
+      "reviewedAt": "2026-04-18T03:42:58.774Z"
     },
     {
       "name": "meta/hollow-test-suite",
@@ -263,7 +249,7 @@
       "language": "TypeScript",
       "type": "metacircular",
       "prTitle": "test: add comprehensive pipeline layer tests",
-      "prUrl": null,
+      "prUrl": "https://github.com/VirtusLab/visdom-code-review/pull/3",
       "bugDescription": "15 tests mocking their own subjects — zero behavioral assertions",
       "findings": [
         {
@@ -271,69 +257,95 @@
           "severity": "high",
           "category": "test-quality",
           "file": "test/pipeline.test.ts",
-          "title": "7/15 tests are circular (mock-on-mock)",
-          "description": "Tests at lines 77-90 verify that layer objects have hardcoded properties (layer, name) that match the mock implementations defined at lines 6-34. These are tautological: mocks are configured with these values, then tests verify the same values exist. No actual layer implementation is tested.",
+          "title": "4/15 tests are circular (mock-on-mock)",
+          "description": "Lines 76-90 test only that mocked objects have expected layer numbers (0, 1, 2, 3). These are tautological: the mock setup on lines 6-34 explicitly assigns these values, so the assertions merely confirm the mock setup itself. No actual layer logic is validated.",
           "layer": 2,
           "confidence": 0.85
         },
         {
           "id": "L2-TEST-002",
           "severity": "high",
-          "category": "Test Logic Error",
+          "category": "test-logic-defect",
           "file": "test/pipeline.test.ts",
-          "line": 73,
-          "title": "Gate stopping condition contradicts mock configuration",
-          "description": "Line 23 configures AIQuickScan mock to return `gate: { proceed: false, risk: 'low', reason: 'low risk' }`, which should trigger the gate to stop execution. However, line 73 asserts that AIDeepReview is NOT called based on this `proceed: false` condition. The test name and assertion are correct, but the mock at line 23 sets `proceed: false` while line 72-74 expects the pipeline to respect this and skip layer 3. This works by accident, but line 73's expectation only passes because the mock prevents the actual gate logic from being tested. A real gate returning `proceed: false` might behave differently.",
-          "suggestion": "Either: (a) test with `proceed: true` to verify layer 3 IS called when gate passes, or (b) verify the actual gate decision logic in the pipeline implementation separately from mock behavior.",
+          "line": 23,
+          "title": "Mock inconsistency: AIQuickScan.gate.proceed = false prevents L3 execution",
+          "description": "The AIQuickScan mock returns `gate: { proceed: false, ... }` on line 23. This causes the pipeline to skip AIDeepReview execution (line 73 test expects this). However, real pipeline behavior depends on actual gate logic. The mock's hardcoded `proceed: false` doesn't test the conditional execution path when `proceed: true`, leaving that scenario untested and creating false confidence.",
+          "suggestion": "Add a separate test that mocks AIQuickScan with `proceed: true` to verify AIDeepReview *is* called when the gate permits. Or use parameterized tests to cover both gate states.",
           "layer": 2,
           "confidence": 0.8
         },
         {
-          "id": "L2-INCO-003",
-          "severity": "medium",
-          "category": "Incomplete Mock Coverage",
+          "id": "L2-TEST-003",
+          "severity": "high",
+          "category": "test-logic-defect",
           "file": "test/pipeline.test.ts",
-          "line": 100,
-          "title": "Event emission test lacks negative case",
-          "description": "Line 100 verifies `layer:start` is called 3 times, but this assumes the pipeline instantiation (line 53) includes exactly 3 layers in execution. If AIDeepReview is skipped due to the gate, the count should be different, but the mock prevents layer 3 from even being attempted. No test verifies behavior when a layer is actually skipped mid-pipeline.",
-          "suggestion": "Add a test that sets `proceed: true` on AIQuickScan to verify layer 3 execution, then add another test with `proceed: false` and verify `layer:start` count is only 2 (or 3 if start fires before gate check).",
+          "line": 101,
+          "title": "Layer:start event count assertion is fragile and incomplete",
+          "description": "Line 101 expects `layer:start` to be called 3 times, but the pipeline has 4 layers (L0–L3, see lines 6–34 mocks). If AIDeepReview is skipped (which line 73 confirms it is), only 3 layers run, making this assertion coincidentally correct but misleading. It doesn't validate the *correct* set of layers actually ran—just that 3 events fired.",
+          "suggestion": "Verify which specific layers emitted events by checking event payloads (e.g., `expect(handler).toHaveBeenNthCalledWith(1, expect.objectContaining({ layer: 0 }))`). Or test the conditional execution explicitly: one test with gate open (all 4 layers), one with gate closed (3 layers).",
+          "layer": 2,
+          "confidence": 0.8
+        },
+        {
+          "id": "L2-TEST-004",
+          "severity": "medium",
+          "category": "test-coverage-gap",
+          "file": "test/pipeline.test.ts",
+          "line": 120,
+          "title": "No validation that report.layers array contains expected layer results",
+          "description": "Line 120 checks that `report.layers.length > 0` but doesn't validate layer order, layer IDs, or findings structure. The test passes if *any* layers are present, not the correct ones. Combined with the gate-closed mock, this cannot detect if L3 incorrectly appears in the report.",
+          "suggestion": "Assert exact layer count and check layer identity: `expect(report.layers.map(l => l.layer)).toEqual([0, 1, 2])`. Add a separate test for the gate-open path to verify L3 appears.",
           "layer": 2,
           "confidence": 0.8
         },
         {
           "id": "L3-ARCH-001",
           "severity": "high",
-          "category": "Wrong condition / logic error",
+          "category": "Wrong method/object",
           "file": "test/pipeline.test.ts",
-          "line": 30,
-          "title": "AIQuickScan mock returns `gate.proceed: false` but test asserts AIDeepReview is NOT called — yet other tests assert it IS called with the same mock",
-          "description": "The AIQuickScan mock is configured globally (in vi.mock) to always return `gate: { proceed: false, ... }`. The test 'does not call AIDeepReview when gate says stop' relies on this to pass. However, the test 'calls AIDeepReview.analyze' (which must exist for 100% coverage claim) would use the same mock and therefore AIDeepReview.analyze would never be invoked — causing that test to fail. The two tests are mutually exclusive under a single static mock configuration, meaning at least one must be wrong. The pipeline's gate logic is never actually validated for the proceed:true path.",
-          "suggestion": "Override the AIQuickScan mock per-test using `mockResolvedValueOnce` inside each test body: set `gate.proceed: false` in the stop test and `gate.proceed: true` in the deep-review call test. The global mock should not hardcode a gate decision.",
+          "line": 70,
+          "title": "AIDeepReview gate-stop test contradicts its own mock setup",
+          "description": "The test 'does not call AIDeepReview when gate says stop' relies on AIQuickScan returning `gate.proceed: false` — which is exactly what the global mock already returns for every test. This means the AIDeepReview layer should never be called in ANY test, including 'calls AIQuickScan.analyze' and the other positive tests. If the pipeline actually respects the gate (proceed: false → skip L3), then the test named 'calls AIDeepReview...' (if it exists in the truncated section) would silently pass even when AIDeepReview is broken, because the mock prevents it from ever being reached. Conversely, the gate-stop assertion is vacuously true and proves nothing about the conditional logic.",
+          "suggestion": "Override the AIQuickScan mock locally in tests that need L3 to execute: use `vi.spyOn(aiQuickScan, 'analyze').mockResolvedValueOnce({ ..., gate: { proceed: true, ... } })` before calling pipeline.run in those tests. The global mock should default to `proceed: true` so the positive path is exercised by default.",
           "layer": 3,
           "lens": "architecture",
           "confidence": 0.92
         },
         {
+          "id": "L3-ARCH-002",
+          "severity": "medium",
+          "category": "Asymmetric logic",
+          "file": "test/pipeline.test.ts",
+          "line": 55,
+          "title": "previousLayers field passed as empty array may mask accumulation bugs",
+          "description": "Every `pipeline.run` call supplies `previousLayers: []`. If the pipeline accumulates layer results into the context object passed to subsequent layers (i.e., each layer receives the results of prior layers), passing an empty array bypasses that path entirely. A bug where the pipeline fails to forward prior results to later layers would never be caught.",
+          "suggestion": "At least one test should supply a non-empty `previousLayers` value and assert that the downstream layer's `analyze` call receives it correctly, verifying the accumulation/forwarding logic.",
+          "layer": 3,
+          "lens": "architecture",
+          "confidence": 0.82
+        },
+        {
           "id": "L3-TEST-001",
           "severity": "high",
-          "category": "false-assurance",
+          "category": "tests-assert-mock-interactions-not-outcomes",
           "file": "test/pipeline.test.ts",
           "line": 62,
-          "title": "Gate-stop test asserts mock interaction, not pipeline behavior",
-          "description": "The test 'does not call AIDeepReview when gate says stop' verifies that `aiDeepReview.analyze` was not called — but `aiDeepReview` is a mock object injected directly into the pipeline. The AIQuickScan mock is hardcoded to return `gate: { proceed: false }`, yet there is no evidence the pipeline actually reads this gate field to make a stop decision. If the pipeline ignores the gate entirely and simply runs all layers unconditionally, `aiDeepReview.analyze` would still be called, and the test would fail — meaning the test does catch a broken gate. However, if the pipeline stops for an *unrelated* reason (e.g., an exception is swallowed, or layers are iterated by index and L3 is never reached due to a bug), the test passes with false confidence. More critically, no test asserts that the *output* of the pipeline reflects a stopped run (e.g., missing L3 results, a 'stopped' flag, cost savings), so a pipeline that silently drops results without respecting the gate would pass all tests.",
-          "suggestion": "Add an assertion on the pipeline's return value when the gate stops: verify the result contains no L3 layer output, and optionally that a `stoppedAt` or equivalent field equals 2. This tests the observable outcome, not just the call count.",
+          "title": "All tests verify mock calls, never pipeline output — broken pipeline logic passes invisibly",
+          "description": "Every test asserts only that `analyze` was called (or not called) on mock instances. The pipeline's actual responsibilities — aggregating layer results into a report, computing totals, merging findings, setting overall risk/status — are never verified against real values. If `ReviewPipeline.run()` returned `null`, an empty object, or silently swallowed errors after calling the mocks, every test would still pass. The 100% line coverage claim is accurate but meaningless: lines are executed, but correctness of the output is unverified.",
+          "suggestion": "Assert on the return value of `pipeline.run()`. At minimum: check that `report.layers` has the expected length, that `report.findings` is an array, and that `report.metrics.totalCostUsd` equals the sum of mock layer costs (0 + 0 + 0.02 + 0 = 0.02 when L3 is skipped, 0.42 when it runs). This catches any aggregation bug the call-count assertions cannot.",
           "layer": 3,
           "lens": "test-quality",
-          "confidence": 0.85
+          "confidence": 0.95
         },
         {
           "id": "L3-TEST-002",
           "severity": "high",
-          "category": "untested-security-path",
+          "category": "false-assurance-security-boundary",
           "file": "test/pipeline.test.ts",
-          "title": "No test covers pipeline behavior when a layer throws — findings from completed layers may be silently lost",
-          "description": "All 15 tests use mocks that resolve successfully. There is no test for the case where a mid-pipeline layer (e.g., AIQuickScan) rejects or throws. If the pipeline catches the error and returns a partial result, callers may treat an incomplete review as a clean bill of health. This is a data-integrity boundary: a silent failure in L2 that causes L3 to be skipped would produce the same output shape as a legitimate gate-stop, giving false confidence that the PR was fully reviewed. The test suite provides 100% line coverage but zero coverage of the error propagation path.",
-          "suggestion": "Add a test that configures one layer mock to reject, then asserts either: (a) the pipeline throws and callers must handle it, or (b) the returned result contains an explicit `error` field and is not mistakable for a clean pass. This prevents silent partial-review being treated as approval.",
+          "line": 64,
+          "title": "'gate says stop' test cannot prove L3 is actually skipped — the mock setup makes AIDeepReview unreachable regardless",
+          "description": "The test titled 'does not call AIDeepReview when gate says stop' is structurally indistinguishable from a test where the pipeline ignores the gate entirely. Because `AIQuickScan.analyze` is globally mocked to return `gate: { proceed: false }` in `beforeEach`, AIDeepReview would also not be called if the pipeline had a bug such as an off-by-one that dropped the last layer, or if the pipeline crashed after L2 and swallowed the error. The negative assertion (`not.toHaveBeenCalled`) passes in all three scenarios: correct gate logic, incorrect gate logic with a crash, and incorrect gate logic that simply never reaches L3. A complementary test with `gate.proceed: true` that confirms L3 *is* called is required to make the negative test meaningful — without it the security-relevant early-exit path is unverified.",
+          "suggestion": "Add a paired positive test: override the AIQuickScan mock for that single test to return `gate: { proceed: true }`, run the pipeline, and assert `aiDeepReview.analyze` was called. Only with both the positive and negative cases does the gate boundary have genuine test coverage.",
           "layer": 3,
           "lens": "test-quality",
           "confidence": 0.9
@@ -342,28 +354,28 @@
       "layerCosts": {
         "l0": 0,
         "l1": 0,
-        "l2": 0.0046072,
-        "l3": 0.03054
+        "l2": 0.0054231999999999995,
+        "l3": 0.034574999999999995
       },
       "layerDurations": {
-        "l0": 0.025584000000890228,
-        "l1": 0.25245800000084273,
-        "l2": 0.595792000000074,
-        "l3": 16355.413167000002
+        "l0": 0.02674999999726424,
+        "l1": 0.2631249999976717,
+        "l2": 9634.171833,
+        "l3": 16019.17525
       },
       "summary": {
-        "totalFindings": 6,
+        "totalFindings": 8,
         "bySeverity": {
           "critical": 0,
-          "high": 5,
-          "medium": 1,
+          "high": 6,
+          "medium": 2,
           "low": 0
         },
-        "costUsd": 0.0351472,
-        "durationMs": 16356.287001000004,
+        "costUsd": 0.0399982,
+        "durationMs": 25653.636957999996,
         "l3Triggered": true
       },
-      "reviewedAt": "2026-04-18T02:18:17.763Z"
+      "reviewedAt": "2026-04-18T03:43:30.498Z"
     },
     {
       "name": "standalone/payment-service",
@@ -387,38 +399,38 @@
           "confidence": 1
         },
         {
-          "id": "L2-SECU-001",
+          "id": "L2-SENS-001",
           "severity": "critical",
-          "category": "Security: SQL Injection",
-          "file": "payment/routes.py",
-          "line": 31,
-          "title": "SQL injection via string interpolation in INSERT statement",
-          "description": "Line 31 builds an INSERT query using f-string interpolation with user-controlled request.amount and request.card_number[-4:]. An attacker can inject SQL by providing malicious values (e.g., amount=1); DROP TABLE charges;--). This bypasses the parameterization that should be used.",
-          "suggestion": "Use parameterized queries with placeholders: cursor.execute('INSERT INTO charges (customer_id, amount, card_last4) VALUES (?, ?, ?)', (customer_id, request.amount, request.card_number[-4:]))",
-          "layer": 2,
-          "confidence": 0.8
-        },
-        {
-          "id": "L2-SECU-002",
-          "severity": "critical",
-          "category": "Security: Sensitive Data Exposure",
+          "category": "sensitive_data_exposure",
           "file": "payment/routes.py",
           "line": 16,
-          "title": "Full card number logged in application logs",
-          "description": "Line 16 logs request.card_number directly in plaintext to application logs. This violates PCI-DSS compliance requirements (card data must never be logged) and exposes sensitive payment card information to anyone with log access.",
-          "suggestion": "Remove card_number from logs entirely, or log only the last 4 digits: logger.info(f\"Processing card ending in {request.card_number[-4:]} for amount {request.amount}\")",
+          "title": "Full card number and CVV logged in plaintext",
+          "description": "Line 16 logs the complete card number and line 16 logs sensitive payment data. This violates PCI-DSS compliance and exposes cardholder data in audit logs, creating a significant security breach and regulatory violation.",
+          "suggestion": "Never log full card numbers or CVV. Log only masked data like last 4 digits: `logger.info(f\"Processing card ****{request.card_number[-4:]} for amount {request.amount}\")`",
           "layer": 2,
           "confidence": 0.8
         },
         {
-          "id": "L2-SECU-003",
+          "id": "L2-HARD-002",
           "severity": "critical",
-          "category": "Security: Hardcoded Secrets",
+          "category": "hardcoded_secrets",
           "file": "payment/routes.py",
-          "line": 10,
-          "title": "Hardcoded SECRET_KEY in source code",
-          "description": "Line 10 contains a hardcoded SECRET_KEY=\"secret\" visible in version control. This exposes authentication/encryption material and violates secure credential management practices.",
-          "suggestion": "Load SECRET_KEY from environment variables: SECRET_KEY = os.getenv('SECRET_KEY')",
+          "line": 11,
+          "title": "Hardcoded secret key in source code",
+          "description": "Line 11 contains a hardcoded SECRET_KEY. This credential is exposed in version control and accessible to anyone with repository access, compromising authentication security.",
+          "suggestion": "Load SECRET_KEY from environment variables: `SECRET_KEY = os.getenv('SECRET_KEY')` and document in .env.example",
+          "layer": 2,
+          "confidence": 0.8
+        },
+        {
+          "id": "L2-SQL_-003",
+          "severity": "critical",
+          "category": "sql_injection",
+          "file": "payment/routes.py",
+          "line": 31,
+          "title": "Second SQL injection in INSERT statement",
+          "description": "Line 31 also uses string interpolation in INSERT statement with user-controlled amount and card_number data. Although Layer 1 flagged line 24, this second query on line 31 is equally vulnerable and will execute attacker-supplied SQL.",
+          "suggestion": "Use parameterized queries: `cursor.execute(\"INSERT INTO charges (customer_id, amount, card_last4) VALUES (?, ?, ?)\", (customer_id, request.amount, request.card_number[-4:]))`",
           "layer": 2,
           "confidence": 0.8
         },
@@ -427,10 +439,10 @@
           "severity": "high",
           "category": "Null/Nil Dereference",
           "file": "payment/routes.py",
-          "line": 30,
-          "title": "Unchecked slice on card_number causes crash on short input",
-          "description": "request.card_number[-4:] is used inside the INSERT statement without validating that card_number has at least 4 characters. If an attacker or malformed client sends a card_number shorter than 4 characters (e.g., empty string \"\"), Python's slice returns a shorter or empty string silently — but combined with the surrounding f-string SQL injection surface, an empty string also breaks the intended last-4 masking logic entirely. More critically, if any upstream stripping/transformation reduces the value to fewer characters, the audit trail is silently corrupted with no error surfaced. The Pydantic model places no minimum-length constraint on card_number, so this path is reachable in production.",
-          "suggestion": "Add a Pydantic validator on ChargeRequest: `@validator('card_number') def card_number_length(cls, v): assert len(v) >= 4, 'card_number too short'; return v`. Also switch to parameterized queries to eliminate the SQL injection surface these fields feed into.",
+          "line": 31,
+          "title": "Unguarded string slice on card_number crashes on short input",
+          "description": "request.card_number[-4:] is evaluated before any length check. If card_number is an empty string or fewer than 4 characters, Python silently returns a shorter string — but more critically, if card_number is None (possible if the Pydantic field is ever made Optional in a future model change, or if validation is bypassed), this raises AttributeError and crashes the request handler mid-transaction, leaving the database connection unclosed and potentially the charge in an inconsistent committed/uncommitted state. Even with current validation, a 1–3 character card_number passes Pydantic's str type and reaches this line, producing misleading audit data with no error surfaced to the caller.",
+          "suggestion": "Validate card_number length explicitly (e.g., min_length=16 in the Pydantic field). Use card_last4 = request.card_number[-4:] only after asserting len(request.card_number) >= 4, and wrap DB operations in a try/finally to ensure conn.close() is always called.",
           "layer": 3,
           "lens": "security",
           "confidence": 0.85
@@ -438,12 +450,12 @@
         {
           "id": "L3-ARCH-001",
           "severity": "high",
-          "category": "resource-lifecycle",
+          "category": "Resource lifecycle",
           "file": "payment/routes.py",
           "line": 27,
           "title": "Database connection not closed on exception paths",
-          "description": "The database connection is opened at line 20 and only closed via `conn.close()` at line 35 in the happy path. If the `HTTPException` is raised at line 27 (customer not found), the connection is never closed. Over time, repeated 404 responses will exhaust the available SQLite file handles/connections.",
-          "suggestion": "Wrap the database operations in a try/finally block (or use a context manager `with sqlite3.connect(...) as conn:`) so `conn.close()` is guaranteed to execute regardless of whether an exception is raised.",
+          "description": "The database connection is opened at line 20 but only closed at line 34 in the happy path. If the HTTPException at line 27 is raised (customer not found), or if any other exception occurs during cursor.execute or conn.commit, conn.close() is never called. This leaks database connections on every 404 response and any runtime error.",
+          "suggestion": "Wrap the database operations in a try/finally block (or use a context manager `with sqlite3.connect(...) as conn:`) to guarantee conn.close() is always called regardless of the execution path.",
           "layer": 3,
           "lens": "architecture",
           "confidence": 0.97
@@ -452,14 +464,14 @@
       "layerCosts": {
         "l0": 0,
         "l1": 0,
-        "l2": 0.0033472,
-        "l3": 0.017643
+        "l2": 0.0032711999999999997,
+        "l3": 0.017637
       },
       "layerDurations": {
-        "l0": 0.03729100000055041,
-        "l1": 1.0548339999986638,
-        "l2": 23.10437499999898,
-        "l3": 7331.765083000002
+        "l0": 0.05045899999822723,
+        "l1": 1.4214580000043497,
+        "l2": 4686.687499999993,
+        "l3": 8060.363791999989
       },
       "summary": {
         "totalFindings": 6,
@@ -469,23 +481,23 @@
           "medium": 0,
           "low": 0
         },
-        "costUsd": 0.0209902,
-        "durationMs": 7355.961583,
+        "costUsd": 0.0209082,
+        "durationMs": 12748.523208999984,
         "l3Triggered": true
       },
-      "reviewedAt": "2026-04-18T02:18:25.121Z"
+      "reviewedAt": "2026-04-18T03:43:43.250Z"
     }
   ],
   "aggregate": {
-    "totalFindings": 27,
+    "totalFindings": 28,
     "bySeverity": {
       "critical": 5,
-      "high": 17,
+      "high": 18,
       "medium": 5,
       "low": 0
     },
-    "avgCostUsd": 0.0235197,
-    "avgDurationMs": 9305.238312750002,
+    "avgCostUsd": 0.0229622,
+    "avgDurationMs": 13803.532447749994,
     "l3TriggerRate": 0.75
   }
 }
