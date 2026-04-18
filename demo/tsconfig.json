@@ -13,5 +13,5 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["src/scenarios/*/files/**", "bench/**"]
+  "exclude": ["src/scenarios/**/files/**", "bench/**"]
 }
