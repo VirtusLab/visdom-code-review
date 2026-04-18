@@ -933,7 +933,14 @@ body {
 .demo-promo__inner { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; text-align: center; }
 .demo-promo__heading { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; color: #f1f5f9; margin: 0.5rem 0 0.75rem; }
 .demo-promo__sub { color: #94a3b8; font-size: 0.95rem; margin: 0 auto 1.5rem; line-height: 1.6; max-width: 640px; }
-.demo-promo__gif { width: 100%; border-radius: 8px; border: 1px solid #1e293b; margin: 0 0 1.5rem; display: block; }
+.demo-promo__gif { width: 100%; border-radius: 0; border: none; margin: 0; display: block; }
+.demo-browser { border-radius: 8px; overflow: hidden; border: 1px solid #1e293b; box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px #1e293b; margin: 0 0 1.5rem; }
+.demo-browser__bar { background: #1e293b; padding: 0.5rem 0.75rem; display: flex; align-items: center; gap: 0.4rem; }
+.demo-browser__dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.demo-browser__dot--red { background: #ef4444; }
+.demo-browser__dot--yellow { background: #f59e0b; }
+.demo-browser__dot--green { background: #10b981; }
+.demo-browser__url { font-size: 0.7rem; color: #475569; margin-left: 0.5rem; font-family: monospace; }
 .demo-promo__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .demo-promo .btn--outline { color: #94a3b8; border-color: #334155; }
 .demo-promo .btn--outline:hover { color: #f1f5f9; border-color: #94a3b8; background: transparent; }

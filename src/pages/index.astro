@@ -236,7 +236,15 @@ const faqTeaseItems = [
       <span class="kicker">SEE IT IN ACTION</span>
       <h2 class="demo-promo__heading">Interactive demo — real PRs, real findings</h2>
       <p class="demo-promo__sub">VCR reviews its own codebase on every pull request. Trace the triage flow, see what each layer catches, and follow findings back to the GitHub PR.</p>
-      <img src={`${base}demo.gif`} alt="VCR triage demo walkthrough" class="demo-promo__gif" loading="lazy" />
+      <div class="demo-browser">
+        <div class="demo-browser__bar">
+          <span class="demo-browser__dot demo-browser__dot--red"></span>
+          <span class="demo-browser__dot demo-browser__dot--yellow"></span>
+          <span class="demo-browser__dot demo-browser__dot--green"></span>
+          <span class="demo-browser__url">visdom-code-review · demo</span>
+        </div>
+        <img src={`${base}demo.gif`} alt="VCR triage demo walkthrough" class="demo-promo__gif" loading="lazy" />
+      </div>
       <div class="demo-promo__actions">
         <a href={`${base}demo/`} class="btn btn--primary">Explore the demo →</a>
         <a href="https://vcr-grafana.fly.dev" target="_blank" rel="noopener" class="btn btn--outline">Live Grafana ↗</a>
