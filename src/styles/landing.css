@@ -935,5 +935,7 @@ body {
 .demo-promo__sub { color: #94a3b8; font-size: 0.95rem; margin: 0 auto 1.5rem; line-height: 1.6; max-width: 640px; }
 .demo-promo__gif { width: 100%; border-radius: 8px; border: 1px solid #1e293b; margin: 0 0 1.5rem; display: block; }
 .demo-promo__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.demo-promo .btn--outline { color: #94a3b8; border-color: #334155; }
+.demo-promo .btn--outline:hover { color: #f1f5f9; border-color: #94a3b8; background: transparent; }
 
 /* FAQ Tease — now uses FaqAccordion from @visdom/ui */

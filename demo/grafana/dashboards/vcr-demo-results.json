@@ -6,7 +6,8 @@
     { "type": "panel", "id": "stat", "name": "Stat", "version": "" },
     { "type": "panel", "id": "barchart", "name": "Bar chart", "version": "" },
     { "type": "panel", "id": "table", "name": "Table", "version": "" },
-    { "type": "panel", "id": "text", "name": "Text", "version": "" }
+    { "type": "panel", "id": "text", "name": "Text", "version": "" },
+    { "type": "panel", "id": "timeseries", "name": "Time series", "version": "" }
   ],
   "annotations": { "list": [] },
   "description": "VCR metacircular demo — real findings from 4 demo scenarios run on this repo",

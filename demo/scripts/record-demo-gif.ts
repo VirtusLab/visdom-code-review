@@ -61,7 +61,7 @@ async function captureFrames() {
 function framesToGif() {
   console.log('Converting frames to GIF...');
   execSync(
-    `/opt/homebrew/bin/ffmpeg -y -framerate 5 -i "${FRAMES_DIR}/frame-%04d.png" ` +
+    `ffmpeg -y -framerate 5 -i "${FRAMES_DIR}/frame-%04d.png" ` +
     `-vf "fps=5,scale=900:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer" ` +
     `"${OUTPUT_GIF}"`,
     { stdio: 'inherit' }

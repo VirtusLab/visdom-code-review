@@ -6,6 +6,7 @@ import type { ShowcaseResults, LiveReviews } from '../../demo/src/types/showcase
 
 const showcase = showcaseRaw as unknown as ShowcaseResults;
 const liveReviews = liveReviewsRaw as unknown as LiveReviews;
+const base = import.meta.env.BASE_URL;
 
 // Merge scenario PRs + live reviews for ticker (most recent 5)
 const SEV_ORDER = ['critical', 'high', 'medium', 'low'] as const;
@@ -441,9 +442,10 @@ const TIMELINE_NARRATIVE: Record<string, { humanEngagedMin: number; humanReason:
     <p class="demo-section-sub">Anonymous read access · updates on every PR · powered by Grafana on fly.io</p>
     <a href="https://vcr-grafana.fly.dev" target="_blank" rel="noopener" class="demo-grafana-link">
       <img
-        src="/screenshots/grafana-dashboard.png"
+        src={`${base}screenshots/grafana-dashboard.png`}
         alt="VCR Grafana dashboard showing PR metrics and findings per week"
         class="demo-grafana-img"
+        loading="lazy"
       />
     </a>
     <div class="demo-grafana-footer">
