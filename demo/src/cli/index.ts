@@ -14,10 +14,20 @@ import { GitHubOps } from '../core/github/operations.js';
 import { TerminalReporter, renderHeader, renderPRCreated, renderLayerStart, renderLayerComplete, renderCleanupHint } from '../core/reporter/terminal.js';
 import { Narrator, PaceMode } from '../core/narrator.js';
 import { scenario as perfectPR } from '../scenarios/perfect-pr/scenario.js';
+import { scenario as metaInsecureAiClient } from '../scenarios/meta/insecure-ai-client/scenario.js';
+import { scenario as metaBrokenGate } from '../scenarios/meta/broken-deterministic-gate/scenario.js';
+import { scenario as metaHollowTests } from '../scenarios/meta/hollow-test-suite/scenario.js';
+import { scenario as standalonePayment } from '../scenarios/standalone/payment-service/scenario.js';
 import { runBench, renderBenchResult } from '../core/bench.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SCENARIOS = { 'perfect-pr': perfectPR } as const;
+const SCENARIOS = {
+  'perfect-pr': perfectPR,
+  'meta/insecure-ai-client': metaInsecureAiClient,
+  'meta/broken-deterministic-gate': metaBrokenGate,
+  'meta/hollow-test-suite': metaHollowTests,
+  'standalone/payment-service': standalonePayment,
+} as const;
 
 function parseArgs(): CLIOptions {
   const args = process.argv.slice(2);
