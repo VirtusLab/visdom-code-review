@@ -1,0 +1,29 @@
+app = "vcr-grafana"
+primary_region = "fra"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  GF_SECURITY_ADMIN_USER = "admin"
+  GF_USERS_ALLOW_SIGN_UP = "false"
+  GF_AUTH_ANONYMOUS_ENABLED = "true"
+  GF_AUTH_ANONYMOUS_ORG_ROLE = "Viewer"
+  GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH = "/var/lib/grafana/dashboards/vcr-demo-results.json"
+  GF_SERVER_ROOT_URL = "https://vcr-grafana.fly.dev"
+
+[[mounts]]
+  source = "grafana_data"
+  destination = "/var/lib/grafana"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
