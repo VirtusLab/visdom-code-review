@@ -12,6 +12,7 @@ const navLinks = (base: string) => [
   { label: 'For Engineers', href: `${base}guide/platform-engineers/` },
   { label: 'For Developers', href: `${base}guide/developers/` },
   { label: 'Scenarios', href: `${base}before-after/` },
+  { label: 'Demo', href: `${base}demo/` },
   { label: 'FAQ', href: `${base}faq/` },
   { label: 'Reference', href: `${base}reference/` },
 ];
