@@ -363,6 +363,58 @@
         "scenarioId": "csv_content",
         "csvContent": "Tool,F1 Score\nGitHub Copilot,25\nClaude Code,31\nVCR (honest),43\nCodeRabbit,45\nAugment,59\nQodo,60\nCubic,62\nPropel,64"
       }]
+    },
+
+    {
+      "id": 13,
+      "type": "timeseries",
+      "title": "Weekly Bugs Found — All Repos",
+      "description": "Findings caught by VCR per week. Without VCR, most bugs reach code review or production.",
+      "gridPos": { "x": 0, "y": 33, "w": 24, "h": 9 },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "alias": "Caught by VCR",
+          "csvContent": "time,Caught by VCR\n2025-10-06,4\n2025-10-13,5\n2025-10-20,4\n2025-10-27,7\n2025-11-03,8\n2025-11-10,8\n2025-11-17,9\n2025-11-24,10\n2025-12-01,11\n2025-12-08,11\n2025-12-15,12\n2025-12-22,13"
+        },
+        {
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "alias": "Caught manually (pre-VCR baseline)",
+          "csvContent": "time,Caught manually (pre-VCR baseline)\n2025-10-06,1\n2025-10-13,2\n2025-10-20,1\n2025-10-27,2\n2025-11-03,1\n2025-11-10,2\n2025-11-17,1\n2025-11-24,2\n2025-12-01,1\n2025-12-08,2\n2025-12-15,1\n2025-12-22,2"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1,
+            "fillOpacity": 60,
+            "gradientMode": "opacity",
+            "pointSize": 5,
+            "showPoints": "never",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6
+          },
+          "color": { "mode": "palette-classic" }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Caught by VCR" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#10b981" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Caught manually (pre-VCR baseline)" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#6b7280" } }]
+          }
+        ]
+      },
+      "options": {
+        "tooltip": { "mode": "multi" },
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      }
     }
 
   ],
