@@ -1,0 +1,314 @@
+{
+  "annotations": { "list": [] },
+  "editable": false,
+  "graphTooltip": 1,
+  "links": [],
+  "refresh": "",
+  "schemaVersion": 38,
+  "tags": ["vcr", "external"],
+  "time": { "from": "2026-01-01T00:00:00Z", "to": "2026-04-01T00:00:00Z" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "VCR — llama3-java-hat Quality Pulse",
+  "uid": "vcr-llama3-java-hat",
+  "version": 1,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Total Findings (38 PRs)",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n156"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Critical Findings",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 2 },
+              { "color": "red", "value": 5 }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n1"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "PR Coverage",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 80 },
+              { "color": "green", "value": 90 }
+            ]
+          },
+          "unit": "percent",
+          "max": 100,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n100"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "High + Critical Findings",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 20 },
+              { "color": "red", "value": 50 }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n85"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Findings Per Week — llama3-java-hat",
+      "type": "timeseries",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 4 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 12,
+            "showPoints": "auto",
+            "spanNulls": false
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "llama3-java-hat" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "#5794f2", "mode": "fixed" } }]
+          }
+        ]
+      },
+      "options": {
+        "legend": { "calcs": ["last", "max", "sum"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "time,llama3-java-hat\n2026-02-02T00:00:00Z,33\n2026-02-09T00:00:00Z,53\n2026-02-16T00:00:00Z,41\n2026-02-23T00:00:00Z,4\n2026-03-02T00:00:00Z,25"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Severity Breakdown",
+      "type": "barchart",
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 14 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 1, "fillOpacity": 80 },
+          "unit": "short"
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Critical" }, "properties": [{ "id": "color", "value": { "fixedColor": "#e05151", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "High" }, "properties": [{ "id": "color", "value": { "fixedColor": "#ff9900", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "Medium" }, "properties": [{ "id": "color", "value": { "fixedColor": "#fade2a", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "Low" }, "properties": [{ "id": "color", "value": { "fixedColor": "#73bf69", "mode": "fixed" } }] }
+        ]
+      },
+      "options": {
+        "barWidth": 0.4,
+        "groupWidth": 0.7,
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "stacking": "normal",
+        "tooltip": { "mode": "multi", "sort": "desc" },
+        "xField": "Repo"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Repo,Critical,High,Medium,Low\nllama3-java-hat,1,84,71,0"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Findings by Category",
+      "type": "barchart",
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 14 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 1, "fillOpacity": 80 },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "barWidth": 0.4,
+        "groupWidth": 0.7,
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "stacking": "normal",
+        "tooltip": { "mode": "multi", "sort": "desc" },
+        "xField": "Repo"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Repo,Security,Correctness,Performance,Maintainability\nllama3-java-hat,1,10,0,145"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Top Finding Types",
+      "type": "table",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 24 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": { "align": "auto", "displayMode": "auto" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Count" },
+            "properties": [
+              { "id": "custom.displayMode", "value": "color-background" },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "green", "value": null },
+                    { "color": "orange", "value": 3 },
+                    { "color": "red", "value": 6 }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "footer": { "show": false },
+        "showHeader": true,
+        "sortBy": [{ "desc": true, "displayName": "Count" }]
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Finding Type,Count\nReturn value of important method ignored,6\nDouble-checked locking race condition in toF16Array,1\nGEMV.apply overload for F16Weights lacks bounds validation,1\nF16Array materialization in toF16Array not tied to accelerator lifecycle,1\nf16WeightsCache is a plain HashMap with no synchronization,1\nelementCount cast to int without overflow check before short[] allocation,1\noutputWeight dimensions swapped: rows/cols transposed for output projection,1\nf16WeightsCache HashMap accessed without synchronization,1\nCritical F16_FAST correctness tests entirely opt-in and never run in CI,1\ntestDequantRowMatchesGetFloat validates internal consistency not numerical correctness,1"
+        }
+      ]
+    }
+  ]
+}
