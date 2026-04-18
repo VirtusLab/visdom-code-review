@@ -1,374 +1,385 @@
 {
-  "id": null,
-  "uid": "vcr-team-health",
-  "title": "VCR Team Health",
-  "description": "Visdom Code Review — team health metrics. Shows PR cycle time, finding quality, and cost trends.",
-  "tags": ["visdom", "code-review", "team-health"],
-  "timezone": "browser",
-  "editable": true,
-  "schemaVersion": 38,
-  "version": 1,
+  "annotations": { "list": [] },
+  "editable": false,
+  "graphTooltip": 1,
+  "links": [],
   "refresh": "",
+  "schemaVersion": 38,
+  "tags": ["vcr"],
   "time": { "from": "now-12w", "to": "now" },
   "timepicker": {},
-  "graphTooltip": 1,
+  "timezone": "browser",
+  "title": "VCR — Quality Pulse",
+  "uid": "vcr-team-health",
+  "version": 2,
   "panels": [
     {
       "id": 1,
-      "type": "timeseries",
-      "title": "PR Cycle Time (hours, open → merge)",
-      "description": "Time from PR open to merge. VCR deployed at marker — reviewers spend less time triaging noise, high-risk PRs get escalated faster.",
-      "gridPos": { "x": 0, "y": 0, "w": 16, "h": 9 },
-      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
-      "targets": [
-        {
-          "refId": "A",
-          "scenarioId": "csv_content",
-          "alias": "Without VCR (baseline)",
-          "csvContent": "time,Without VCR\n2026-01-05T00:00:00Z,71\n2026-01-12T00:00:00Z,68\n2026-01-19T00:00:00Z,74\n2026-01-26T00:00:00Z,70\n2026-02-02T00:00:00Z,69\n2026-02-09T00:00:00Z,73\n2026-02-16T00:00:00Z,68\n2026-02-23T00:00:00Z,71\n2026-03-02T00:00:00Z,72\n2026-03-09T00:00:00Z,70\n2026-03-16T00:00:00Z,69\n2026-03-23T00:00:00Z,73"
-        },
-        {
-          "refId": "B",
-          "scenarioId": "csv_content",
-          "alias": "With VCR",
-          "csvContent": "time,With VCR\n2026-01-05T00:00:00Z,71\n2026-01-12T00:00:00Z,68\n2026-01-19T00:00:00Z,74\n2026-01-26T00:00:00Z,70\n2026-02-02T00:00:00Z,52\n2026-02-09T00:00:00Z,41\n2026-02-16T00:00:00Z,34\n2026-02-23T00:00:00Z,27\n2026-03-02T00:00:00Z,21\n2026-03-09T00:00:00Z,17\n2026-03-16T00:00:00Z,14\n2026-03-23T00:00:00Z,12"
-        }
-      ],
+      "title": "Findings This Week",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
       "fieldConfig": {
         "defaults": {
-          "unit": "h",
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 8,
-            "gradientMode": "none",
-            "pointSize": 5,
-            "showPoints": "auto"
-          },
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n38"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Critical Findings This Week",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
           "thresholds": {
             "mode": "absolute",
             "steps": [
               { "color": "green", "value": null },
-              { "color": "yellow", "value": 24 },
-              { "color": "red", "value": 48 }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": { "id": "byName", "options": "Without VCR" },
-            "properties": [
-              { "id": "color", "value": { "mode": "fixed", "fixedColor": "#6b7280" } }
+              { "color": "orange", "value": 2 },
+              { "color": "red", "value": 5 }
             ]
           },
-          {
-            "matcher": { "id": "byName", "options": "With VCR" },
-            "properties": [
-              { "id": "color", "value": { "mode": "fixed", "fixedColor": "#10b981" } }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "tooltip": { "mode": "multi", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom" }
-      }
-    },
-    {
-      "id": 2,
-      "type": "stat",
-      "title": "Avg Cost / PR",
-      "description": "Average LLM cost per pull request across all layers.",
-      "gridPos": { "x": 16, "y": 0, "w": 4, "h": 3 },
-      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
-      "targets": [
-        {
-          "refId": "A",
-          "scenarioId": "manual_entry",
-          "points": [[0, 1734480000000]]
-        }
-      ],
-      "options": {
-        "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" },
-        "orientation": "auto",
-        "textMode": "auto",
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [{ "type": "value", "options": { "0": { "text": "$0.09" } } }],
-          "color": { "mode": "fixed", "fixedColor": "#10b981" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+          "unit": "short"
         },
         "overrides": []
-      }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n3"
+        }
+      ]
     },
     {
       "id": 3,
+      "title": "PR Coverage",
       "type": "stat",
-      "title": "False Positive Rate",
-      "description": "Percentage of findings that were rejected by developers as noise.",
-      "gridPos": { "x": 16, "y": 3, "w": 4, "h": 3 },
-      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
-      "targets": [
-        {
-          "refId": "A",
-          "scenarioId": "manual_entry",
-          "points": [[0, 1734480000000]]
-        }
-      ],
-      "options": {
-        "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" },
-        "orientation": "auto",
-        "textMode": "auto",
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto"
-      },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
       "fieldConfig": {
         "defaults": {
-          "mappings": [{ "type": "value", "options": { "0": { "text": "11.2%" } } }],
-          "color": { "mode": "fixed", "fixedColor": "#10b981" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 80 },
+              { "color": "green", "value": 90 }
+            ]
+          },
+          "unit": "percent",
+          "max": 100,
+          "min": 0
         },
         "overrides": []
-      }
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n94"
+        }
+      ]
     },
     {
       "id": 4,
+      "title": "Week-over-Week Change",
       "type": "stat",
-      "title": "Acceptance Rate",
-      "description": "Percentage of VCR findings acted on by developers (fixed, acknowledged, or converted to ticket).",
-      "gridPos": { "x": 16, "y": 6, "w": 4, "h": 3 },
-      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
-      "targets": [
-        {
-          "refId": "A",
-          "scenarioId": "manual_entry",
-          "points": [[0, 1734480000000]]
-        }
-      ],
-      "options": {
-        "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" },
-        "orientation": "auto",
-        "textMode": "auto",
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto"
-      },
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
       "fieldConfig": {
         "defaults": {
-          "mappings": [{ "type": "value", "options": { "0": { "text": "78%" } } }],
-          "color": { "mode": "fixed", "fixedColor": "#10b981" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 0 },
+              { "color": "red", "value": 10 }
+            ]
+          },
+          "unit": "percent",
+          "custom": {}
         },
         "overrides": []
-      }
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n-12"
+        }
+      ]
     },
     {
       "id": 5,
-      "type": "barchart",
-      "title": "Issues Found by Severity (weekly)",
-      "description": "More CRITICAL/HIGH findings found early = fewer production incidents.",
-      "gridPos": { "x": 0, "y": 9, "w": 12, "h": 9 },
-      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
-      "targets": [
-        {
-          "refId": "A",
-          "scenarioId": "csv_content",
-          "csvContent": "Week,Critical,High,Medium,Low\nW1,3,8,12,19\nW2,5,11,15,22\nW3,4,9,13,20\nW4,6,12,16,24\nW5,4,10,14,20\nW6,5,9,13,21\nW7,3,11,12,18\nW8,4,8,14,19"
-        }
-      ],
+      "title": "Findings Per Week — All Repos (12 weeks)",
+      "type": "timeseries",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 4 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
       "fieldConfig": {
         "defaults": {
-          "custom": { "lineWidth": 1, "fillOpacity": 80 }
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": false
+          },
+          "unit": "short"
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "Critical" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#ef4444" } }]
+            "matcher": { "id": "byName", "options": "data-pipeline" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "#e05151", "mode": "fixed" } }]
           },
           {
-            "matcher": { "id": "byName", "options": "High" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#f59e0b" } }]
-          },
-          {
-            "matcher": { "id": "byName", "options": "Medium" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#3b82f6" } }]
-          },
-          {
-            "matcher": { "id": "byName", "options": "Low" },
-            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#6b7280" } }]
+            "matcher": { "id": "byName", "options": "auth-service" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "#37872d", "mode": "fixed" } }]
           }
         ]
       },
       "options": {
-        "xField": "Week",
-        "stacking": "normal",
-        "groupWidth": 0.7,
-        "barWidth": 0.97,
-        "tooltip": { "mode": "multi", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom" },
-        "xTickLabelRotation": 0
-      }
+        "legend": { "calcs": ["last", "max"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "time,api-gateway\n2026-01-19T00:00:00Z,12\n2026-01-26T00:00:00Z,11\n2026-02-02T00:00:00Z,10\n2026-02-09T00:00:00Z,9\n2026-02-16T00:00:00Z,9\n2026-02-23T00:00:00Z,8\n2026-03-02T00:00:00Z,8\n2026-03-09T00:00:00Z,7\n2026-03-16T00:00:00Z,7\n2026-03-23T00:00:00Z,6\n2026-03-30T00:00:00Z,6\n2026-04-06T00:00:00Z,6"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "csvContent": "time,auth-service\n2026-01-19T00:00:00Z,3\n2026-01-26T00:00:00Z,2\n2026-02-02T00:00:00Z,3\n2026-02-09T00:00:00Z,2\n2026-02-16T00:00:00Z,2\n2026-02-23T00:00:00Z,3\n2026-03-02T00:00:00Z,2\n2026-03-09T00:00:00Z,3\n2026-03-16T00:00:00Z,2\n2026-03-23T00:00:00Z,2\n2026-03-30T00:00:00Z,3\n2026-04-06T00:00:00Z,2"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "C",
+          "scenarioId": "csv_content",
+          "csvContent": "time,payment-processor\n2026-01-19T00:00:00Z,7\n2026-01-26T00:00:00Z,7\n2026-02-02T00:00:00Z,8\n2026-02-09T00:00:00Z,8\n2026-02-16T00:00:00Z,9\n2026-02-23T00:00:00Z,10\n2026-03-02T00:00:00Z,11\n2026-03-09T00:00:00Z,15\n2026-03-16T00:00:00Z,12\n2026-03-23T00:00:00Z,10\n2026-03-30T00:00:00Z,9\n2026-04-06T00:00:00Z,8"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "D",
+          "scenarioId": "csv_content",
+          "csvContent": "time,data-pipeline\n2026-01-19T00:00:00Z,4\n2026-01-26T00:00:00Z,4\n2026-02-02T00:00:00Z,5\n2026-02-09T00:00:00Z,5\n2026-02-16T00:00:00Z,6\n2026-02-23T00:00:00Z,6\n2026-03-02T00:00:00Z,7\n2026-03-09T00:00:00Z,7\n2026-03-16T00:00:00Z,8\n2026-03-23T00:00:00Z,9\n2026-03-30T00:00:00Z,10\n2026-04-06T00:00:00Z,10"
+        },
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "E",
+          "scenarioId": "csv_content",
+          "csvContent": "time,frontend-app\n2026-01-19T00:00:00Z,6\n2026-01-26T00:00:00Z,5\n2026-02-02T00:00:00Z,6\n2026-02-09T00:00:00Z,7\n2026-02-16T00:00:00Z,6\n2026-02-23T00:00:00Z,5\n2026-03-02T00:00:00Z,6\n2026-03-09T00:00:00Z,6\n2026-03-16T00:00:00Z,7\n2026-03-23T00:00:00Z,6\n2026-03-30T00:00:00Z,5\n2026-04-06T00:00:00Z,6"
+        }
+      ]
     },
     {
       "id": 6,
-      "type": "timeseries",
-      "title": "L3 Deep Review Trigger Rate",
-      "description": "% of PRs that escalate to L3 deep review. Target: 30–50%. Too low = missing risk. Too high = wasting budget.",
-      "gridPos": { "x": 12, "y": 9, "w": 12, "h": 9 },
-      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
-      "targets": [
-        {
-          "refId": "A",
-          "scenarioId": "csv_content",
-          "alias": "L3 Trigger Rate (%)",
-          "csvContent": "time,L3 Trigger Rate\n2026-01-05T00:00:00Z,28\n2026-01-12T00:00:00Z,31\n2026-01-19T00:00:00Z,29\n2026-01-26T00:00:00Z,35\n2026-02-02T00:00:00Z,38\n2026-02-09T00:00:00Z,42\n2026-02-16T00:00:00Z,40\n2026-02-23T00:00:00Z,37\n2026-03-02T00:00:00Z,39\n2026-03-09T00:00:00Z,41\n2026-03-16T00:00:00Z,38\n2026-03-23T00:00:00Z,36"
-        }
-      ],
+      "title": "Severity Breakdown Per Repo (current week)",
+      "type": "barchart",
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 14 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
       "fieldConfig": {
         "defaults": {
-          "unit": "percent",
-          "min": 0,
-          "max": 100,
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 12,
-            "pointSize": 5,
-            "showPoints": "auto"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "red", "value": null },
-              { "color": "green", "value": 30 },
-              { "color": "red", "value": 50 }
-            ]
-          },
-          "color": { "mode": "fixed", "fixedColor": "#a78bfa" }
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 1, "fillOpacity": 80 },
+          "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Critical" }, "properties": [{ "id": "color", "value": { "fixedColor": "#e05151", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "High" }, "properties": [{ "id": "color", "value": { "fixedColor": "#ff9900", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "Medium" }, "properties": [{ "id": "color", "value": { "fixedColor": "#fade2a", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "Low" }, "properties": [{ "id": "color", "value": { "fixedColor": "#73bf69", "mode": "fixed" } }] }
+        ]
       },
       "options": {
-        "tooltip": { "mode": "single", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom" }
-      }
+        "barWidth": 0.7,
+        "groupWidth": 0.7,
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "stacking": "normal",
+        "tooltip": { "mode": "multi", "sort": "desc" },
+        "xField": "Repo"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Repo,Critical,High,Medium,Low\napi-gateway,0,2,3,1\nauth-service,0,0,2,0\npayment-processor,1,3,3,1\ndata-pipeline,2,4,3,1\nfrontend-app,0,1,4,1"
+        }
+      ]
     },
     {
       "id": 7,
-      "type": "timeseries",
-      "title": "Weekly LLM Cost (USD)",
-      "description": "Total LLM spend per week across all PRs reviewed. Stable low cost is the goal.",
-      "gridPos": { "x": 0, "y": 18, "w": 12, "h": 7 },
-      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
-      "targets": [
-        {
-          "refId": "A",
-          "scenarioId": "csv_content",
-          "alias": "Weekly cost (USD)",
-          "csvContent": "time,Cost\n2026-01-05T00:00:00Z,4.20\n2026-01-12T00:00:00Z,5.80\n2026-01-19T00:00:00Z,4.90\n2026-01-26T00:00:00Z,6.10\n2026-02-02T00:00:00Z,5.30\n2026-02-09T00:00:00Z,4.70\n2026-02-16T00:00:00Z,5.50\n2026-02-23T00:00:00Z,4.80\n2026-03-02T00:00:00Z,5.20\n2026-03-09T00:00:00Z,4.60\n2026-03-16T00:00:00Z,5.10\n2026-03-23T00:00:00Z,4.90"
-        }
-      ],
+      "title": "Findings by Category Per Repo (current week)",
+      "type": "barchart",
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 14 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
       "fieldConfig": {
         "defaults": {
-          "unit": "currencyUSD",
-          "custom": {
-            "drawStyle": "bars",
-            "lineWidth": 1,
-            "fillOpacity": 80
-          },
-          "color": { "mode": "fixed", "fixedColor": "#10b981" }
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 1, "fillOpacity": 80 },
+          "unit": "short"
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "single", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom" }
-      }
+        "barWidth": 0.7,
+        "groupWidth": 0.7,
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "stacking": "normal",
+        "tooltip": { "mode": "multi", "sort": "desc" },
+        "xField": "Repo"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Repo,Security,Correctness,Performance,Maintainability\napi-gateway,1,3,1,1\nauth-service,0,2,0,0\npayment-processor,2,3,2,1\ndata-pipeline,3,4,2,1\nfrontend-app,0,3,1,2"
+        }
+      ]
     },
     {
       "id": 8,
-      "type": "gauge",
-      "title": "Issue Tracking Score (ITS)",
-      "description": "VISDOM SDLC composite: finding_acceptance × (1 − fpr) × recall. Target ≥ 0.70.",
-      "gridPos": { "x": 12, "y": 18, "w": 6, "h": 7 },
-      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
-      "targets": [
-        {
-          "refId": "A",
-          "scenarioId": "manual_entry",
-          "points": [[0, 1734480000000]]
-        }
-      ],
-      "options": {
-        "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" },
-        "orientation": "auto",
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "minVizWidth": 75,
-        "minVizHeight": 75
-      },
+      "title": "PR Coverage % Per Repo",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
       "fieldConfig": {
         "defaults": {
-          "min": 0,
-          "max": 1,
-          "mappings": [{ "type": "value", "options": { "0": { "text": "0.87" } } }],
+          "color": { "mode": "thresholds" },
           "thresholds": {
             "mode": "absolute",
             "steps": [
               { "color": "red", "value": null },
-              { "color": "yellow", "value": 0.5 },
-              { "color": "green", "value": 0.7 }
+              { "color": "orange", "value": 85 },
+              { "color": "green", "value": 95 }
             ]
           },
-          "color": { "mode": "thresholds" }
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "custom": { "fillOpacity": 80 }
         },
         "overrides": []
-      }
+      },
+      "options": {
+        "barWidth": 0.6,
+        "groupWidth": 0.7,
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "stacking": "none",
+        "tooltip": { "mode": "single", "sort": "none" },
+        "xField": "Repo",
+        "colorByField": "Coverage %"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Repo,Coverage %\napi-gateway,98\nauth-service,100\npayment-processor,92\ndata-pipeline,89\nfrontend-app,96"
+        }
+      ]
     },
     {
       "id": 9,
-      "type": "gauge",
-      "title": "Code Performance Index (CPI)",
-      "description": "VISDOM SDLC metric. 1.0 = on budget, >1.0 = under budget. Tracks review cost vs. incident prevention value.",
-      "gridPos": { "x": 18, "y": 18, "w": 6, "h": 7 },
-      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
-      "targets": [
-        {
-          "refId": "A",
-          "scenarioId": "manual_entry",
-          "points": [[0, 1734480000000]]
-        }
-      ],
-      "options": {
-        "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" },
-        "orientation": "auto",
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "minVizWidth": 75,
-        "minVizHeight": 75
-      },
+      "title": "Top Finding Types (last 4 weeks)",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
       "fieldConfig": {
         "defaults": {
-          "min": 0,
-          "max": 2,
-          "mappings": [{ "type": "value", "options": { "0": { "text": "1.24" } } }],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "red", "value": null },
-              { "color": "yellow", "value": 0.8 },
-              { "color": "green", "value": 1.0 }
-            ]
-          },
-          "color": { "mode": "thresholds" }
+          "color": { "mode": "thresholds" },
+          "custom": { "align": "auto", "displayMode": "auto" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
         },
-        "overrides": []
-      }
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Count" },
+            "properties": [
+              { "id": "custom.displayMode", "value": "color-background" },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "green", "value": null },
+                    { "color": "orange", "value": 8 },
+                    { "color": "red", "value": 15 }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "footer": { "show": false },
+        "showHeader": true,
+        "sortBy": [{ "desc": true, "displayName": "Count" }]
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Finding Type,Count,Repos Affected\nMissing input validation,18,\"api-gateway, data-pipeline, payment-processor\"\nUnhandled async error,12,\"api-gateway, frontend-app\"\nInsecure data exposure,9,\"data-pipeline, payment-processor\"\nRace condition risk,7,data-pipeline\nMissing rate limiting,5,api-gateway"
+        }
+      ]
     }
   ]
 }
