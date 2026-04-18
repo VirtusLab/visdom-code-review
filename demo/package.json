@@ -18,7 +18,9 @@
     "showcase": "tsx src/scripts/run-showcase.ts",
     "showcase:live": "tsx src/scripts/run-showcase.ts --live",
     "build": "tsup src/cli/index.ts --format esm --dts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "review": "tsx src/cli/review.ts",
+    "test": "node --import tsx/esm --test src/test/dashboard-aggregator.test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
