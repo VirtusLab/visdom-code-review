@@ -406,17 +406,26 @@ const TIMELINE_NARRATIVE: Record<string, { humanEngagedMin: number; humanReason:
           </div>
           <h3 class="demo-scenario-title">{s.title}</h3>
           <p class="demo-scenario-bug">{s.bugDescription}</p>
+          {s.prTitle && <p class="demo-scenario-pr-title">PR: {s.prTitle}</p>}
           <div class="demo-scenario-pills">
             {s.summary.bySeverity.critical > 0 && <span class="sev-pill sev-critical">● {s.summary.bySeverity.critical} critical</span>}
             {s.summary.bySeverity.high > 0 && <span class="sev-pill sev-high">● {s.summary.bySeverity.high} high</span>}
             {s.summary.bySeverity.medium > 0 && <span class="sev-pill sev-medium">● {s.summary.bySeverity.medium} medium</span>}
           </div>
+          <ul class="demo-scenario-findings">
+            {s.findings.slice(0, 3).map(f => (
+              <li class={`dsf-item dsf-${f.severity}`}>
+                <span class="dsf-sev">{f.severity}</span>
+                <span class="dsf-title">{f.title}</span>
+              </li>
+            ))}
+          </ul>
           <div class="demo-scenario-meta">
             <span>${s.summary.costUsd.toFixed(2)}</span>
             <span>{Math.round(s.summary.durationMs / 1000)}s</span>
           </div>
           {s.prUrl
-            ? <a href={s.prUrl} class="demo-scenario-link" target="_blank" rel="noopener">View PR with VCR findings →</a>
+            ? <a href={s.prUrl} class="demo-scenario-link" target="_blank" rel="noopener">View PR #{s.prUrl.split('/').at(-1)} on GitHub →</a>
             : <span class="demo-scenario-nopr">Local run — no GitHub PR</span>}
         </div>
       ))}
@@ -538,4 +547,13 @@ const TIMELINE_NARRATIVE: Record<string, { humanEngagedMin: number; humanReason:
 .demo-scenario-link { font-size: 0.8rem; color: #3b82f6; text-decoration: none; margin-top: auto; }
 .demo-scenario-link:hover { text-decoration: underline; }
 .demo-scenario-nopr { font-size: 0.78rem; color: #334155; font-style: italic; margin-top: auto; }
+.demo-scenario-pr-title { font-size: 0.7rem; color: #334155; font-family: monospace; margin: -0.2rem 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.demo-scenario-findings { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+.dsf-item { display: flex; align-items: flex-start; gap: 0.35rem; font-size: 0.75rem; line-height: 1.35; }
+.dsf-sev { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.1rem 0.3rem; border-radius: 3px; flex-shrink: 0; margin-top: 0.05rem; }
+.dsf-critical .dsf-sev { background: #ef444420; color: #ef4444; }
+.dsf-high .dsf-sev { background: #f59e0b20; color: #f59e0b; }
+.dsf-medium .dsf-sev { background: #3b82f620; color: #3b82f6; }
+.dsf-low .dsf-sev { background: #47556920; color: #475569; }
+.dsf-title { color: #94a3b8; }
 </style>
