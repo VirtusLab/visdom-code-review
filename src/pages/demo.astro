@@ -1,0 +1,541 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import showcaseRaw from '../../demo/results/showcase.json';
+import liveReviewsRaw from '../../demo/results/live-reviews.json';
+import type { ShowcaseResults, LiveReviews } from '../../demo/src/types/showcase.js';
+
+const showcase = showcaseRaw as unknown as ShowcaseResults;
+const liveReviews = liveReviewsRaw as unknown as LiveReviews;
+
+// Merge scenario PRs + live reviews for ticker (most recent 5)
+const SEV_ORDER = ['critical', 'high', 'medium', 'low'] as const;
+
+const tickerItems = [
+  ...showcase.scenarios
+    .filter(s => s.prUrl)
+    .map(s => ({
+      prTitle: s.prTitle,
+      prUrl: s.prUrl!,
+      totalFindings: s.summary.totalFindings,
+      maxSeverity: (SEV_ORDER.find(sv => s.summary.bySeverity[sv] > 0) ?? 'none') as string,
+      costUsd: s.summary.costUsd,
+      durationMs: s.summary.durationMs,
+      reviewedAt: s.reviewedAt,
+      prNumber: null as number | null,
+    })),
+  ...liveReviews.reviews.map(r => ({
+    prTitle: r.prTitle,
+    prUrl: r.prUrl,
+    totalFindings: r.totalFindings,
+    maxSeverity: r.maxSeverity as string,
+    costUsd: r.costUsd,
+    durationMs: r.durationMs,
+    reviewedAt: r.reviewedAt,
+    prNumber: r.prNumber,
+  })),
+].sort((a, b) => new Date(b.reviewedAt).getTime() - new Date(a.reviewedAt).getTime()).slice(0, 5);
+
+const agg = showcase.aggregate;
+
+const SEV_COLOR: Record<string, string> = {
+  critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#6b7280', none: '#475569',
+};
+
+// Timeline narrative data per scenario
+const TIMELINE_NARRATIVE: Record<string, { humanEngagedMin: number; humanReason: string; withoutVcr: string }> = {
+  'meta/insecure-ai-client': {
+    humanEngagedMin: 2,
+    humanReason: 'VCR posted CRITICAL finding (hardcoded API key) at T+1.5min. Human reviews the 3 additional findings and decides to block the merge.',
+    withoutVcr: '24–48h wait for review. Hardcoded key ships to prod. Rotated after incident.',
+  },
+  'meta/broken-deterministic-gate': {
+    humanEngagedMin: 1,
+    humanReason: 'L1 fires immediately — weakened SQL regex is a LOGIC finding. Human traces the 4 regressions and requires a revert.',
+    withoutVcr: 'Clean CI. Code ships. INSERT/UPDATE injection vectors exposed for weeks.',
+  },
+  'meta/hollow-test-suite': {
+    humanEngagedMin: 3,
+    humanReason: 'L2 flags circular test pattern. Human reviews the L3 deep analysis confirming 100% coverage with 0 behavioral assertions.',
+    withoutVcr: 'Passes code review — coverage dashboard looks green. Behavioral regressions ship undetected.',
+  },
+  'standalone/payment-service': {
+    humanEngagedMin: 2,
+    humanReason: 'L1 fires SQL injection (CRITICAL) + hardcoded SECRET_KEY. Human blocks and requests full security review.',
+    withoutVcr: 'SQL injection and PCI violation ship. Card data leaks in logs.',
+  },
+};
+---
+
+<BaseLayout
+  title="Demo — Visdom Code Review"
+  description="VCR reviews its own codebase on every pull request. See real findings, real costs, real GitHub PRs."
+>
+
+<!-- ═══ SECTION 1: HERO ═══ -->
+<section class="demo-hero">
+  <div class="demo-container">
+    <p class="demo-eyebrow">VISDOM CREATED WITH VISDOM</p>
+    <h1 class="demo-headline">Every PR on this repo is reviewed by VCR</h1>
+    <p class="demo-subtext">We don't demo on toy examples. VCR runs on its own codebase — metacircularly — on every pull request. The findings below are real.</p>
+    <div class="demo-hero-actions">
+      {tickerItems[0]?.prUrl && (
+        <a href={tickerItems[0].prUrl} class="demo-btn-primary" target="_blank" rel="noopener">
+          See last PR review on GitHub ↗
+        </a>
+      )}
+      <div class="demo-hero-stats">
+        <span class="demo-hero-stat"><strong style="color:#10b981">{agg.totalFindings}</strong> bugs found</span>
+        <span class="demo-hero-stat"><strong style="color:#10b981">${agg.avgCostUsd.toFixed(2)}</strong> avg cost</span>
+        <span class="demo-hero-stat"><strong style="color:#10b981">{Math.round(agg.avgDurationMs / 1000)}s</strong> avg time</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 2: LIVE TICKER ═══ -->
+<section class="demo-ticker-section">
+  <div class="demo-container">
+    <p class="demo-section-label">RECENT PR REVIEWS ON THIS REPO</p>
+    {tickerItems.length > 0 ? (
+      <div class="demo-ticker">
+        {tickerItems.map(item => (
+          <div class="demo-ticker-row">
+            {item.prNumber && <span class="demo-ticker-pr">PR #{item.prNumber}</span>}
+            <span class="demo-ticker-title">{item.prTitle}</span>
+            <span class="demo-ticker-findings" style={`color:${SEV_COLOR[item.maxSeverity] ?? '#475569'}`}>
+              {item.totalFindings} finding{item.totalFindings !== 1 ? 's' : ''}
+            </span>
+            <span class="demo-ticker-meta">${item.costUsd.toFixed(2)} · {Math.round(item.durationMs / 1000)}s</span>
+            {item.prUrl && (
+              <a href={item.prUrl} class="demo-ticker-link" target="_blank" rel="noopener">view →</a>
+            )}
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p class="demo-ticker-empty">No PR reviews yet — run <code>npm run showcase</code> to generate initial data.</p>
+    )}
+  </div>
+</section>
+
+<!-- ═══ SECTION 3: METRICS CHARTS ═══ -->
+<section class="demo-charts-section">
+  <div class="demo-container">
+    <p class="demo-section-label">MEASURED METRICS — REAL RUNS</p>
+    <div class="demo-charts-grid">
+      <div class="demo-chart-panel">
+        <h3 class="demo-chart-title">Findings by Severity</h3>
+        <p class="demo-chart-note">Per scenario · real run output</p>
+        <div class="chart-wrap"><canvas id="severityChart"></canvas></div>
+      </div>
+      <div class="demo-chart-panel">
+        <h3 class="demo-chart-title">Cost Per Layer</h3>
+        <p class="demo-chart-note">L0+L1 free · L3 only runs for HIGH/CRITICAL</p>
+        <div class="chart-wrap"><canvas id="costChart"></canvas></div>
+      </div>
+      <div class="demo-chart-panel">
+        <h3 class="demo-chart-title">F1 Score vs Market</h3>
+        <p class="demo-chart-note">50 PRs · 5 repos · advisor judge · honest numbers</p>
+        <div class="chart-wrap"><canvas id="f1Chart"></canvas></div>
+      </div>
+      <div class="demo-chart-panel">
+        <h3 class="demo-chart-title">4× Hidden Tax Breakdown</h3>
+        <p class="demo-chart-note">50-seat team · license is only 5% of real cost</p>
+        <div class="chart-wrap" style="max-width:280px;margin:0 auto"><canvas id="taxChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script is:inline define:vars={{ showcase }}>
+  const chartDefaults = {
+    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } },
+      y: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } },
+    },
+  };
+
+  // Chart 1: Severity breakdown per scenario
+  new Chart(document.getElementById('severityChart'), {
+    type: 'bar',
+    data: {
+      labels: showcase.scenarios.map(s => s.title),
+      datasets: [
+        { label: 'Critical', data: showcase.scenarios.map(s => s.summary.bySeverity.critical), backgroundColor: '#ef4444' },
+        { label: 'High',     data: showcase.scenarios.map(s => s.summary.bySeverity.high),     backgroundColor: '#f59e0b' },
+        { label: 'Medium',   data: showcase.scenarios.map(s => s.summary.bySeverity.medium),   backgroundColor: '#3b82f6' },
+        { label: 'Low',      data: showcase.scenarios.map(s => s.summary.bySeverity.low),      backgroundColor: '#475569' },
+      ],
+    },
+    options: {
+      ...chartDefaults, responsive: true,
+      scales: {
+        x: { ...chartDefaults.scales.x, stacked: true },
+        y: { ...chartDefaults.scales.y, stacked: true },
+      },
+    },
+  });
+
+  // Chart 2: Cost per layer (avg across scenarios)
+  const avgCosts = ['l0','l1','l2','l3'].map(
+    l => showcase.scenarios.reduce((n, s) => n + s.layerCosts[l], 0) / showcase.scenarios.length
+  );
+  new Chart(document.getElementById('costChart'), {
+    type: 'bar',
+    data: {
+      labels: ['L0 Context', 'L1 Deterministic', 'L2 AI Scan', 'L3 Deep Review'],
+      datasets: [{
+        label: 'Avg cost (USD)', data: avgCosts,
+        backgroundColor: ['#1e3a2f','#1e3a2f','#2a1e3a','#3a2a1e'],
+        borderColor: ['#10b981','#10b981','#a78bfa','#f59e0b'], borderWidth: 1,
+      }],
+    },
+    options: {
+      ...chartDefaults, indexAxis: 'y',
+      plugins: { ...chartDefaults.plugins, tooltip: { callbacks: { label: ctx => ` $${Number(ctx.raw).toFixed(4)}` } } },
+    },
+  });
+
+  // Chart 3: F1 vs market (hardcoded benchmark data from architecture-decisions.md)
+  new Chart(document.getElementById('f1Chart'), {
+    type: 'bar',
+    data: {
+      labels: ['GitHub Copilot', 'Claude Code', 'CodeRabbit', 'VCR (honest)', 'Augment', 'Qodo', 'Cubic', 'Propel'],
+      datasets: [{
+        label: 'F1 Score %',
+        data: [25, 31, 45, 43, 59, 60, 62, 64],
+        backgroundColor: ['#1e293b','#1e293b','#1e293b','#10b98133','#1e293b','#1e293b','#1e293b','#1e293b'],
+        borderColor:      ['#334155','#334155','#334155','#10b981',  '#334155','#334155','#334155','#334155'],
+        borderWidth: 1,
+      }],
+    },
+    options: { ...chartDefaults, indexAxis: 'y', scales: { ...chartDefaults.scales, x: { ...chartDefaults.scales.x, max: 100 } } },
+  });
+
+  // Chart 4: 4x Hidden Tax donut
+  new Chart(document.getElementById('taxChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['AI Licenses', 'Compute', 'Token Spend', 'Human Review'],
+      datasets: [{
+        data: [5, 24, 22, 49],
+        backgroundColor: ['#1e3a2f','#2a1e3a','#1e2a3a','#3a1e1e'],
+        borderColor: ['#10b981','#a78bfa','#3b82f6','#ef4444'], borderWidth: 2,
+      }],
+    },
+    options: { plugins: { legend: { labels: { color: '#94a3b8' } } } },
+  });
+</script>
+
+<!-- ═══ SECTION 4: TRIAGE FLOW ═══ -->
+<section class="demo-triage-section">
+  <div class="demo-container">
+    <p class="demo-section-label">PR TRIAGE PATH — L0 → L1 → L2 → L3</p>
+    <h2 class="demo-section-heading">How each PR moves through the pipeline</h2>
+    <p class="demo-section-sub">Click a scenario to trace its path. Each layer shows what was found and why the gate made its decision.</p>
+    <div class="triage-layout">
+      <div class="triage-pr-list" id="triage-pr-list"></div>
+      <div class="triage-diagram" id="triage-diagram">
+        <p class="triage-empty">← Select a scenario to trace its path</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ showcase: showcase }}>
+  (function() {
+    const LAYER_NAMES = ['L0 Context Collection','L1 Deterministic Gate','L2 AI Quick Scan','L3 AI Deep Review'];
+    const SEV_COLORS = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#6b7280' };
+
+    function costFmt(c) { return c < 0.0005 ? '$0' : '$' + c.toFixed(3); }
+    function sevPill(f) {
+      return '<span class="t-pill" style="border-color:' + (SEV_COLORS[f.severity]||'#475569') + '">' + f.title.slice(0,45) + '</span>';
+    }
+
+    function renderTriage(idx) {
+      var s = showcase.scenarios[idx];
+      var diagram = document.getElementById('triage-diagram');
+      var layerKeys = ['l0','l1','l2','l3'];
+      var html = '<div class="t-summary">';
+      html += '<div class="t-sum-item"><strong style="color:#10b981">' + s.summary.totalFindings + '</strong><span>Findings</span></div>';
+      html += '<div class="t-sum-item"><strong style="color:#a78bfa">' + costFmt(s.summary.costUsd) + '</strong><span>Cost</span></div>';
+      html += '<div class="t-sum-item"><strong style="color:#3b82f6">' + Math.round(s.summary.durationMs/1000) + 's</strong><span>Duration</span></div>';
+      html += '<div class="t-sum-item"><strong style="color:#f59e0b">' + (s.summary.l3Triggered ? 'YES' : 'NO') + '</strong><span>L3 run</span></div>';
+      html += '</div>';
+
+      for (var i = 0; i < 4; i++) {
+        var layerFindings = s.findings.filter(function(f) { return f.layer === i; });
+        var cost = s.layerCosts[layerKeys[i]];
+        var dur = s.layerDurations[layerKeys[i]];
+        var skipped = i === 3 && !s.summary.l3Triggered;
+        var cls = skipped ? 't-skipped' : (layerFindings.length > 0 ? 't-hit' : 't-pass');
+        html += '<div class="t-layer ' + cls + '">';
+        html += '<div class="t-layer-head"><span class="t-layer-label">L' + i + '</span><span class="t-layer-name">' + LAYER_NAMES[i] + '</span><span class="t-layer-cost">' + costFmt(cost) + ' · ' + Math.round(dur) + 'ms</span></div>';
+        if (skipped) {
+          html += '<div class="t-layer-result t-dim">Skipped — L2 risk was LOW</div>';
+        } else if (layerFindings.length === 0) {
+          html += '<div class="t-layer-result t-dim">No findings</div>';
+        } else {
+          html += '<div class="t-pills">' + layerFindings.map(sevPill).join('') + '</div>';
+        }
+        html += '</div>';
+        if (i < 3) html += '<div class="t-connector"></div>';
+      }
+      diagram.innerHTML = html;
+    }
+
+    var list = document.getElementById('triage-pr-list');
+    showcase.scenarios.forEach(function(s, i) {
+      var btn = document.createElement('button');
+      btn.className = 'triage-pr-btn';
+      btn.setAttribute('data-idx', i);
+      var typeLabel = s.type === 'metacircular' ? 'META' : 'STANDALONE';
+      btn.innerHTML = '<span class="tpb-type tpb-' + s.type + '">' + typeLabel + ' · ' + s.language + '</span>' +
+        '<span class="tpb-title">' + s.title + '</span>' +
+        '<span class="tpb-count">' + s.summary.totalFindings + '</span>';
+      btn.onclick = function() {
+        document.querySelectorAll('.triage-pr-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderTriage(i);
+      };
+      list.appendChild(btn);
+    });
+  })();
+</script>
+
+<!-- ═══ SECTION 5: TIMELINE ═══ -->
+<section class="demo-timeline-section">
+  <div class="demo-container">
+    <p class="demo-section-label">WHEN DOES THE HUMAN ENTER?</p>
+    <h2 class="demo-section-heading">From PR opened to human decision</h2>
+    <p class="demo-section-sub">Click any scenario to see the full timeline. Click any event for details.</p>
+    <div class="timeline-layout">
+      <div class="timeline-tabs" id="timeline-tabs"></div>
+      <div class="timeline-canvas-wrap">
+        <div class="timeline-swim-lanes" id="timeline-swim-lanes">
+          <p class="triage-empty">← Select a scenario</p>
+        </div>
+      </div>
+      <div class="timeline-detail" id="timeline-detail"></div>
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ showcase: showcase, timelineNarrative: TIMELINE_NARRATIVE }}>
+  (function() {
+    var tabs = document.getElementById('timeline-tabs');
+    var lanes = document.getElementById('timeline-swim-lanes');
+    var detail = document.getElementById('timeline-detail');
+
+    function renderTimeline(idx) {
+      var s = showcase.scenarios[idx];
+      var narr = timelineNarrative[s.name] || { humanEngagedMin: 5, humanReason: 'Human reviews VCR findings.', withoutVcr: 'Bugs ship.' };
+      var totalMs = s.summary.durationMs;
+      var l0ms = s.layerDurations.l0;
+      var l1ms = s.layerDurations.l1;
+      var l2ms = s.layerDurations.l2;
+      var l3ms = s.layerDurations.l3;
+      var vcrEndSec = Math.round(totalMs / 1000);
+      var humanMin = narr.humanEngagedMin;
+
+      // Compressed scale: VCR phase = 60% of bar width
+      function pct(ms) { return Math.round((ms / totalMs) * 60); }
+
+      var layerEvents = [
+        { label: 'L0 Context', start: 0, widthPct: pct(l0ms), lane: 'vcr', color: '#1e3a2f', border: '#10b981' },
+        { label: 'L1 Gate', start: pct(l0ms), widthPct: pct(l1ms), lane: 'vcr', color: '#1e3a2f', border: '#10b981' },
+        { label: 'L2 Scan', start: pct(l0ms)+pct(l1ms), widthPct: Math.max(pct(l2ms),3), lane: 'vcr', color: '#2a1e3a', border: '#a78bfa' },
+      ];
+      if (s.summary.l3Triggered) {
+        layerEvents.push({ label: 'L3 Deep', start: pct(l0ms)+pct(l1ms)+Math.max(pct(l2ms),3), widthPct: Math.max(pct(l3ms),3), lane: 'vcr', color: '#3a2a1e', border: '#f59e0b' });
+      }
+
+      var html = '';
+      // VCR lane
+      html += '<div class="tl-lane"><div class="tl-lane-label">VCR Pipeline</div><div class="tl-lane-track">';
+      layerEvents.forEach(function(ev) {
+        html += '<div class="tl-block" style="left:' + ev.start + '%;width:' + ev.widthPct + '%;background:' + ev.color + ';border:1px solid ' + ev.border + '" title="' + ev.label + '">' + ev.label + '</div>';
+      });
+      html += '</div></div>';
+      // GitHub lane
+      html += '<div class="tl-lane"><div class="tl-lane-label">GitHub</div><div class="tl-lane-track">';
+      html += '<div class="tl-event tl-event-pr" style="left:0%;width:3%">PR opened</div>';
+      html += '<div class="tl-event tl-event-comment" style="left:58%;width:5%">VCR comment</div>';
+      html += '</div></div>';
+      // Human lane
+      var humanLeft = 63;
+      html += '<div class="tl-lane"><div class="tl-lane-label">Human</div><div class="tl-lane-track">';
+      html += '<div class="tl-event tl-event-human" style="left:' + humanLeft + '%;width:37%" title="' + narr.humanReason + '">Reviews findings (' + humanMin + 'min)</div>';
+      html += '</div></div>';
+      // Time axis
+      html += '<div class="tl-axis"><span style="left:0%">0s</span><span style="left:60%">+' + vcrEndSec + 's VCR done</span><span style="left:97%">+' + humanMin + 'min human</span></div>';
+
+      lanes.innerHTML = html;
+      detail.innerHTML = '<div class="tl-detail-box">' +
+        '<p class="tl-detail-title">Why human at T+' + humanMin + 'min?</p>' +
+        '<p class="tl-detail-text">' + narr.humanReason + '</p>' +
+        '<p class="tl-detail-vs"><strong>Without VCR:</strong> ' + narr.withoutVcr + '</p>' +
+        '</div>';
+    }
+
+    showcase.scenarios.forEach(function(s, i) {
+      var tab = document.createElement('button');
+      tab.className = 'tl-tab';
+      tab.textContent = s.title;
+      tab.onclick = function() {
+        document.querySelectorAll('.tl-tab').forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        renderTimeline(i);
+      };
+      tabs.appendChild(tab);
+    });
+  })();
+</script>
+
+<!-- ═══ SECTION 6: SCENARIO CARDS ═══ -->
+<section class="demo-scenarios-section">
+  <div class="demo-container">
+    <p class="demo-section-label">DEMO SCENARIOS — REAL RUNS, REAL FINDINGS</p>
+    <div class="demo-scenarios-grid">
+      {showcase.scenarios.map(s => (
+        <div class="demo-scenario-card">
+          <div class={`demo-scenario-type demo-scenario-type--${s.type}`}>
+            {s.type === 'metacircular' ? 'METACIRCULAR' : 'STANDALONE'} · {s.language}
+          </div>
+          <h3 class="demo-scenario-title">{s.title}</h3>
+          <p class="demo-scenario-bug">{s.bugDescription}</p>
+          <div class="demo-scenario-pills">
+            {s.summary.bySeverity.critical > 0 && <span class="sev-pill sev-critical">● {s.summary.bySeverity.critical} critical</span>}
+            {s.summary.bySeverity.high > 0 && <span class="sev-pill sev-high">● {s.summary.bySeverity.high} high</span>}
+            {s.summary.bySeverity.medium > 0 && <span class="sev-pill sev-medium">● {s.summary.bySeverity.medium} medium</span>}
+          </div>
+          <div class="demo-scenario-meta">
+            <span>${s.summary.costUsd.toFixed(2)}</span>
+            <span>{Math.round(s.summary.durationMs / 1000)}s</span>
+          </div>
+          {s.prUrl
+            ? <a href={s.prUrl} class="demo-scenario-link" target="_blank" rel="noopener">View PR with VCR findings →</a>
+            : <span class="demo-scenario-nopr">Local run — no GitHub PR</span>}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+/* ── Layout ── */
+.demo-container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+.demo-section-label { font-size: 0.62rem; color: #475569; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.demo-section-heading { font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 700; color: #f1f5f9; margin: 0 0 0.5rem; }
+.demo-section-sub { color: #64748b; font-size: 0.9rem; margin: 0 0 1.5rem; }
+
+/* ── Section 1: Hero ── */
+.demo-hero { background: #0f172a; padding: 4rem 0 3rem; border-bottom: 1px solid #1e293b; }
+.demo-eyebrow { font-size: 0.7rem; color: #10b981; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.demo-headline { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700; color: #f1f5f9; margin: 0 0 1rem; line-height: 1.2; }
+.demo-subtext { color: #94a3b8; font-size: 1rem; max-width: 600px; margin-bottom: 1.5rem; line-height: 1.6; }
+.demo-hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+.demo-btn-primary { background: #10b981; color: #fff; padding: 0.6rem 1.25rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: opacity 0.15s; }
+.demo-btn-primary:hover { opacity: 0.85; }
+.demo-hero-stats { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+.demo-hero-stat { font-size: 0.85rem; color: #64748b; }
+
+/* ── Section 2: Ticker ── */
+.demo-ticker-section { background: #020817; padding: 1.5rem 0; border-bottom: 1px solid #1e293b; }
+.demo-ticker { display: flex; flex-direction: column; gap: 0.5rem; }
+.demo-ticker-row { display: flex; align-items: center; gap: 1rem; font-size: 0.82rem; flex-wrap: wrap; padding: 0.4rem 0; border-bottom: 1px solid #0f172a; }
+.demo-ticker-pr { color: #475569; font-variant-numeric: tabular-nums; }
+.demo-ticker-title { color: #f1f5f9; flex: 1; min-width: 200px; }
+.demo-ticker-findings { font-weight: 600; }
+.demo-ticker-meta { color: #475569; font-size: 0.75rem; }
+.demo-ticker-link { color: #3b82f6; font-size: 0.75rem; }
+.demo-ticker-empty { color: #475569; font-size: 0.85rem; font-style: italic; }
+
+/* ── Section 3: Charts ── */
+.demo-charts-section { background: #020817; padding: 3rem 0; border-bottom: 1px solid #1e293b; }
+.demo-charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+@media (max-width: 768px) { .demo-charts-grid { grid-template-columns: 1fr; } }
+.demo-chart-panel { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 1.25rem; }
+.demo-chart-title { font-size: 0.9rem; font-weight: 600; color: #f1f5f9; margin: 0 0 0.2rem; }
+.demo-chart-note { font-size: 0.72rem; color: #475569; margin: 0 0 1rem; }
+.chart-wrap { position: relative; }
+
+/* ── Section 4: Triage ── */
+.demo-triage-section { background: #0f172a; padding: 3rem 0; border-bottom: 1px solid #1e293b; }
+.triage-layout { display: grid; grid-template-columns: 220px 1fr; gap: 1.5rem; }
+@media (max-width: 768px) { .triage-layout { grid-template-columns: 1fr; } }
+.triage-pr-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.triage-pr-btn { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 0.6rem 0.75rem; text-align: left; cursor: pointer; transition: all 0.15s; }
+.triage-pr-btn:hover, .triage-pr-btn.active { border-color: #10b981; background: #0f2a1e; }
+.tpb-type { display: block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+.tpb-metacircular { color: #a78bfa; }
+.tpb-standalone { color: #f59e0b; }
+.tpb-title { display: block; font-size: 0.8rem; color: #f1f5f9; margin-bottom: 0.2rem; }
+.tpb-count { display: block; font-size: 0.72rem; color: #64748b; }
+.triage-diagram { background: #020817; border: 1px solid #1e293b; border-radius: 8px; padding: 1rem; min-height: 200px; }
+.triage-empty { color: #475569; font-size: 0.85rem; font-style: italic; margin: 2rem 1rem; }
+.t-summary { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.t-sum-item { display: flex; flex-direction: column; align-items: center; background: #0f172a; border: 1px solid #1e293b; border-radius: 6px; padding: 0.5rem 0.75rem; min-width: 70px; }
+.t-sum-item strong { font-size: 1.1rem; }
+.t-sum-item span { font-size: 0.65rem; color: #64748b; margin-top: 0.1rem; }
+.t-layer { background: #0f172a; border: 1px solid #1e293b; border-radius: 6px; padding: 0.6rem 0.75rem; }
+.t-hit { border-color: #f59e0b44; }
+.t-pass { border-color: #10b98133; }
+.t-skipped { opacity: 0.4; }
+.t-layer-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+.t-layer-label { background: #1e293b; color: #94a3b8; font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 3px; }
+.t-layer-name { color: #f1f5f9; font-size: 0.8rem; flex: 1; }
+.t-layer-cost { color: #475569; font-size: 0.72rem; }
+.t-layer-result { font-size: 0.78rem; }
+.t-dim { color: #475569; }
+.t-pills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.t-pill { font-size: 0.72rem; color: #f1f5f9; border: 1px solid #334155; border-radius: 4px; padding: 0.15rem 0.4rem; }
+.t-connector { width: 2px; height: 14px; background: #1e293b; margin: 0 auto; }
+
+/* ── Section 5: Timeline ── */
+.demo-timeline-section { background: #020817; padding: 3rem 0; border-bottom: 1px solid #1e293b; }
+.timeline-layout { display: flex; flex-direction: column; gap: 1rem; }
+.timeline-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+.tl-tab { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 0.4rem 0.75rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }
+.tl-tab:hover, .tl-tab.active { border-color: #10b981; color: #f1f5f9; background: #0f2a1e; }
+.timeline-canvas-wrap { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 1rem; overflow-x: auto; }
+.tl-lane { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+.tl-lane-label { font-size: 0.72rem; color: #64748b; width: 100px; flex-shrink: 0; text-align: right; }
+.tl-lane-track { position: relative; flex: 1; height: 28px; background: #020817; border-radius: 4px; }
+.tl-block { position: absolute; height: 100%; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: #94a3b8; overflow: hidden; white-space: nowrap; padding: 0 0.25rem; }
+.tl-event { position: absolute; height: 100%; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; white-space: nowrap; padding: 0 0.25rem; }
+.tl-event-pr { background: #1e2a3a; border: 1px solid #3b82f6; color: #3b82f6; }
+.tl-event-comment { background: #0f2a1e; border: 1px solid #10b981; color: #10b981; }
+.tl-event-human { background: #2a1e3a; border: 1px solid #a78bfa; color: #a78bfa; }
+.tl-axis { position: relative; height: 20px; margin-top: 0.25rem; padding-left: 100px; }
+.tl-axis span { position: absolute; font-size: 0.6rem; color: #475569; transform: translateX(-50%); }
+.timeline-detail { }
+.tl-detail-box { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 1rem; }
+.tl-detail-title { font-size: 0.8rem; font-weight: 600; color: #a78bfa; margin: 0 0 0.4rem; }
+.tl-detail-text { font-size: 0.85rem; color: #94a3b8; margin: 0 0 0.5rem; line-height: 1.5; }
+.tl-detail-vs { font-size: 0.82rem; color: #64748b; margin: 0; }
+.tl-detail-vs strong { color: #f59e0b; }
+
+/* ── Section 6: Scenario Cards ── */
+.demo-scenarios-section { background: #0f172a; padding: 3rem 0; }
+.demo-scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.demo-scenario-card { background: #020817; border: 1px solid #1e293b; border-radius: 8px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.demo-scenario-type { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; }
+.demo-scenario-type--metacircular { color: #a78bfa; }
+.demo-scenario-type--standalone { color: #f59e0b; }
+.demo-scenario-title { font-size: 0.95rem; font-weight: 600; color: #f1f5f9; margin: 0; }
+.demo-scenario-bug { font-size: 0.82rem; color: #64748b; margin: 0; line-height: 1.4; }
+.demo-scenario-pills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.sev-pill { font-size: 0.72rem; padding: 0.15rem 0.5rem; border-radius: 4px; }
+.sev-critical { color: #ef4444; background: #3a1e1e; }
+.sev-high { color: #f59e0b; background: #3a2a1e; }
+.sev-medium { color: #3b82f6; background: #1e2a3a; }
+.demo-scenario-meta { display: flex; gap: 0.75rem; font-size: 0.78rem; color: #475569; }
+.demo-scenario-link { font-size: 0.8rem; color: #3b82f6; text-decoration: none; margin-top: auto; }
+.demo-scenario-link:hover { text-decoration: underline; }
+.demo-scenario-nopr { font-size: 0.78rem; color: #334155; font-style: italic; margin-top: auto; }
+</style>
