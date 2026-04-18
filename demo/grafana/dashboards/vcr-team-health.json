@@ -1,0 +1,374 @@
+{
+  "id": null,
+  "uid": "vcr-team-health",
+  "title": "VCR Team Health",
+  "description": "Visdom Code Review — team health metrics. Shows PR cycle time, finding quality, and cost trends.",
+  "tags": ["visdom", "code-review", "team-health"],
+  "timezone": "browser",
+  "editable": true,
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "",
+  "time": { "from": "now-12w", "to": "now" },
+  "timepicker": {},
+  "graphTooltip": 1,
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "PR Cycle Time (hours, open → merge)",
+      "description": "Time from PR open to merge. VCR deployed at marker — reviewers spend less time triaging noise, high-risk PRs get escalated faster.",
+      "gridPos": { "x": 0, "y": 0, "w": 16, "h": 9 },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "alias": "Without VCR (baseline)",
+          "csvContent": "time,Without VCR\n2024-10-07T00:00:00Z,71\n2024-10-14T00:00:00Z,68\n2024-10-21T00:00:00Z,74\n2024-10-28T00:00:00Z,70\n2024-11-04T00:00:00Z,69\n2024-11-11T00:00:00Z,73\n2024-11-18T00:00:00Z,68\n2024-11-25T00:00:00Z,71\n2024-12-02T00:00:00Z,72\n2024-12-09T00:00:00Z,70\n2024-12-16T00:00:00Z,69\n2024-12-23T00:00:00Z,73"
+        },
+        {
+          "refId": "B",
+          "scenarioId": "csv_content",
+          "alias": "With VCR",
+          "csvContent": "time,With VCR\n2024-10-07T00:00:00Z,71\n2024-10-14T00:00:00Z,68\n2024-10-21T00:00:00Z,74\n2024-10-28T00:00:00Z,70\n2024-11-04T00:00:00Z,52\n2024-11-11T00:00:00Z,41\n2024-11-18T00:00:00Z,34\n2024-11-25T00:00:00Z,27\n2024-12-02T00:00:00Z,21\n2024-12-09T00:00:00Z,17\n2024-12-16T00:00:00Z,14\n2024-12-23T00:00:00Z,12"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "h",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "gradientMode": "none",
+            "pointSize": 5,
+            "showPoints": "auto"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 24 },
+              { "color": "red", "value": 48 }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Without VCR" },
+            "properties": [
+              { "id": "color", "value": { "mode": "fixed", "fixedColor": "#6b7280" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "With VCR" },
+            "properties": [
+              { "id": "color", "value": { "mode": "fixed", "fixedColor": "#10b981" } }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "tooltip": { "mode": "multi", "sort": "none" },
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Avg Cost / PR",
+      "description": "Average LLM cost per pull request across all layers.",
+      "gridPos": { "x": 16, "y": 0, "w": 4, "h": 3 },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "manual_entry",
+          "points": [[0, 1734480000000]]
+        }
+      ],
+      "options": {
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [{ "type": "value", "options": { "0": { "text": "$0.09" } } }],
+          "color": { "mode": "fixed", "fixedColor": "#10b981" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "False Positive Rate",
+      "description": "Percentage of findings that were rejected by developers as noise.",
+      "gridPos": { "x": 16, "y": 3, "w": 4, "h": 3 },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "manual_entry",
+          "points": [[0, 1734480000000]]
+        }
+      ],
+      "options": {
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [{ "type": "value", "options": { "0": { "text": "11.2%" } } }],
+          "color": { "mode": "fixed", "fixedColor": "#10b981" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Acceptance Rate",
+      "description": "Percentage of VCR findings acted on by developers (fixed, acknowledged, or converted to ticket).",
+      "gridPos": { "x": 16, "y": 6, "w": 4, "h": 3 },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "manual_entry",
+          "points": [[0, 1734480000000]]
+        }
+      ],
+      "options": {
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [{ "type": "value", "options": { "0": { "text": "78%" } } }],
+          "color": { "mode": "fixed", "fixedColor": "#10b981" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 5,
+      "type": "barchart",
+      "title": "Issues Found by Severity (weekly)",
+      "description": "More CRITICAL/HIGH findings found early = fewer production incidents.",
+      "gridPos": { "x": 0, "y": 9, "w": 12, "h": 9 },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Week,Critical,High,Medium,Low\nW1,3,8,12,19\nW2,5,11,15,22\nW3,4,9,13,20\nW4,6,12,16,24\nW5,4,10,14,20\nW6,5,9,13,21\nW7,3,11,12,18\nW8,4,8,14,19"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "lineWidth": 1, "fillOpacity": 80 }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Critical" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#ef4444" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "High" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#f59e0b" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Medium" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#3b82f6" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Low" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "#6b7280" } }]
+          }
+        ]
+      },
+      "options": {
+        "xField": "Week",
+        "stacking": "normal",
+        "groupWidth": 0.7,
+        "barWidth": 0.97,
+        "tooltip": { "mode": "multi", "sort": "none" },
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "xTickLabelRotation": 0
+      }
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "L3 Deep Review Trigger Rate",
+      "description": "% of PRs that escalate to L3 deep review. Target: 30–50%. Too low = missing risk. Too high = wasting budget.",
+      "gridPos": { "x": 12, "y": 9, "w": 12, "h": 9 },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "alias": "L3 Trigger Rate (%)",
+          "csvContent": "time,L3 Trigger Rate\n2024-10-07T00:00:00Z,28\n2024-10-14T00:00:00Z,31\n2024-10-21T00:00:00Z,29\n2024-10-28T00:00:00Z,35\n2024-11-04T00:00:00Z,38\n2024-11-11T00:00:00Z,42\n2024-11-18T00:00:00Z,40\n2024-11-25T00:00:00Z,37\n2024-12-02T00:00:00Z,39\n2024-12-09T00:00:00Z,41\n2024-12-16T00:00:00Z,38\n2024-12-23T00:00:00Z,36"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 12,
+            "pointSize": 5,
+            "showPoints": "auto"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "green", "value": 30 },
+              { "color": "red", "value": 50 }
+            ]
+          },
+          "color": { "mode": "fixed", "fixedColor": "#a78bfa" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "tooltip": { "mode": "single", "sort": "none" },
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      }
+    },
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "Weekly LLM Cost (USD)",
+      "description": "Total LLM spend per week across all PRs reviewed. Stable low cost is the goal.",
+      "gridPos": { "x": 0, "y": 18, "w": 12, "h": 7 },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "alias": "Weekly cost (USD)",
+          "csvContent": "time,Cost\n2024-10-07T00:00:00Z,4.20\n2024-10-14T00:00:00Z,5.80\n2024-10-21T00:00:00Z,4.90\n2024-10-28T00:00:00Z,6.10\n2024-11-04T00:00:00Z,5.30\n2024-11-11T00:00:00Z,4.70\n2024-11-18T00:00:00Z,5.50\n2024-11-25T00:00:00Z,4.80\n2024-12-02T00:00:00Z,5.20\n2024-12-09T00:00:00Z,4.60\n2024-12-16T00:00:00Z,5.10\n2024-12-23T00:00:00Z,4.90"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1,
+            "fillOpacity": 80
+          },
+          "color": { "mode": "fixed", "fixedColor": "#10b981" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "tooltip": { "mode": "single", "sort": "none" },
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      }
+    },
+    {
+      "id": 8,
+      "type": "gauge",
+      "title": "Issue Tracking Score (ITS)",
+      "description": "VISDOM SDLC composite: finding_acceptance × (1 − fpr) × recall. Target ≥ 0.70.",
+      "gridPos": { "x": 12, "y": 18, "w": 6, "h": 7 },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "manual_entry",
+          "points": [[0, 1734480000000]]
+        }
+      ],
+      "options": {
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "minVizWidth": 75,
+        "minVizHeight": 75
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 1,
+          "mappings": [{ "type": "value", "options": { "0": { "text": "0.87" } } }],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 0.5 },
+              { "color": "green", "value": 0.7 }
+            ]
+          },
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 9,
+      "type": "gauge",
+      "title": "Code Performance Index (CPI)",
+      "description": "VISDOM SDLC metric. 1.0 = on budget, >1.0 = under budget. Tracks review cost vs. incident prevention value.",
+      "gridPos": { "x": 18, "y": 18, "w": 6, "h": 7 },
+      "datasource": { "type": "testdata", "uid": "testdata-vcr" },
+      "targets": [
+        {
+          "refId": "A",
+          "scenarioId": "manual_entry",
+          "points": [[0, 1734480000000]]
+        }
+      ],
+      "options": {
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "minVizWidth": 75,
+        "minVizHeight": 75
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 2,
+          "mappings": [{ "type": "value", "options": { "0": { "text": "1.24" } } }],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 0.8 },
+              { "color": "green", "value": 1.0 }
+            ]
+          },
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      }
+    }
+  ]
+}
