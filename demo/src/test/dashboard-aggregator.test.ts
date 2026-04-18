@@ -76,8 +76,22 @@ describe('DashboardAggregator', () => {
     assert.ok(csv.timeseries_csv.startsWith('time,findings\n'));
     assert.ok(csv.timeseries_csv.includes('2026-01-19T00:00:00Z,1'));
     assert.equal(csv.severity_csv, 'Critical,High,Medium,Low\n1,0,0,0');
-    assert.ok(csv.categories_csv.startsWith('Security,Correctness,Performance,Maintainability\n'));
+    assert.equal(csv.categories_csv, 'Security,Correctness,Performance,Maintainability\n1,0,0,0');
     assert.equal(csv.coverage_csv, `value\n${out.coverage.pct}`);
-    assert.ok(csv.top_findings_csv.startsWith('Finding Type,Count\n'));
+    assert.equal(csv.top_findings_csv, 'Finding Type,Count\n"SQLi",1');
+  });
+
+  test('aggregate shifts non-Monday mergedAt to that week Monday', () => {
+    // 2026-01-21 is a Wednesday — should map to Monday 2026-01-19
+    const results = [makeResult(1, '2026-01-21T15:00:00Z', [{ severity: 'low', category: 'security', title: 'X', file: 'f.ts' }])];
+    const out = agg.aggregate(results, { owner: 'a', repo: 'b' });
+    assert.equal(out.timeseries[0].week, '2026-01-19T00:00:00Z');
+  });
+
+  test('aggregate shifts Sunday mergedAt to previous Monday', () => {
+    // 2026-01-25 is a Sunday — should map to Monday 2026-01-19
+    const results = [makeResult(1, '2026-01-25T08:00:00Z', [{ severity: 'high', category: 'correctness', title: 'Y', file: 'g.ts' }])];
+    const out = agg.aggregate(results, { owner: 'a', repo: 'b' });
+    assert.equal(out.timeseries[0].week, '2026-01-19T00:00:00Z');
   });
 });

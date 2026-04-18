@@ -22,6 +22,7 @@ export interface GrafanaCSV {
 
 function getWeekMonday(isoDate: string): string {
   const d = new Date(isoDate);
+  if (isNaN(d.getTime())) throw new Error(`Invalid mergedAt date: ${isoDate}`);
   const day = d.getUTCDay();
   const diff = day === 0 ? -6 : 1 - day;
   d.setUTCDate(d.getUTCDate() + diff);
@@ -38,8 +39,10 @@ function mapCategory(category: string): keyof DashboardOutput['categories'] {
 }
 
 export class DashboardAggregator {
-  aggregate(results: ExternalReviewResult[], opts: { owner: string; repo: string }): DashboardOutput {
+  aggregate(results: ExternalReviewResult[], opts: { owner: string; repo: string; totalPrs?: number }): DashboardOutput {
     const allFindings = results.flatMap(r => r.findings);
+    const total = opts.totalPrs ?? results.length;
+    const pct = total > 0 ? Math.round((results.length / total) * 100) : 100;
 
     const severity = { critical: 0, high: 0, medium: 0, low: 0 };
     for (const f of allFindings) severity[f.severity]++;
@@ -72,11 +75,11 @@ export class DashboardAggregator {
       repo: `${opts.owner}/${opts.repo}`,
       generatedAt: new Date().toISOString(),
       prsReviewed: results.length,
-      prsTotal: results.length,
+      prsTotal: total,
       timeseries,
       severity,
       categories,
-      coverage: { reviewed: results.length, total: results.length, pct: 100 },
+      coverage: { reviewed: results.length, total, pct },
       topFindings,
     };
   }
@@ -94,7 +97,7 @@ export class DashboardAggregator {
     const coverage_csv = `value\n${output.coverage.pct}`;
 
     const top_findings_csv = 'Finding Type,Count\n' +
-      output.topFindings.map(f => `${f.title},${f.count}`).join('\n');
+      output.topFindings.map(f => `"${f.title.replace(/"/g, '""')}",${f.count}`).join('\n');
 
     return { timeseries_csv, severity_csv, categories_csv, coverage_csv, top_findings_csv };
   }
