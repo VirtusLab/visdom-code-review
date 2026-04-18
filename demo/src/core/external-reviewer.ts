@@ -1,7 +1,7 @@
 import { Octokit } from '@octokit/rest';
 import { join } from 'node:path';
 
-import type { ReviewContext } from './types.js';
+import type { ReviewContext, PRMetadata, Finding } from './types.js';
 import { buildReport } from './pipeline.js';
 import { ContextCollector } from './layers/context-collector.js';
 import { DeterministicGate } from './layers/deterministic-gate.js';
@@ -9,7 +9,6 @@ import { AIQuickScan } from './layers/ai-quick-scan.js';
 import { AIDeepReview } from './layers/ai-deep-review.js';
 import { PRFetcher } from './pr-fetcher.js';
 import type { AIClient } from './ai/client.js';
-import type { PRMetadata, Finding } from './types.js';
 
 export interface ExternalReviewResult {
   pr: PRMetadata;
@@ -57,13 +56,16 @@ export class ExternalReviewer {
       new AIDeepReview(this.ai, scenario),
     ];
 
-    let l3Triggered = false;
     for (const layer of layers) {
-      const result = await layer.analyze(context);
-      context.previousLayers.push(result);
-      if (layer.layer === 3) l3Triggered = true;
-      if (result.gate && !result.gate.proceed) break;
+      try {
+        const result = await layer.analyze(context);
+        context.previousLayers.push(result);
+        if (result.gate && !result.gate.proceed) break;
+      } catch {
+        break;
+      }
     }
+    const l3Triggered = context.previousLayers.some(r => r.layer === 3);
 
     const report = buildReport(context);
     const findings = report.layers.flatMap(l => l.findings);
@@ -84,6 +86,7 @@ export class ExternalReviewer {
       state: 'closed',
       sort: 'updated',
       direction: 'desc',
+      // GitHub API max per_page is 100; since filter may miss older PRs in busy repos
       per_page: 100,
     });
 
