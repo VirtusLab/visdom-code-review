@@ -1,0 +1,85 @@
+# .github/workflows/vcr-review.yml
+name: VCR Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  vcr-review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: demo/package-lock.json
+
+      - name: Install dependencies
+        run: cd demo && npm ci
+
+      - name: Run VCR on this PR
+        id: vcr
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VCR_PR_NUMBER: ${{ github.event.pull_request.number }}
+          VCR_PR_TITLE: ${{ github.event.pull_request.title }}
+          VCR_PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          cd demo
+          npm run demo:local 2>&1 | tee /tmp/vcr-output.txt || true
+
+      - name: Post VCR findings as PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const output = fs.readFileSync('/tmp/vcr-output.txt', 'utf8');
+            const body = `## 🔍 VCR Code Review\n\n\`\`\`\n${output.slice(0, 65000)}\n\`\`\`\n\n*Reviewed by [Visdom Code Review](https://visdom-code-review.virtuslab.com/demo/)*`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+
+      - name: Append to live-reviews.json
+        if: always()
+        run: |
+          cd demo
+          node -e "
+          const fs = require('fs');
+          const path = 'results/live-reviews.json';
+          const data = JSON.parse(fs.readFileSync(path, 'utf8'));
+          data.reviews.unshift({
+            prNumber: parseInt(process.env.VCR_PR_NUMBER || '0'),
+            prTitle: process.env.VCR_PR_TITLE || '',
+            prUrl: process.env.VCR_PR_URL || '',
+            totalFindings: 0,
+            maxSeverity: 'none',
+            costUsd: 0,
+            durationMs: 0,
+            reviewedAt: new Date().toISOString()
+          });
+          data.reviews = data.reviews.slice(0, 20);
+          fs.writeFileSync(path, JSON.stringify(data, null, 2));
+          " || true
+        env:
+          VCR_PR_NUMBER: ${{ github.event.pull_request.number }}
+          VCR_PR_TITLE: ${{ github.event.pull_request.title }}
+          VCR_PR_URL: ${{ github.event.pull_request.html_url }}
+
+      - name: Commit updated live-reviews.json
+        run: |
+          git config user.name "VCR Bot"
+          git config user.email "vcr-bot@virtuslab.com"
+          git add demo/results/live-reviews.json || true
+          git diff --staged --quiet || git commit -m "ci: update live-reviews from PR #${{ github.event.pull_request.number }}"
+          git push || true
