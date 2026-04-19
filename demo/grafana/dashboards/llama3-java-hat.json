@@ -1,0 +1,511 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": false,
+        "iconColor": "#5794f2",
+        "name": "Batch runs",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": ["vcr-batch"],
+          "type": "tags"
+        },
+        "type": "tags"
+      }
+    ]
+  },
+  "editable": true,
+  "graphTooltip": 1,
+  "links": [],
+  "refresh": "",
+  "schemaVersion": 38,
+  "tags": ["vcr", "external"],
+  "templating": {
+    "list": [
+      {
+        "current": { "selected": false, "text": "llama3-java-hat", "value": "llama3-java-hat" },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Project",
+        "multi": false,
+        "name": "project",
+        "options": [
+          { "selected": true,  "text": "llama3-java-hat",  "value": "llama3-java-hat" },
+          { "selected": false, "text": "demo-spring-boot", "value": "demo-spring-boot" },
+          { "selected": false, "text": "demo-react-app",   "value": "demo-react-app" }
+        ],
+        "query": "llama3-java-hat,demo-spring-boot,demo-react-app",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": { "from": "2026-01-01T00:00:00Z", "to": "2026-04-15T00:00:00Z" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "VCR — ${project} Quality Pulse",
+  "uid": "vcr-quality-pulse",
+  "version": 2,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Total Findings",
+      "description": "156 issues found across all 38 merged PRs reviewed by VISDOM. Use the Project dropdown above to switch between analysed repositories.",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n156"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Critical Findings",
+      "description": "1 critical issue: a double-checked locking race condition in F16_FAST weight storage (PR #48). Green = under control. Red (≥5) means AI-introduced bugs are slipping through undetected.",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 2 },
+              { "color": "red", "value": 5 }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n1"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "PR Coverage",
+      "description": "100% of merged PRs were reviewed by VISDOM. Coverage below 90% means AI-generated code is shipping without automated review.",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 80 },
+              { "color": "green", "value": 90 }
+            ]
+          },
+          "unit": "percent",
+          "max": 100,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n100"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "High + Critical Findings",
+      "description": "85 of 156 findings (54%) are high or critical severity — issues that could cause bugs in production. Watch this ratio: above 60% means the team is merging AI code without sufficient review.",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 20 },
+              { "color": "red", "value": 50 }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n85"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Avg Findings / PR",
+      "description": "4.1 findings per PR — 62% below the industry AI-code baseline of 10.83/PR (CodeRabbit 2024 study, 470 PRs). Green: ≤6 (strong). Yellow: 6–9 (watch trend). Red: ≥9 (approaching AI baseline).",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 8, "x": 0, "y": 4 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 6 },
+              { "color": "red", "value": 9 }
+            ]
+          },
+          "decimals": 1,
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "value_and_name",
+        "text": {}
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Metric,value\nVISDOM avg,4.1\nAI industry baseline,10.83"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "High+Critical Rate",
+      "description": "54% of all findings are High or Critical. A rising rate indicates the team is approving AI-generated code with serious issues without adequate review.",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 8, "x": 8, "y": 4 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 50 },
+              { "color": "red", "value": 65 }
+            ]
+          },
+          "unit": "percent",
+          "max": 100,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n54"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "PRs Flagged (>5 findings)",
+      "description": "12 of 38 PRs had more than 5 findings — warrant a retrospective discussion. Likely places where AI-generated code was merged without sufficient review.",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 8, "x": 16, "y": 4 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 8 },
+              { "color": "red", "value": 15 }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "value\n12"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Findings Per Week — ${project}",
+      "description": "Weekly finding count. Green zone (≤25/week) = healthy pace. Yellow (25–40) = elevated. Red (≥40) = high volume, review the PR queue. Blue vertical markers = VISDOM analysis batch runs (add via Dashboard → Annotations with tag 'vcr-batch').",
+      "type": "timeseries",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 8 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 12,
+            "showPoints": "auto",
+            "spanNulls": false,
+            "thresholdsStyle": { "mode": "area" }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#EAB839", "value": 25 },
+              { "color": "red", "value": 40 }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "${project}" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "#5794f2", "mode": "fixed" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "llama3-java-hat" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "#5794f2", "mode": "fixed" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "AI industry baseline" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#FF9900", "mode": "fixed" } },
+              { "id": "custom.lineStyle", "value": { "dash": [10, 10], "fill": "dash" } },
+              { "id": "custom.lineWidth", "value": 1 },
+              { "id": "custom.fillOpacity", "value": 0 },
+              { "id": "displayName", "value": "AI industry baseline (10.83/PR avg)" }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": { "calcs": ["last", "max", "sum"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "time,llama3-java-hat\n2026-02-02T00:00:00Z,33\n2026-02-09T00:00:00Z,53\n2026-02-16T00:00:00Z,41\n2026-02-23T00:00:00Z,4\n2026-03-02T00:00:00Z,25"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Severity Breakdown",
+      "description": "Distribution of findings by severity across all reviewed PRs. Critical (red) and High (orange) require immediate attention. A healthy codebase has most findings in Low/Medium.",
+      "type": "barchart",
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 18 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 1, "fillOpacity": 80 },
+          "unit": "short"
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Critical" }, "properties": [{ "id": "color", "value": { "fixedColor": "#e05151", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "High" },     "properties": [{ "id": "color", "value": { "fixedColor": "#ff9900", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "Medium" },   "properties": [{ "id": "color", "value": { "fixedColor": "#fade2a", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "Low" },      "properties": [{ "id": "color", "value": { "fixedColor": "#73bf69", "mode": "fixed" } }] }
+        ]
+      },
+      "options": {
+        "barWidth": 0.4,
+        "groupWidth": 0.7,
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "stacking": "normal",
+        "tooltip": { "mode": "multi", "sort": "desc" },
+        "xField": "Repo"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Repo,Critical,High,Medium,Low\nllama3-java-hat,1,84,71,0"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Findings by Category",
+      "description": "Finding distribution across code quality categories. Maintainability dominates (145) — typical for AI-generated code. Security (1) and Correctness (10) are the highest-priority items to address.",
+      "type": "barchart",
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 18 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 1, "fillOpacity": 80 },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "barWidth": 0.4,
+        "groupWidth": 0.7,
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "stacking": "normal",
+        "tooltip": { "mode": "multi", "sort": "desc" },
+        "xField": "Repo"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Repo,Security,Correctness,Performance,Maintainability\nllama3-java-hat,1,10,0,145"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Top Finding Types",
+      "description": "Most frequently flagged patterns across all PRs. 'Return value ignored' (6 occurrences) is the top signal — review these PRs first. All other findings are unique incidents.",
+      "type": "table",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 28 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": { "align": "auto", "displayMode": "auto" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Count" },
+            "properties": [
+              { "id": "custom.displayMode", "value": "color-background" },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "green", "value": null },
+                    { "color": "orange", "value": 3 },
+                    { "color": "red", "value": 6 }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "footer": { "show": false },
+        "showHeader": true,
+        "sortBy": [{ "desc": true, "displayName": "Count" }]
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-testdata-datasource", "uid": "testdata-vcr" },
+          "refId": "A",
+          "scenarioId": "csv_content",
+          "csvContent": "Finding Type,Count\nReturn value of important method ignored,6\nDouble-checked locking race condition in toF16Array,1\nGEMV.apply overload for F16Weights lacks bounds validation,1\nF16Array materialization in toF16Array not tied to accelerator lifecycle,1\nf16WeightsCache is a plain HashMap with no synchronization,1\nelementCount cast to int without overflow check before short[] allocation,1\noutputWeight dimensions swapped: rows/cols transposed for output projection,1\nf16WeightsCache HashMap accessed without synchronization,1\nCritical F16_FAST correctness tests entirely opt-in and never run in CI,1\ntestDequantRowMatchesGetFloat validates internal consistency not numerical correctness,1"
+        }
+      ]
+    }
+  ]
+}
