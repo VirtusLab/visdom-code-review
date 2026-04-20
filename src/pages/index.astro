@@ -74,6 +74,36 @@ const faqTeaseItems = [
     </div>
   </section>
 
+  <!-- ============ Stats Section ============ -->
+  <section class="stats-section">
+    <div class="stats-section__inner">
+      <h2 class="section-heading">The problem in numbers</h2>
+      <p class="section-subtitle">
+        Your CI says the code is fine. Your tests pass. But the AI wrote the tests too.
+      </p>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <StatCard
+          value="84%"
+          label="of CI test failures are flaky, not real regressions"
+          source="Google"
+          color="red"
+        />
+        <StatCard
+          value="45%"
+          label="of AI-generated code contains OWASP security vulnerabilities"
+          source="Veracode 2025"
+          color="amber"
+        />
+        <StatCard
+          value="12.5%"
+          label="of agent output that passes CI is still functionally wrong"
+          source="Spotify"
+          color="purple"
+        />
+      </div>
+    </div>
+  </section>
+
   <!-- ============ Feature Row 1: How it works (So fast) ============ -->
   <section class="feature-row feature-row--white">
     <div class="feature-row__inner">
@@ -236,15 +266,6 @@ const faqTeaseItems = [
       <span class="kicker">SEE IT IN ACTION</span>
       <h2 class="demo-promo__heading">Interactive demo — real PRs, real findings</h2>
       <p class="demo-promo__sub">VCR reviews its own codebase on every pull request. Trace the triage flow, see what each layer catches, and follow findings back to the GitHub PR.</p>
-      <div class="demo-browser">
-        <div class="demo-browser__bar">
-          <span class="demo-browser__dot demo-browser__dot--red"></span>
-          <span class="demo-browser__dot demo-browser__dot--yellow"></span>
-          <span class="demo-browser__dot demo-browser__dot--green"></span>
-          <span class="demo-browser__url">visdom-code-review · demo</span>
-        </div>
-        <img src={`${base}demo.gif`} alt="VCR triage demo walkthrough" class="demo-promo__gif" loading="lazy" />
-      </div>
       <div class="demo-promo__actions">
         <a href={`${base}demo/`} class="btn btn--primary">Explore the demo →</a>
         <a href="https://vcr-grafana.fly.dev" target="_blank" rel="noopener" class="btn btn--outline">Live Grafana ↗</a>
@@ -272,36 +293,6 @@ const faqTeaseItems = [
           alt="VCR GitHub PR comment showing findings grouped by layer with inline code annotations"
           class="gh-preview__img"
           loading="lazy"
-        />
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ Stats Section ============ -->
-  <section class="stats-section">
-    <div class="stats-section__inner">
-      <h2 class="section-heading">The problem in numbers</h2>
-      <p class="section-subtitle">
-        Your CI says the code is fine. Your tests pass. But the AI wrote the tests too.
-      </p>
-      <div class="grid sm:grid-cols-3 gap-4">
-        <StatCard
-          value="84%"
-          label="of CI test failures are flaky, not real regressions"
-          source="Google"
-          color="red"
-        />
-        <StatCard
-          value="45%"
-          label="of AI-generated code contains OWASP security vulnerabilities"
-          source="Veracode 2025"
-          color="amber"
-        />
-        <StatCard
-          value="12.5%"
-          label="of agent output that passes CI is still functionally wrong"
-          source="Spotify"
-          color="purple"
         />
       </div>
     </div>
