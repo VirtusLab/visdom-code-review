@@ -274,26 +274,36 @@ const faqTeaseItems = [
   </section>
 
   <!-- ============ GitHub Output Preview ============ -->
-  <section class="gh-preview-section">
-    <div class="gh-preview__inner">
-      <span class="kicker">Real output — no toys</span>
-      <h2 class="gh-preview__heading">This is what VCR posts to your GitHub PR</h2>
-      <p class="gh-preview__sub">
-        Findings grouped by layer, linked to the exact line. Every comment shows the rule, the risk, and a concrete fix suggestion.
-      </p>
-      <div class="gh-preview__frame">
-        <div class="gh-preview__bar">
-          <span class="gh-preview__dot gh-preview__dot--red"></span>
-          <span class="gh-preview__dot gh-preview__dot--yellow"></span>
-          <span class="gh-preview__dot gh-preview__dot--green"></span>
-          <span class="gh-preview__url">github.com · Pull Request · VCR commented</span>
+  <section class="feature-row feature-row--white">
+    <div class="feature-row__inner">
+      <div class="feature-row__text">
+        <span class="kicker">Real output — no toys</span>
+        <h2 class="feature-row__heading">What lands on your PR</h2>
+        <p class="feature-row__desc">
+          Findings grouped by layer, linked to the exact line. Every comment names the rule, the risk level, and a concrete fix — not a vague hint.
+        </p>
+        <ul class="feature-row__list">
+          <li>Layer 1 — deterministic gate: secrets, forbidden patterns, hard rules</li>
+          <li>Layer 2 — AI quick scan: logic, reliability, security smell</li>
+          <li>Layer 3 — AI deep review: architecture, cache safety, edge cases</li>
+        </ul>
+        <a href="https://github.com/VirtusLab/visdom-code-review/pull/1" target="_blank" rel="noopener" class="feature-row__link">See the real PR this came from &rarr;</a>
+      </div>
+      <div class="feature-row__visual">
+        <div class="gh-preview__frame">
+          <div class="gh-preview__bar">
+            <span class="gh-preview__dot gh-preview__dot--red"></span>
+            <span class="gh-preview__dot gh-preview__dot--yellow"></span>
+            <span class="gh-preview__dot gh-preview__dot--green"></span>
+            <span class="gh-preview__url">github.com · Pull Request · VCR commented</span>
+          </div>
+          <img
+            src={`${base}screenshots/github-pr-comment.png`}
+            alt="VCR GitHub PR comment showing findings grouped by layer with inline code annotations"
+            class="gh-preview__img"
+            loading="lazy"
+          />
         </div>
-        <img
-          src={`${base}screenshots/github-pr-comment.png`}
-          alt="VCR GitHub PR comment showing findings grouped by layer with inline code annotations"
-          class="gh-preview__img"
-          loading="lazy"
-        />
       </div>
     </div>
   </section>
