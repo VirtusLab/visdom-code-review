@@ -940,7 +940,8 @@ body {
 .demo-promo__inner { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; text-align: center; }
 .demo-promo__heading { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; color: #f1f5f9; margin: 0.5rem 0 0.75rem; }
 .demo-promo__sub { color: #94a3b8; font-size: 0.95rem; margin: 0 auto 1.5rem; line-height: 1.6; max-width: 640px; }
-.demo-promo__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.demo-promo__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.demo-promo__screen { border-radius: 10px; overflow: hidden; border: 1px solid #1e293b; box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px #1e293b; max-width: 900px; margin: 0 auto; }
 .demo-promo .btn--outline { color: #94a3b8; border-color: #334155; }
 .demo-promo .btn--outline:hover { color: #f1f5f9; border-color: #94a3b8; background: transparent; }
 
