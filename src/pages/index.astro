@@ -104,6 +104,69 @@ const faqTeaseItems = [
     </div>
   </section>
 
+  <!-- ============ VCR Difference ============ -->
+  <section class="feature-row feature-row--offwhite">
+    <div class="feature-row__inner feature-row__inner--flipped">
+      <div class="feature-row__text">
+        <span class="kicker">A different approach</span>
+        <h2 class="feature-row__heading">A review process you deploy into your platform</h2>
+        <p class="feature-row__desc">
+          VCR is not a SaaS product and not a vendor service. It's a review <em>process</em> with an
+          open-source reference implementation &mdash; opinionated patterns, six runnable layers, and
+          a pipeline you run inside your own CI/CD, against your own LLM provider, behind your own network boundary.
+        </p>
+        <p class="feature-row__desc">
+          VirtusLab deploys VCR as part of Visdom engagements: we embed with your platform engineers,
+          configure the pipeline for your stack, tune the lenses to your conventions, and hand it over.
+          Capability transfer from day one. Your team owns and operates the process. No ongoing SaaS dependency.
+        </p>
+        <a href={`${base}reference/evaluation/`} class="feature-row__link">Evaluation methodology &rarr;</a>
+      </div>
+      <div class="feature-row__visual">
+        <div class="card">
+          <p class="card__label">Deployment model</p>
+          <div class="diff-table">
+            <div class="diff-table__header">
+              <span></span>
+              <span class="diff-table__col-head">SaaS review tools</span>
+              <span class="diff-table__col-head diff-table__col-head--vcr">VCR (deployed)</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Where it runs</span>
+              <span>Vendor cloud</span>
+              <span class="diff-table__vcr">Your CI/CD pipeline</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">LLM provider</span>
+              <span>Vendor-chosen</span>
+              <span class="diff-table__vcr">Your choice (Claude, GPT, self-hosted)</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Code leaves your network</span>
+              <span>Yes</span>
+              <span class="diff-table__vcr">No &mdash; runs on your infra</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Custom review rules</span>
+              <span>Limited config</span>
+              <span class="diff-table__vcr">Full lens customization (compliance, domain)</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Cost model</span>
+              <span>Per-seat: $12&ndash;40/dev/mo</span>
+              <span class="diff-table__vcr">Your LLM costs only ($0&ndash;0.44/PR)</span>
+            </div>
+            <div class="diff-table__row">
+              <span class="diff-table__label">Ownership</span>
+              <span>Vendor dependency</span>
+              <span class="diff-table__vcr">Your team owns and operates</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ Feature Row 1: How it works (So fast) ============ -->
   <section class="feature-row feature-row--white">
     <div class="feature-row__inner">
@@ -406,69 +469,6 @@ const faqTeaseItems = [
     </div>
   </section>
 
-
-  <!-- ============ VCR Difference ============ -->
-  <section class="feature-row feature-row--white">
-    <div class="feature-row__inner">
-      <div class="feature-row__text">
-        <span class="kicker">A different approach</span>
-        <h2 class="feature-row__heading">A review process you deploy into your platform</h2>
-        <p class="feature-row__desc">
-          The tools above are SaaS products you subscribe to. VCR is a review <em>process</em> with a reference
-          implementation &mdash; designed to be deployed into your existing CI/CD, your infrastructure, your LLM provider.
-          It runs in your environment, reports to your systems, and follows your rules.
-        </p>
-        <p class="feature-row__desc">
-          VirtusLab deploys VCR as part of Visdom engagements: we configure the pipeline for your stack,
-          tune the lenses to your conventions, and transfer ownership to your platform team.
-          You keep the process. No ongoing SaaS dependency.
-        </p>
-        <a href={`${base}reference/evaluation/`} class="feature-row__link">Evaluation methodology &rarr;</a>
-      </div>
-      <div class="feature-row__visual">
-        <div class="card">
-          <p class="card__label">Deployment model</p>
-          <div class="diff-table">
-            <div class="diff-table__header">
-              <span></span>
-              <span class="diff-table__col-head">SaaS review tools</span>
-              <span class="diff-table__col-head diff-table__col-head--vcr">VCR (deployed)</span>
-            </div>
-            <div class="diff-table__row">
-              <span class="diff-table__label">Where it runs</span>
-              <span>Vendor cloud</span>
-              <span class="diff-table__vcr">Your CI/CD pipeline</span>
-            </div>
-            <div class="diff-table__row">
-              <span class="diff-table__label">LLM provider</span>
-              <span>Vendor-chosen</span>
-              <span class="diff-table__vcr">Your choice (Claude, GPT, self-hosted)</span>
-            </div>
-            <div class="diff-table__row">
-              <span class="diff-table__label">Code leaves your network</span>
-              <span>Yes</span>
-              <span class="diff-table__vcr">No &mdash; runs on your infra</span>
-            </div>
-            <div class="diff-table__row">
-              <span class="diff-table__label">Custom review rules</span>
-              <span>Limited config</span>
-              <span class="diff-table__vcr">Full lens customization (compliance, domain)</span>
-            </div>
-            <div class="diff-table__row">
-              <span class="diff-table__label">Cost model</span>
-              <span>Per-seat: $12&ndash;40/dev/mo</span>
-              <span class="diff-table__vcr">Your LLM costs only ($0&ndash;0.44/PR)</span>
-            </div>
-            <div class="diff-table__row">
-              <span class="diff-table__label">Ownership</span>
-              <span>Vendor dependency</span>
-              <span class="diff-table__vcr">Your team owns and operates</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ============ Try the Demo ============ -->
   <section class="feature-row feature-row--offwhite">
